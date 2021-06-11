@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
+import { useRouter } from "next/router";
 import { AppUiContext } from "../../Context";
 import { Default, Mobile } from "../utils/Breakpoints";
 import Icon from "../atoms/SwiplusLogo";
-import { useRouter } from "next/router";
 import {
   HomeIcon,
   NotificationsIcon,
@@ -10,6 +10,7 @@ import {
   SearchIcon,
 } from "../atoms/Icons";
 import Search from "../atoms/SearchBar";
+
 export default function ProfilePage({ children, showTopBarMobile }) {
   const [state, dispatch] = useContext(AppUiContext);
   const router = useRouter();
@@ -17,15 +18,15 @@ export default function ProfilePage({ children, showTopBarMobile }) {
     dispatch({ type: "focused-menu-icon", payload: navPage });
     switch (navPage) {
       case "home":
-        router.push("/");
-        break;
+        return router.push("/");
       case "search":
-        router.push("/search");
-        break;
+        return router.push("/search");
       case "notifications":
-        router.push("/notifications");
+        return router.push("/notifications");
       case "profile":
-        router.push("/hello");
+        return router.push("/hello");
+      default:
+        return undefined;
     }
   };
   return (
@@ -50,7 +51,7 @@ export default function ProfilePage({ children, showTopBarMobile }) {
         )}
         {/* app body */}
         <div className="bg-gray-900">{children}</div>
-        <div className="bg-gray-900 inset-x-0 h-12 bottom-0 border-t-2 border-gray-800 "></div>
+        <div className="bg-gray-900 inset-x-0 h-12 bottom-0 border-t-2 border-gray-800 " />
         <div className="bg-gray-900 fixed inset-x-0 h-12 bottom-0 border-t-2 border-gray-800 ">
           <div className="flex justify-around p-1.5">
             <HomeIcon

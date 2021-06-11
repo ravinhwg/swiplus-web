@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
 import Navbar from "../components/molecules/NavBar";
 import SingleCard from "../components/atoms/SingleCard";
 import ProfileHeader from "../components/molecules/ProfileHeader";

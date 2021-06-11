@@ -2,7 +2,8 @@ import React from "react";
 import Image from "next/image";
 import { Default, Mobile } from "../utils/Breakpoints";
 import FollowButton from "../atoms/Button";
-export default function ProfilePage({}) {
+
+export default function ProfilePage() {
   return (
     <>
       <Mobile>

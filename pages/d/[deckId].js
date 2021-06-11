@@ -9,7 +9,7 @@ import { Mobile } from "../../components/utils/Breakpoints";
 
 export default function Search() {
   const router = useRouter();
-  const [state, dispatch] = useContext(AppUiContext);
+  const [, dispatch] = useContext(AppUiContext);
   const goBackfromSearch = () => {
     router.back();
   };

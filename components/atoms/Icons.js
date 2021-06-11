@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 function HomeIcon(props) {
   return (
     <svg
