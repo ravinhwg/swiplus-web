@@ -10,19 +10,31 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@tailwindcss/aspect-ratio": "^0.2.0",
     "next": "10.2.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-query": "^3.16.0",
+    "react-responsive": "^8.2.0",
+    "swiper": "^6.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
     "@storybook/addon-actions": "^6.2.9",
-    "@storybook/addon-essentials": "^6.2.9",
+    "@storybook/addon-essentials": "^6.1.21",
     "@storybook/addon-links": "^6.2.9",
-    "@storybook/react": "^6.2.9",
+    "@storybook/react": "^6.1.21",
     "autoprefixer": "^10.2.5",
     "babel-loader": "^8.2.2",
+    "eslint": "^7.28.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "postcss": "^8.2.14",
+    "prettier": "2.0.5",
     "tailwindcss": "^2.1.2"
   }
 }
