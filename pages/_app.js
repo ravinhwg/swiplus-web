@@ -1,16 +1,20 @@
-import { useReducer } from "react";
-import appUiReducer from "../reducers/appUiReducer";
-import { AppUiContext } from "../Context";
 import "tailwindcss/tailwind.css";
 import "swiper/swiper.min.css";
 import "swiper/components/pagination/pagination.min.css";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import InitialStateTree from "../initialStateTrees/AppUiTree";
+import appUiReducer from "../reducers/appUiReducer";
+import useReducerWithLocalStorage from "../hooks/useReducerWithLocalStorage";
+import { AppUiContext } from "../Context";
 
 const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }) {
-  const [state, dispatch] = useReducer(appUiReducer, InitialStateTree);
+  const [state, dispatch] = useReducerWithLocalStorage({
+    initializerArg: InitialStateTree,
+    key: "SWIPLUS_APP_STATE",
+    reducer: appUiReducer,
+  });
   return (
     <QueryClientProvider client={queryClient}>
       <AppUiContext.Provider value={[state, dispatch]}>

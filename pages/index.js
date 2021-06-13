@@ -1,8 +1,12 @@
+import { useContext } from "react";
 import Head from "next/head";
 import Navbar from "../components/molecules/NavBar";
+import { AppUiContext } from "../Context";
 import SingleCard from "../components/atoms/SingleCard";
+import JoinSwiplusBanner from "../components/molecules/JoinSwiplusBanner";
 
 export default function Home() {
+  const [state, dispatch] = useContext(AppUiContext);
   return (
     <>
       <Head>
@@ -11,7 +15,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar showTopBarMobile>
+        {state.loggedIn || !state.askToJoinBannerVisible ? (
+          <></>
+        ) : (
+          <JoinSwiplusBanner />
+        )}
         <div className="grid row-auto grid-cols-2 sm:grid-cols-3 md:grid-cols-3 md:mx-3 lg:grid-cols-4 xl:grid-cols-4 gap-1 sm:my-8">
+          <SingleCard />
+          <SingleCard />
           <SingleCard />
           <SingleCard />
           <SingleCard />
