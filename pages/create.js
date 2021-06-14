@@ -2,11 +2,31 @@ import { useContext, useState } from "react";
 import Head from "next/head";
 import Navbar from "../components/molecules/NavBar";
 import { AppUiContext } from "../Context";
-import SingleCard from "../components/atoms/SingleCard";
+import { CloseIcon, PlusIcon } from "../components/atoms/Icons";
 
 export default function Home() {
   const [state, dispatch] = useContext(AppUiContext);
   const [files, setFiles] = useState(0);
+  const [pics, setPics] = useState([]);
+  const addImages = (event) => {
+    let imageFiles;
+    if (event.target.files) {
+      imageFiles = [...event.target.files].map((item) => {
+        const itemURL = URL.createObjectURL(item);
+        return itemURL;
+      });
+    } else {
+      console.log(event);
+    }
+    setPics((picsState) => picsState.concat(imageFiles));
+  };
+  const removePic = (index) => {
+    setPics((picState) => {
+      URL.revokeObjectURL(pics[index]);
+      picState.splice(index, 1);
+      return picState;
+    });
+  };
   return (
     <>
       <Head>
@@ -21,12 +41,42 @@ export default function Home() {
               Create deck
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 md:mx-3 lg:grid-cols-4 xl:grid-cols-5 gap-1">
-              <SingleCard />
-              <SingleCard />
-              <SingleCard />
-              <SingleCard />
-              <SingleCard />
-              <SingleCard />
+              {pics.map((item, index) => (
+                <div className={`relative aspect-w-4 aspect-h-5 bg-black ${}`}>
+                  <img
+                    alt={item}
+                    src={item}
+                    key={item}
+                    className=" object-scale-down"
+                  />
+                  <div
+                    className="absolute top-0 left-0 m-2"
+                    onClick={() => removePic(index)}
+                    onKeyPress={() => removePic(index)}
+                  >
+                    <CloseIcon />
+                  </div>
+                </div>
+              ))}
+              <div className="aspect-w-4 aspect-h-5 bg-gray-800 rounded">
+                <div className="flex h-full">
+                  <div className="m-auto  items-center flex flex-col">
+                    <>
+                      <label htmlFor="file-upload">
+                        <PlusIcon className="text-gray-100 h-20 w-20" />
+                      </label>
+                      <input
+                        type="file"
+                        id="file-upload"
+                        onChange={addImages}
+                        className="hidden"
+                        multiple
+                        accept="image/png, image/jpeg"
+                      />
+                    </>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
