@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useState, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Link from "next/link";
 import SwiperCore, { Mousewheel, Pagination } from "swiper";
 import { useForm } from "react-hook-form";
 import { InView } from "react-intersection-observer";
@@ -66,9 +67,7 @@ export default function Search() {
       queryClient.invalidateQueries("comments");
     },
   });
-  const toggleMobileSearchTab = (target) => {
-    dispatch({ type: "focused-mobile-search-tab", payload: target });
-  };
+
   const submitComment = () => {
     commentMutation.mutate({
       comment,
@@ -140,12 +139,39 @@ export default function Search() {
           </div>
         </div>
       </div>
+      <div className="p-3 flex w-full justify-between">
+        <div className="flex">
+          {deckData?.deck?.profile_pic ? (
+            <img
+              src={deckData?.deck.profile_pic}
+              alt="profile-pic"
+              className="rounded-full h-8 w-8 my-1"
+            />
+          ) : (
+            <img
+              src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
+              alt="profile-pic"
+              className="rounded-full h-8 w-8 my-1"
+            />
+          )}
+          <div className="mx-2">
+            <Link href={`/${deckData?.deck?.username}`}>
+              <a>
+                <p className="text-gray-50 text-md m-1">
+                  {deckData?.deck?.display_name}
+                </p>
+              </a>
+            </Link>
+          </div>
+        </div>
+      </div>
       <div
         className="text-gray-300 self-center font-light font-inter text-sm p-3.5 "
         onClick={() => setOpen(true)}
       >
         {deckData.deck?.deck_description.substr(0, 100)}... Read more
       </div>
+
       {state.loggedIn ? (
         <form onSubmit={handleSubmit(() => submitComment())}>
           <div className=" text-red-500  p-2 rounded-md text-sm text-left w-full">
