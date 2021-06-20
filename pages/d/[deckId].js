@@ -1,9 +1,11 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
 import SwiperCore, { Mousewheel, Pagination } from "swiper";
 import { useForm } from "react-hook-form";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
 import { InView } from "react-intersection-observer";
 import { useRouter } from "next/router";
 import {
@@ -25,22 +27,20 @@ import {
 import CommentDisplay from "../../components/molecules/CommentDisplay";
 import { Mobile } from "../../components/utils/Breakpoints";
 
-export default function Search() {
+export default function Search({ deckId }) {
   const router = useRouter();
   const pageNumber = useRef(0);
+  const [showAll, setShowAll] = useState(false);
   const queryClient = useQueryClient();
-  const [open, setOpen] = useState(false);
   const [comment, setComment] = useState("");
+  const [description, setDescription] = useState("");
+  const [createdAt, setCreatedAt] = useState("");
   const [state, dispatch] = useContext(AppUiContext);
-  const [deckData, setDeckData] = useState({});
-  const query = useQuery(
-    ["getDeck", router.query.deckId, state.user?.accessToken],
+  const deckQuery = useQuery(
+    ["getDeck", router.query.deckId || deckId, state.user?.accessToken],
     getDeck,
     {
       refetchOnWindowFocus: false,
-      onSuccess: async ({ data }) => {
-        setDeckData({ ...data });
-      },
     }
   );
 
@@ -75,6 +75,21 @@ export default function Search() {
       token: state.user?.accessToken,
     });
   };
+  useEffect(() => {
+    TimeAgo.addLocale(en);
+    const timeAgo = new TimeAgo("en-US");
+    setCreatedAt(
+      timeAgo.format(
+        Date.now() -
+          (Date.now() -
+            Math.floor(
+              new Date(
+                deckQuery.data?.data?.deck?.created_at || Date.now()
+              ).getTime()
+            ))
+      )
+    );
+  }, [deckQuery.isLoading]);
   SwiperCore.use([Mousewheel, Pagination]);
   const setLike = (active) => {
     if (state.loggedIn) {
@@ -87,91 +102,105 @@ export default function Search() {
       router.replace("/login");
     }
   };
+
   return (
     <Navbar>
-      <div className="flex flex-row m-3 justify-start">
-        <BackButton
-          className=" h-8 text-gray-200 self-center w-auto"
-          onClick={goBackfromSearch}
-        />
-        <div className="w-11/12 text-xl text-gray-200 self-center font-inter font-medium">
-          <div className="flex align-text-top">{deckData.deck?.deck_title}</div>
-        </div>
-      </div>
-      <div className="bg-gray-800 w-full ">
-        <Swiper
-          lazy="true"
-          spaceBetween={1}
-          slidesPerView={1}
-          // mousewheel
-          pagination={{ dynamicBullets: true }}
-        >
-          {deckData.deck?.card_order.map((item, index) => (
-            <SwiperSlide key={`${index}-${item}`}>
-              <img src={item} alt={index} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-      <div className="items-stretch m-3 px-2 ">
-        <div className="flex justify-around">
-          <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
-            {deckData?.userLiked ? (
-              <LikeFill
-                className="h-10 w-10 text-red-600"
-                onClick={() => setLike(false)}
-              />
-            ) : (
-              <LikeOutline
-                className="h-10 w-10 text-red-600"
-                onClick={() => setLike(true)}
-              />
-            )}
-            {deckData?.likes}
-          </div>
-          <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
-            <Eye className="h-10 w-10 text-gray-300" />
-            {deckData?.views}
-          </div>
-          <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
-            <Share className="h-10 w-10 text-gray-300" />
-            share
-          </div>
-        </div>
-      </div>
-      <div className="p-3 flex w-full justify-between">
-        <div className="flex">
-          {deckData?.deck?.profile_pic ? (
-            <img
-              src={deckData?.deck.profile_pic}
-              alt="profile-pic"
-              className="rounded-full h-8 w-8 my-1"
+      {!deckQuery.isLoading ? (
+        <>
+          <div className="flex flex-row m-3 justify-start">
+            <BackButton
+              className=" h-8 text-gray-200 self-center w-auto"
+              onClick={goBackfromSearch}
             />
-          ) : (
-            <img
-              src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
-              alt="profile-pic"
-              className="rounded-full h-8 w-8 my-1"
-            />
-          )}
-          <div className="mx-2">
-            <Link href={`/${deckData?.deck?.username}`}>
-              <a>
-                <p className="text-gray-50 text-md m-1">
-                  {deckData?.deck?.display_name}
-                </p>
-              </a>
-            </Link>
+            <div className="w-11/12 text-xl text-gray-200 self-center font-inter font-medium">
+              <div className="flex align-text-top">
+                {deckQuery.data.data.deck?.deck_title}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div
-        className="text-gray-300 self-center font-light font-inter text-sm p-3.5 "
-        onClick={() => setOpen(true)}
-      >
-        {deckData.deck?.deck_description.substr(0, 100)}... Read more
-      </div>
-
+          <div className="bg-gray-800 w-full ">
+            <Swiper
+              lazy="true"
+              spaceBetween={1}
+              slidesPerView={1}
+              // mousewheel
+              pagination={{ dynamicBullets: true }}
+            >
+              {deckQuery.data.data.deck?.card_order.map((item, index) => (
+                <SwiperSlide key={`${index}-${item}`}>
+                  <img src={item} alt={index} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+          <div className="items-stretch m-3 px-2 ">
+            <div className="flex justify-around">
+              <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
+                {deckQuery.data.data.userLiked ? (
+                  <LikeFill
+                    className="h-10 w-10 text-red-600"
+                    onClick={() => setLike(false)}
+                  />
+                ) : (
+                  <LikeOutline
+                    className="h-10 w-10 text-red-600"
+                    onClick={() => setLike(true)}
+                  />
+                )}
+                {deckQuery.data.data.likes}
+              </div>
+              <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
+                <Eye className="h-10 w-10 text-gray-300" />
+                {deckQuery.data.data.views}
+              </div>
+              <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
+                <Share className="h-10 w-10 text-gray-300" />
+                share
+              </div>
+            </div>
+          </div>
+          <div className="p-3 flex w-full justify-between">
+            <div className="flex">
+              {deckQuery.data.data.deck?.profile_pic ? (
+                <img
+                  src={deckQuery.data.data?.deck.profile_pic}
+                  alt="profile-pic"
+                  className="rounded-full h-12 w-12 my-1"
+                />
+              ) : (
+                <img
+                  src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
+                  alt="profile-pic"
+                  className="rounded-full h-12 w-12 my-1"
+                />
+              )}
+              <div className="mx-2">
+                <Link href={`/${deckQuery.data.data.deck?.username}`}>
+                  <a>
+                    <p className="text-gray-50 text-md m-1">
+                      {deckQuery.data.data.deck?.display_name}
+                    </p>
+                    <p className="text-gray-300 text-xs m-1">
+                      {`PUBLISHED ${createdAt.toUpperCase()}`}
+                    </p>
+                  </a>
+                </Link>
+              </div>
+            </div>
+            <BackButton
+              onClick={() => setShowAll((showAllState) => !showAllState)}
+              className={`h-10 w-10  transform ${
+                showAll ? "rotate-90" : "-rotate-90"
+              } text-gray-400 `}
+            />
+          </div>
+          <div className="text-gray-300 self-center font-light font-inter text-sm p-3.5 ">
+            {showAll ? deckQuery.data.data.deck?.deck_description : ""}
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
       {state.loggedIn ? (
         <form onSubmit={handleSubmit(() => submitComment())}>
           <div className=" text-red-500  p-2 rounded-md text-sm text-left w-full">
@@ -213,7 +242,7 @@ export default function Search() {
         commentQuery.data.pages.map((page) => (
           <React.Fragment key={page.nextId}>
             {page.data.data.map((comment) => (
-              <CommentDisplay comment={comment} />
+              <CommentDisplay comment={comment} key={comment.id} />
             ))}
           </React.Fragment>
         ))
@@ -236,4 +265,13 @@ export default function Search() {
       />
     </Navbar>
   );
+}
+
+export async function getServerSideProps(context) {
+  const { deckId } = context.params;
+  return {
+    props: {
+      deckId,
+    },
+  };
 }
