@@ -28,6 +28,7 @@ export default function GoogleCallback(props) {
             payload: {
               token: data.accessToken,
               expiresIn: data.expiresIn,
+              userId: data.userId,
             },
           });
           router.replace("/");

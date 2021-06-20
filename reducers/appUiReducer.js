@@ -23,6 +23,7 @@ function UiReducer(state, action) {
     case "login-user": {
       const stateCopy = JSON.parse(JSON.stringify(state));
       stateCopy.loggedIn = true;
+      stateCopy.user.userId = action.payload.userId;
       stateCopy.user.accessToken = action.payload.token;
       stateCopy.user.expiresIn = action.payload.expiresIn;
       return stateCopy;
@@ -31,6 +32,13 @@ function UiReducer(state, action) {
       const stateCopy = JSON.parse(JSON.stringify(state));
       stateCopy.loggedIn = false;
       stateCopy.user = {};
+      return stateCopy;
+    }
+    case "refresh-token": {
+      const stateCopy = JSON.parse(JSON.stringify(state));
+      stateCopy.loggedIn = true;
+      stateCopy.user.accessToken = action.payload.token;
+      stateCopy.user.expiresIn = action.payload.expiresIn;
       return stateCopy;
     }
     default:

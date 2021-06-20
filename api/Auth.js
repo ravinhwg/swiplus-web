@@ -29,13 +29,26 @@ async function logout() {
 }
 async function googleLogin({ token }) {
   try {
-    const response = await axios.post(`${API_URL}/auth/login/callback/google`, {
-      token,
+    const response = await axios.post(
+      `${API_URL}/auth/login/callback/google`,
+      {
+        token,
+      },
+      { withCredentials: true }
+    );
+    return response;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+async function refreshToken() {
+  try {
+    const response = await axios.get(`${API_URL}/auth/refresh`, {
+      withCredentials: true,
     });
     return response;
   } catch (e) {
     throw new Error(e);
   }
 }
-
-export { login, logout, googleLogin };
+export { login, logout, googleLogin, refreshToken };

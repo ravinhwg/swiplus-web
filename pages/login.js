@@ -38,6 +38,7 @@ export default function Home() {
         payload: {
           token: data.accessToken,
           expiresIn: data.expiresIn,
+          userId: data.userId,
         },
       });
       router.replace("/");

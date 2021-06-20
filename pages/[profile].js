@@ -1,9 +1,32 @@
 import Head from "next/head";
+import { useInfiniteQuery, useMutation, useQuery } from "react-query";
+import { useRouter } from "next/router";
+import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../components/molecules/NavBar";
 import SingleCard from "../components/atoms/SingleCard";
 import ProfileHeader from "../components/molecules/ProfileHeader";
+import { getUser, getUserDecks } from "../api/user";
+import { AppUiContext } from "../Context";
 
 export default function Home() {
+  const router = useRouter();
+  const [state] = useContext(AppUiContext);
+  const queryKey = "profile";
+  const queryValue =
+    router.query[queryKey] ||
+    router.asPath.match(new RegExp(`[&?]${queryKey}=(.*)(&|$)`));
+  const query = useQuery(
+    ["getProfile", queryValue, state.user?.accessToken],
+    getUser,
+    {
+      retryOnMount: true,
+    }
+  );
+  const userDecks = useInfiniteQuery(
+    ["getUserDecks", queryValue],
+    getUserDecks
+  );
+
   return (
     <>
       <Head>
@@ -12,15 +35,35 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar showTopBarMobile>
-        <ProfileHeader />
-        <div className="grid row-auto grid-cols-2 sm:grid-cols-3 md:grid-cols-2 md:mx-3 lg:grid-cols-3 xl:grid-cols-4 gap-1 sm:my-8">
-          <SingleCard />
-          <SingleCard />
-          <SingleCard />
-          <SingleCard />
-          <SingleCard />
-          <SingleCard />
-        </div>
+        {!query.error ? (
+          <>
+            <ProfileHeader user={query.data} />
+            <div className="grid row-auto grid-cols-2 lg:m-20 sm:grid-cols-3 md:grid-cols-3 md:mx-3 lg:grid-cols-3 gap-1 sm:my-8">
+              {userDecks.isLoading ? (
+                <>
+                  <SingleCard />
+                  <SingleCard />
+                  <SingleCard />
+                  <SingleCard />
+                  <SingleCard />
+                  <SingleCard />
+                </>
+              ) : (
+                userDecks.data.pages.map((page) => (
+                  <React.Fragment key={page.nextId}>
+                    {page.data.decks.map((deck) => (
+                      <>
+                        <SingleCard deck={deck} />
+                      </>
+                    ))}
+                  </React.Fragment>
+                ))
+              )}
+            </div>
+          </>
+        ) : (
+          <p>Error</p>
+        )}
       </Navbar>
     </>
   );

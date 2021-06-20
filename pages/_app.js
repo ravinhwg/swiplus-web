@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "tailwindcss/tailwind.css";
 import "swiper/swiper.min.css";
 import "swiper/components/pagination/pagination.min.css";
@@ -15,6 +16,7 @@ function MyApp({ Component, pageProps }) {
     key: "SWIPLUS_APP_STATE",
     reducer: appUiReducer,
   });
+
   return (
     <QueryClientProvider client={queryClient}>
       <AppUiContext.Provider value={[state, dispatch]}>

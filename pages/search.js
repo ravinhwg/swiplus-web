@@ -1,18 +1,28 @@
-import { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { useRouter } from "next/router";
+import { useInfiniteQuery } from "react-query";
+import { InView } from "react-intersection-observer";
 import Navbar from "../components/molecules/NavBar";
 import SearchBar from "../components/atoms/SearchBar";
 import { AppUiContext } from "../Context";
+import SingleCard from "../components/atoms/SingleCard";
 import { Mobile } from "../components/utils/Breakpoints";
+import ProfileCard from "../components/atoms/ProfileCard";
+import getSearchResults from "../api/search";
 
 export default function Search() {
   const router = useRouter();
   const [state, dispatch] = useContext(AppUiContext);
+  const pageNumber = useRef(0);
+  const query = useInfiniteQuery(
+    ["searchResults", router.query.q],
+    getSearchResults,
+    {
+      staleTime: 900000, // 15 minutes
+    }
+  );
   const goBackfromSearch = () => {
     router.back();
-  };
-  const toggleMobileSearchTab = (target) => {
-    dispatch({ type: "focused-mobile-search-tab", payload: target });
   };
   return (
     <Navbar>
@@ -34,37 +44,81 @@ export default function Search() {
             />
           </svg>
           <div className="w-11/12">
-            <SearchBar />
+            <SearchBar q={router.query.q} />
           </div>
         </div>
-        <div className="">
-          {/* Mobile UI tabs */}
-          <div className="flex justify-center flex-row">
-            {/* Tab button group */}
-            <div
-              onClick={() => toggleMobileSearchTab("users")}
-              className={`${
-                state.selectedMobileTab === "users"
-                  ? `bg-purple-900 text-purple-400`
-                  : `bg-gray-600 text-gray-400`
-              } px-4 rounded-lg m-3`}
-            >
-              Users
-            </div>
-            <div
-              onClick={() => toggleMobileSearchTab("decks")}
-              className={`${
-                state.selectedMobileTab === "decks"
-                  ? `bg-purple-900 text-purple-400`
-                  : `bg-gray-600 text-gray-400`
-              } px-4 rounded-lg m-3`}
-            >
-              Decks
+        <div className="h-screen p-1">
+          <div className="flex overflow-x-scroll pb-10">
+            <div className="flex flex-nowrap">
+              {query.isLoading ? (
+                <>
+                  <ProfileCard key={0} />
+                  <ProfileCard key={1} />
+                  <ProfileCard key={2} />
+                  <ProfileCard key={3} />
+                </>
+              ) : (
+                query.data.pages.map((page) => (
+                  <React.Fragment key={page.nextId}>
+                    {page.data.users.users.map((user) => (
+                      <ProfileCard user={user} />
+                    ))}
+                  </React.Fragment>
+                ))
+              )}
+              <InView
+                as="div"
+                onChange={(inView) => {
+                  if (inView) {
+                    // Check if data has all the decks
+                    if (
+                      query.data.pages[query.data.pages.length - 1].data.users
+                        .nextPage
+                    ) {
+                      pageNumber.current += 1;
+                      query.fetchNextPage({ pageParam: pageNumber.current });
+                    }
+                  }
+                }}
+              />
             </div>
           </div>
-          <div>
-            <div />
-            <div />
+          <div className="h-4/6">
+            <div className="grid row-auto grid-cols-2 sm:grid-cols-3 md:grid-cols-3 md:mx-3 lg:grid-cols-4 xl:grid-cols-4 gap-1 sm:my-8">
+              {query.isLoading ? (
+                <>
+                  <SingleCard key={0} />
+                  <SingleCard key={1} />
+                  <SingleCard key={2} />
+                  <SingleCard key={3} />
+                  <SingleCard key={4} />
+                  <SingleCard key={5} />
+                </>
+              ) : (
+                query.data.pages.map((page) => (
+                  <React.Fragment key={page.nextId}>
+                    {page.data.decks.decks.map((deck) => (
+                      <SingleCard deck={deck} key={`${deck.id}`} />
+                    ))}
+                  </React.Fragment>
+                ))
+              )}
+              <InView
+                as="div"
+                onChange={(inView) => {
+                  if (inView) {
+                    // Check if data has all the decks
+                    if (
+                      query.data.pages[query.data.pages.length - 1].data.decks
+                        .nextPage
+                    ) {
+                      pageNumber.current += 1;
+                      query.fetchNextPage({ pageParam: pageNumber.current });
+                    }
+                  }
+                }}
+              />
+            </div>
           </div>
         </div>
       </Mobile>

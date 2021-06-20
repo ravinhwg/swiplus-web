@@ -10,6 +10,21 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-SEGNLPJ9WK"
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `                 
+                 window.dataLayer = window.dataLayer || [];
+                 function gtag(){dataLayer.push(arguments);}
+                 gtag('js', new Date());
+               
+                 gtag('config', 'G-SEGNLPJ9WK');`,
+            }}
+          />
+
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;100&display=swap"

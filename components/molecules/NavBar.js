@@ -1,6 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useMutation } from "react-query";
+import { refreshToken } from "../../api/Auth";
 import { AppUiContext } from "../../Context";
 import { Default, Mobile } from "../utils/Breakpoints";
 import Icon from "../atoms/SwiplusLogo";
@@ -18,6 +20,30 @@ export default function ProfilePage({ children, showTopBarMobile }) {
   const [state, dispatch] = useContext(AppUiContext);
   const { loggedIn } = state;
   const router = useRouter();
+  const mutation = useMutation(refreshToken, {
+    onSuccess: async ({ data }) => {
+      dispatch({
+        type: "refresh-token",
+        payload: {
+          token: data.accessToken,
+          expiresIn: data.expiresIn,
+        },
+      });
+      console.log("New access token set");
+    },
+  });
+
+  useEffect(() => {
+    if (state.loggedIn && state.user.expiresIn < Date.now()) {
+      mutation.mutate();
+    }
+    const interval = setInterval(() => {
+      if (state.loggedIn && state.user.expiresIn < Date.now()) {
+        mutation.mutate();
+      }
+    }, 300000);
+    return () => clearInterval(interval);
+  }, []);
   const handleMobileNavigation = (navPage) => {
     dispatch({ type: "focused-menu-icon", payload: navPage });
     switch (navPage) {
@@ -28,7 +54,7 @@ export default function ProfilePage({ children, showTopBarMobile }) {
       case "notifications":
         return router.push("/notifications");
       case "profile":
-        return router.push("/hello");
+        return router.push(`/${state.user.userId}`);
       case "create":
         return router.push("/create");
       default:
@@ -41,7 +67,11 @@ export default function ProfilePage({ children, showTopBarMobile }) {
         {showTopBarMobile ? (
           <div className="bg-gray-900 inset-x-0 h-12 top-0 w-full sticky z-50 border-gray-500">
             <div className="flex justify-between flex-row">
-              <Icon />
+              <Link href="/" passHref>
+                <a>
+                  <Icon />
+                </a>
+              </Link>
               {loggedIn ? (
                 <div className="flex justify-around flex-row">
                   <ProfileIcon
@@ -103,7 +133,11 @@ export default function ProfilePage({ children, showTopBarMobile }) {
       <Default>
         <div className="bg-gray-900 inset-x-0 h-12 top-0 w-full sticky z-50 border-gray-800">
           <div className="flex flex-row justify-between">
-            <Icon />
+            <Link href="/" passHref>
+              <a>
+                <Icon />
+              </a>
+            </Link>
             <Search />
             <div className="flex flex-row">
               {loggedIn ? (
