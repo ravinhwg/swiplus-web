@@ -187,12 +187,16 @@ export default function Search({ deckId }) {
                 </Link>
               </div>
             </div>
-            <BackButton
+            <button
+              type="button"
               onClick={() => setShowAll((showAllState) => !showAllState)}
-              className={`h-10 w-10  transform ${
-                showAll ? "rotate-90" : "-rotate-90"
-              } text-gray-400 `}
-            />
+            >
+              <BackButton
+                className={`h-10 w-10  transform ${
+                  showAll ? "rotate-90" : "-rotate-90"
+                } text-gray-400 `}
+              />
+            </button>
           </div>
           <div className="text-gray-300 self-center font-light font-inter text-sm p-3.5 ">
             {showAll ? deckQuery.data.data.deck?.deck_description : ""}
