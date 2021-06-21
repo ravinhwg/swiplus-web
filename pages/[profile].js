@@ -8,13 +8,11 @@ import ProfileHeader from "../components/molecules/ProfileHeader";
 import { getUser, getUserDecks } from "../api/user";
 import { AppUiContext } from "../Context";
 
-export default function Home() {
+export default function Home({ profile }) {
   const router = useRouter();
   const [state] = useContext(AppUiContext);
   const queryKey = "profile";
-  const queryValue =
-    router.query[queryKey] ||
-    router.asPath.match(new RegExp(`[&?]${queryKey}=(.*)(&|$)`));
+  const queryValue = router.query[queryKey] || profile;
   const query = useQuery(
     ["getProfile", queryValue, state.user?.accessToken],
     getUser,
@@ -35,26 +33,24 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar showTopBarMobile>
-        {!query.error ? (
+        {!query.isLoading && !query.error ? (
           <>
             <ProfileHeader user={query.data} />
             <div className="grid row-auto grid-cols-2 lg:m-20 sm:grid-cols-3 md:grid-cols-3 md:mx-3 lg:grid-cols-3 gap-1 sm:my-8">
               {userDecks.isLoading ? (
                 <>
-                  <SingleCard />
-                  <SingleCard />
-                  <SingleCard />
-                  <SingleCard />
-                  <SingleCard />
-                  <SingleCard />
+                  <SingleCard key={0} />
+                  <SingleCard key={1} />
+                  <SingleCard key={2} />
+                  <SingleCard key={3} />
+                  <SingleCard key={4} />
+                  <SingleCard key={5} />
                 </>
               ) : (
                 userDecks.data.pages.map((page) => (
                   <React.Fragment key={page.nextId}>
                     {page.data.decks.map((deck) => (
-                      <>
-                        <SingleCard deck={deck} />
-                      </>
+                      <SingleCard deck={deck} key={deck.id} />
                     ))}
                   </React.Fragment>
                 ))
@@ -67,4 +63,12 @@ export default function Home() {
       </Navbar>
     </>
   );
+}
+export async function getServerSideProps(context) {
+  const { profile } = context.params;
+  return {
+    props: {
+      profile,
+    },
+  };
 }

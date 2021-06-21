@@ -18,7 +18,11 @@ export default function ProfileCard({ user }) {
                 className="rounded-full h-12 w-12 my-1"
               />
             ) : (
-              <img src={user.profile_pic} alt="profile-pic" />
+              <img
+                src={user.profile_pic}
+                alt="profile-pic"
+                className="rounded-full h-12 w-12 my-1"
+              />
             )}
             <p className=" text-gray-50 font-inter font-bold text-2xl">
               {user.display_name}

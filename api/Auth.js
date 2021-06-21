@@ -51,4 +51,24 @@ async function refreshToken() {
     throw new Error(e);
   }
 }
-export { login, logout, googleLogin, refreshToken };
+
+async function changeUsername({ active, username, token }) {
+  try {
+    const response = await axios.put(
+      `${API_URL}/auth/username`,
+      {
+        change: active,
+        username,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+export { login, logout, googleLogin, refreshToken, changeUsername };

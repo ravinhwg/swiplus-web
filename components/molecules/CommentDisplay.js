@@ -179,7 +179,7 @@ export default function CommentDisplay({ comment }) {
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
                   placeholder="Type a Reply"
-                  className="bg-gray-600  h-full resize-y   border-2 border-transparent rounded-xl w-full py-2 px-4 text-gray-100 font-inter leading-tight focus:outline-none  focus:border-blue-600"
+                  className="bg-gray-600  h-full resize-y   border-2 border-transparent rounded-xl w-6/6 py-2 px-4 text-gray-100 font-inter leading-tight focus:outline-none  focus:border-blue-600"
                 />
                 <div className="flex justify-end">
                   <p className="m-4 text-right text-gray-500">
@@ -187,7 +187,7 @@ export default function CommentDisplay({ comment }) {
                   </p>
                   <button
                     type="submit"
-                    className="bg-indigo-700 m-3 focus:outline-none  p-1.5 px-8 rounded-lg text-white text-sm font-inter font-bold hover:bg-indigo-500"
+                    className="bg-indigo-700 m-3 focus:outline-none  text-left p-1.5 px-8 rounded-lg text-white text-sm font-inter font-bold hover:bg-indigo-500"
                   >
                     Reply
                   </button>
@@ -198,8 +198,11 @@ export default function CommentDisplay({ comment }) {
               ) : (
                 getCommentReplies.data.pages.map((page) => (
                   <React.Fragment key={page.nextId}>
-                    {page.data.data.map((comment) => (
-                      <ReplyCommentDisplay comment={comment} />
+                    {page.data.data.map((comment, index) => (
+                      <ReplyCommentDisplay
+                        key={`${comment.id}-${index.length}`}
+                        comment={comment}
+                      />
                     ))}
                   </React.Fragment>
                 ))

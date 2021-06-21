@@ -25,7 +25,7 @@ import {
   Share,
 } from "../../components/atoms/Icons";
 import CommentDisplay from "../../components/molecules/CommentDisplay";
-import { Mobile } from "../../components/utils/Breakpoints";
+import abbreviateNumber from "../../components/utils/numberFormatter";
 
 export default function Search({ deckId }) {
   const router = useRouter();
@@ -33,9 +33,8 @@ export default function Search({ deckId }) {
   const [showAll, setShowAll] = useState(false);
   const queryClient = useQueryClient();
   const [comment, setComment] = useState("");
-  const [description, setDescription] = useState("");
   const [createdAt, setCreatedAt] = useState("");
-  const [state, dispatch] = useContext(AppUiContext);
+  const [state] = useContext(AppUiContext);
   const deckQuery = useQuery(
     ["getDeck", router.query.deckId || deckId, state.user?.accessToken],
     getDeck,
@@ -120,14 +119,15 @@ export default function Search({ deckId }) {
           </div>
           <div className="bg-gray-800 w-full ">
             <Swiper
-              lazy="true"
+              lazy
+              zoom={{ maxRatio: 5 }}
               spaceBetween={1}
               slidesPerView={1}
               // mousewheel
               pagination={{ dynamicBullets: true }}
             >
               {deckQuery.data.data.deck?.card_order.map((item, index) => (
-                <SwiperSlide key={`${index}-${item}`}>
+                <SwiperSlide key={`${index.length}-${item}`}>
                   <img src={item} alt={index} />
                 </SwiperSlide>
               ))}
@@ -147,11 +147,11 @@ export default function Search({ deckId }) {
                     onClick={() => setLike(true)}
                   />
                 )}
-                {deckQuery.data.data.likes}
+                {abbreviateNumber(deckQuery.data.data.likes)}
               </div>
               <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
                 <Eye className="h-10 w-10 text-gray-300" />
-                {deckQuery.data.data.views}
+                {abbreviateNumber(deckQuery.data.data.views)}
               </div>
               <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
                 <Share className="h-10 w-10 text-gray-300" />
@@ -176,27 +176,31 @@ export default function Search({ deckId }) {
               )}
               <div className="mx-2">
                 <Link href={`/${deckQuery.data.data.deck?.username}`}>
-                  <a>
-                    <p className="text-gray-50 text-md m-1">
+                  <button type="button">
+                    <p className="text-gray-50 text-left text-md m-1">
                       {deckQuery.data.data.deck?.display_name}
                     </p>
                     <p className="text-gray-300 text-xs m-1">
                       {`PUBLISHED ${createdAt.toUpperCase()}`}
                     </p>
-                  </a>
+                  </button>
                 </Link>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setShowAll((showAllState) => !showAllState)}
-            >
-              <BackButton
-                className={`h-10 w-10  transform ${
-                  showAll ? "rotate-90" : "-rotate-90"
-                } text-gray-400 `}
-              />
-            </button>
+            {deckQuery.data.data.deck.deck_description ? (
+              <button
+                type="button"
+                onClick={() => setShowAll((showAllState) => !showAllState)}
+              >
+                <BackButton
+                  className={`h-10 w-10  transform ${
+                    showAll ? "rotate-90" : "-rotate-90"
+                  } text-gray-400 `}
+                />
+              </button>
+            ) : (
+              <></>
+            )}
           </div>
           <div className="text-gray-300 self-center font-light font-inter text-sm p-3.5 ">
             {showAll ? deckQuery.data.data.deck?.deck_description : ""}
@@ -245,8 +249,8 @@ export default function Search({ deckId }) {
       ) : (
         commentQuery.data.pages.map((page) => (
           <React.Fragment key={page.nextId}>
-            {page.data.data.map((comment) => (
-              <CommentDisplay comment={comment} key={comment.id} />
+            {page.data.data.map((singleComment) => (
+              <CommentDisplay comment={singleComment} key={comment.id} />
             ))}
           </React.Fragment>
         ))
@@ -261,7 +265,6 @@ export default function Search({ deckId }) {
                 .nextPage
             ) {
               pageNumber.current += 1;
-              console.log(pageNumber.current);
               commentQuery.fetchNextPage({ pageParam: pageNumber.current });
             }
           }

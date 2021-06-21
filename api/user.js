@@ -20,7 +20,7 @@ async function getUser({ queryKey }) {
   }
 }
 async function getUserDecks({ pageParam = 0, queryKey }) {
-  const [key, userId] = queryKey;
+  const [, userId] = queryKey;
   try {
     const response = await axios.get(
       `${API_URL}/user/${userId}/decks?pageNumber=${pageParam}&resultsPerPage=10`
@@ -50,4 +50,24 @@ async function placeFollow({ id, active, token }) {
     throw new Error(e);
   }
 }
-export { getUser, getUserDecks, placeFollow };
+async function editUser({ name, bio, link, token }) {
+  try {
+    const response = await axios.put(
+      `${API_URL}/user`,
+      {
+        name,
+        bio: bio.length === 0 ? undefined : bio,
+        link: link.length === 0 ? undefined : link,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+export { getUser, getUserDecks, placeFollow, editUser };

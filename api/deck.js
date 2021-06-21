@@ -81,7 +81,7 @@ async function placeLike({ token, deckId, active }) {
 }
 
 async function getComments({ pageParam = 0, queryKey }) {
-  const [key, deckId, token] = queryKey;
+  const [, deckId, token] = queryKey;
   try {
     const response = await axios.get(
       `${API_URL}/decks/${deckId}/comments?pageNumber=${pageParam}&resultsPerPage=10`,
@@ -154,7 +154,7 @@ async function replyComment({ commentId, replyText, token, deckId }) {
   }
 }
 async function getReply({ pageParam = 0, queryKey }) {
-  const [key, commentId, token] = queryKey;
+  const [, commentId, token] = queryKey;
   try {
     const response = await axios.get(
       `${API_URL}/decks/comments/${commentId}/replies?pageNumber=${pageParam}&resultsPerPage=10`,

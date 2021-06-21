@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useContext } from "react";
+import Link from "next/link";
 import { useMutation, useQueryClient } from "react-query";
 import { useRouter } from "next/router";
 import { Default, Mobile } from "../utils/Breakpoints";
@@ -62,7 +63,11 @@ export default function ProfilePage({ user }) {
               </div>
               <div className="self-center p-2 px-0">
                 {state.user.userId === Number(user?.data.id) ? (
-                  <FollowButton text="Edit profile" />
+                  <Link href="/settings">
+                    <button type="button">
+                      <FollowButton text="Edit profile" />
+                    </button>
+                  </Link>
                 ) : (
                   <button
                     type="button"
@@ -84,9 +89,15 @@ export default function ProfilePage({ user }) {
               {user?.data.bio}
             </div>
           </div>
-          <div className=" text-purple-600 font-medium text-sm overflow-ellipsis mx-3 px-2 ">
-            {user?.data.link}
-          </div>
+          <a
+            href={`https://${user?.data.link}`}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            <div className=" text-purple-600 font-medium text-sm overflow-ellipsis mx-3 px-2 ">
+              {user?.data.link}
+            </div>
+          </a>
           <div className="items-stretch m-3 px-2 ">
             <div className="flex justify-around">
               <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 px-0 text-center ">
