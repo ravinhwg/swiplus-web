@@ -82,6 +82,9 @@ export default function CommentDisplay({ comment }) {
     });
   };
   const commentLike = (active) => {
+    if (!state.loggedIn) {
+      router.push("/login");
+    }
     likeComment.mutate({
       commentId: comment.id,
       active,
@@ -158,41 +161,45 @@ export default function CommentDisplay({ comment }) {
           </button>
           {showReplyTextBox ? (
             <>
-              <form
-                className=" w-full flex flex-col justify-end"
-                onSubmit={handleSubmit(() => commentReply())}
-              >
-                <div className=" text-red-500  p-2 rounded-md text-sm text-left w-full">
-                  {errors.reply?.type === "required" &&
-                    "Comment text is required"}
-                  {errors.reply?.type === "minLength" &&
-                    "Comment has to be more than one character long"}
-                  {errors.reply?.type === "maxLength" &&
-                    "Comment has to be less than 500 characters"}
-                </div>
-                <textarea
-                  {...register("reply", {
-                    required: true,
-                    maxLength: 500,
-                    minLength: 1,
-                  })}
-                  value={replyText}
-                  onChange={(e) => setReplyText(e.target.value)}
-                  placeholder="Type a Reply"
-                  className="bg-gray-600  h-full resize-y   border-2 border-transparent rounded-xl w-6/6 py-2 px-4 text-gray-100 font-inter leading-tight focus:outline-none  focus:border-blue-600"
-                />
-                <div className="flex justify-end">
-                  <p className="m-4 text-right text-gray-500">
-                    {replyText.length}/500
-                  </p>
-                  <button
-                    type="submit"
-                    className="bg-indigo-700 m-3 focus:outline-none  text-left p-1.5 px-8 rounded-lg text-white text-sm font-inter font-bold hover:bg-indigo-500"
-                  >
-                    Reply
-                  </button>
-                </div>
-              </form>
+              {state.loggedIn ? (
+                <form
+                  className=" w-full flex flex-col justify-end"
+                  onSubmit={handleSubmit(() => commentReply())}
+                >
+                  <div className=" text-red-500  p-2 rounded-md text-sm text-left w-full">
+                    {errors.reply?.type === "required" &&
+                      "Comment text is required"}
+                    {errors.reply?.type === "minLength" &&
+                      "Comment has to be more than one character long"}
+                    {errors.reply?.type === "maxLength" &&
+                      "Comment has to be less than 500 characters"}
+                  </div>
+                  <textarea
+                    {...register("reply", {
+                      required: true,
+                      maxLength: 500,
+                      minLength: 1,
+                    })}
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    placeholder="Type a Reply"
+                    className="bg-gray-600  h-full resize-y   border-2 border-transparent rounded-xl w-6/6 py-2 px-4 text-gray-100 font-inter leading-tight focus:outline-none  focus:border-blue-600"
+                  />
+                  <div className="flex justify-end">
+                    <p className="m-4 text-right text-gray-500">
+                      {replyText.length}/500
+                    </p>
+                    <button
+                      type="submit"
+                      className="bg-indigo-700 m-3 focus:outline-none  text-left p-1.5 px-8 rounded-lg text-white text-sm font-inter font-bold hover:bg-indigo-500"
+                    >
+                      Reply
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <></>
+              )}
               {getCommentReplies.isLoading ? (
                 <></>
               ) : (

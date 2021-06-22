@@ -7,12 +7,14 @@ import { useMutation, useQueryClient } from "react-query";
 import { deleteComments, placeCommentLike } from "../../api/deck";
 import { AppUiContext } from "../../Context";
 import { LikeOutline, LikeFill } from "../atoms/Icons";
+import { useRouter } from "next/router";
 
 export default function ReplyCommentDisplay({ comment }) {
   const [state] = useContext(AppUiContext);
   const [showAll, setShowAll] = useState(false);
   const [createdAt, setCreatedAt] = useState("");
   const queryClient = useQueryClient();
+  const router = useRouter();
   const [commentText, setCommentText] = useState("");
   const likeComment = useMutation(placeCommentLike, {
     onSuccess: async () => {
@@ -44,6 +46,9 @@ export default function ReplyCommentDisplay({ comment }) {
   }, [comment]);
 
   const commentLike = (active) => {
+    if (!state.loggedIn) {
+      router.push("/login");
+    }
     likeComment.mutate({
       commentId: comment.id,
       active,

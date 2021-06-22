@@ -123,7 +123,7 @@ export default function Search({ deckId }) {
               zoom={{ maxRatio: 5 }}
               spaceBetween={1}
               slidesPerView={1}
-              // mousewheel
+              mousewheel
               pagination={{ dynamicBullets: true }}
             >
               {deckQuery.data.data.deck?.card_order.map((item, index) => (
@@ -242,7 +242,15 @@ export default function Search({ deckId }) {
           </div>
         </form>
       ) : (
-        "not logged in"
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            onClick={() => router.push("/login")}
+            className="bg-indigo-700 focus:outline-none w-8/12  self-center p-1.5 px-8 rounded-lg text-white text-sm font-inter font-bold hover:bg-indigo-500"
+          >
+            Login to comment
+          </button>
+        </div>
       )}
       {commentQuery.isLoading ? (
         <></>
