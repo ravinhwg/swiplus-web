@@ -9,20 +9,14 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useForm } from "react-hook-form";
 import Navbar from "../components/molecules/NavBar";
 import { AppUiContext } from "../Context";
-import {
-  CloseIcon,
-  PlusIcon,
-  ArrowCircleLeft,
-  ArrowCircleRight,
-  SpinnerBasic,
-  BackButton,
-} from "../components/atoms/Icons";
-import { editUser, getUser } from "../api/user";
+import { BackButton } from "../components/atoms/Icons";
+import { editUser, getUser, uploadProfilePicture } from "../api/user";
 import { changeUsername } from "../api/Auth";
 
 export default function Home() {
   const [state, dispatch] = useContext(AppUiContext);
   const [usernameAvailable, setUsernameAvailable] = useState(true);
+  const [profilePicture, setProfilePicture] = useState("");
   const [link, setLink] = useState("");
   const [username, setUsername] = useState("");
   const [initialUsername, setInitialUsername] = useState("");
@@ -35,6 +29,19 @@ export default function Home() {
     ["getProfileForEditing", state.user?.userId, state.user?.accessToken],
     getUser
   );
+  const profilePictureMutation = useMutation(uploadProfilePicture, {
+    onSuccess: async () => {
+      queryClient.invalidateQueries("getProfile");
+      queryClient.refetchQueries("getProfile");
+      queryClient.invalidateQueries("getProfileForEditing");
+      router.back();
+    },
+    onError: async () => {
+      queryClient.invalidateQueries("getProfileForEditing");
+      setServerError(true);
+      router.reload();
+    },
+  });
   const userDataMutation = useMutation(editUser, {
     onSuccess: async () => {
       queryClient.invalidateQueries("getProfile");
@@ -85,18 +92,32 @@ export default function Home() {
       setLink(query.data.data.link || "");
       setBio(query.data.data.bio || "");
       setUsername(query.data.data.username || "");
+      setProfilePicture(
+        query.data.data.profile_pic ||
+          "https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
+      );
       setInitialUsername(query.data.data.username || "");
     }
   }, [query.isLoading]);
-  const addImages = (event) => {
-    let imageFiles;
-    if (event.target.files) {
-      imageFiles = [...event.target.files].map((item) => {
-        const itemURL = URL.createObjectURL(item);
-        return { pic: itemURL, source: item };
-      });
-    }
-    setPics((picsState) => picsState.concat(imageFiles));
+  const addImage = (event) => {
+    const itemURL = URL.createObjectURL(event.target.files[0]);
+    setProfilePicture(itemURL);
+    const formData = new FormData();
+    formData.append("profile_pic", event.target.files[0]);
+    profilePictureMutation.mutate({
+      token: state.user.accessToken,
+      userId: query.data.data.id,
+      formData,
+    });
+  };
+  const removeProfilePic = () => {
+    const formData = new FormData();
+    formData.append("remove", true);
+    profilePictureMutation.mutate({
+      token: state.user.accessToken,
+      userId: query.data.data.id,
+      formData,
+    });
   };
   const editUserData = () => {
     userDataMutation.mutate({
@@ -127,6 +148,33 @@ export default function Home() {
             </div>
             {!query.isLoading && !query.error ? (
               <>
+                <form>
+                  <div className="self-center flex justify-center ">
+                    <label htmlFor="file-upload">
+                      <img
+                        src={profilePicture}
+                        alt="profile"
+                        className="h-40 w-40 rounded-full self-center"
+                      />
+                    </label>
+                    <input
+                      type="file"
+                      id="file-upload"
+                      onChange={addImage}
+                      className="hidden"
+                      accept="image/png, image/jpeg"
+                    />
+                  </div>
+                  <div className="flex justify-center">
+                    <button
+                      onClick={() => removeProfilePic()}
+                      type="submit"
+                      className=" self-center focus:outline-none  text-left p-1.5 px-8 rounded-lg text-indigo-600 text-sm font-inter font-bold"
+                    >
+                      REMOVE
+                    </button>
+                  </div>
+                </form>
                 <form onSubmit={handleSubmit(() => editUserData())}>
                   <div className=" text-red-500  p-2 rounded-md text-sm text-left w-full">
                     {errors.displyName?.type === "required" &&
@@ -142,6 +190,7 @@ export default function Home() {
                     {errors.files?.type === "required" &&
                       "One or more cards are required"}
                   </div>
+
                   <input
                     className="bg-gray-600 mb-4  border-2 border-transparent rounded-xl w-full h-14 py-2 px-4 text-gray-100 font-inter leading-tight focus:outline-none  focus:border-blue-600"
                     id="inline-user-displayname"
@@ -228,6 +277,15 @@ export default function Home() {
                     )}
                   </div>
                 </form>
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => router.replace("/logout")}
+                    type="submit"
+                    className=" self-center focus:outline-none  text-left p-1.5 px-8 rounded-lg text-red-600 text-sm font-inter font-bold"
+                  >
+                    LOG OUT
+                  </button>
+                </div>
               </>
             ) : (
               <></>

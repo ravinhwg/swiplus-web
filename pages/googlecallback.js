@@ -8,15 +8,11 @@ import { SpinnerBasic } from "../components/atoms/Icons";
 export default function GoogleCallback(props) {
   const router = useRouter();
   const [state, dispatch] = useContext(AppUiContext);
-  const mutation = useMutation(googleLogin, {
-    onSuccess: async () => {},
-  });
+  const mutation = useMutation(googleLogin);
   let idToken;
   if (typeof window !== "undefined") {
     // eslint-disable-next-line prefer-destructuring
-    idToken = window.location.hash
-      .split("&authuser=0&prompt=none")[0]
-      .split("=")[1];
+    idToken = window.location.hash.split("&authuser")[0].split("=")[1];
   }
   useEffect(() => {
     mutation.mutate(

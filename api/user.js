@@ -70,4 +70,21 @@ async function editUser({ name, bio, link, token }) {
     throw new Error(e);
   }
 }
-export { getUser, getUserDecks, placeFollow, editUser };
+
+async function uploadProfilePicture({ token, formData, userId }) {
+  try {
+    const response = await axios.post(
+      `${API_URL}/user/${userId}/pic`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+export { getUser, getUserDecks, placeFollow, editUser, uploadProfilePicture };
