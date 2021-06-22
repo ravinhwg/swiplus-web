@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -20,12 +21,14 @@ import { AppUiContext } from "../../Context";
 import {
   BackButton,
   LikeOutline,
+  SpinnerBasic,
   LikeFill,
   Eye,
   Share,
 } from "../../components/atoms/Icons";
 import CommentDisplay from "../../components/molecules/CommentDisplay";
 import abbreviateNumber from "../../components/utils/numberFormatter";
+import ErrorPage from "../../components/molecules/ErrorPage";
 
 export default function Search({ deckId }) {
   const router = useRouter();
@@ -104,7 +107,14 @@ export default function Search({ deckId }) {
 
   return (
     <Navbar>
-      {!deckQuery.isLoading ? (
+      {deckQuery.isLoading ? (
+        <div className="flex h-screen">
+          <div className="m-auto  items-center flex flex-col">
+            <SpinnerBasic className="animate-spin -ml-1 mr-3 h-16 w-16 text-indigo-600" />
+            <p className="text-gray-100 text-xl m-3">Loading</p>
+          </div>
+        </div>
+      ) : !deckQuery.isLoading && !deckQuery.error ? (
         <>
           <div className="flex flex-row m-3 justify-start">
             <BackButton
@@ -207,9 +217,10 @@ export default function Search({ deckId }) {
           </div>
         </>
       ) : (
-        <></>
+        // Error page
+        <ErrorPage />
       )}
-      {state.loggedIn ? (
+      {state.loggedIn && !deckQuery.error ? (
         <form onSubmit={handleSubmit(() => submitComment())}>
           <div className=" text-red-500  p-2 rounded-md text-sm text-left w-full">
             {errors.comment?.type === "required" && "Comment text is required"}
@@ -241,7 +252,7 @@ export default function Search({ deckId }) {
             </button>
           </div>
         </form>
-      ) : (
+      ) : !deckQuery.error ? (
         <div className="flex justify-center">
           <button
             type="submit"
@@ -251,10 +262,10 @@ export default function Search({ deckId }) {
             Login to comment
           </button>
         </div>
-      )}
-      {commentQuery.isLoading ? (
-        <></>
       ) : (
+        <></>
+      )}
+      {!commentQuery.isLoading && !deckQuery.error ? (
         commentQuery.data.pages.map((page) => (
           <React.Fragment key={page.nextId}>
             {page.data.data.map((singleComment) => (
@@ -262,6 +273,8 @@ export default function Search({ deckId }) {
             ))}
           </React.Fragment>
         ))
+      ) : (
+        <></>
       )}
       <InView
         as="div"

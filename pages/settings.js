@@ -58,7 +58,7 @@ export default function Home() {
       if (status === 201) {
         queryClient.invalidateQueries("getProfile");
         queryClient.invalidateQueries("getProfileForEditing");
-        return router.back();
+        return router.replace(`/`);
       }
       setUsernameAvailable(true);
     },
@@ -104,6 +104,7 @@ export default function Home() {
     setProfilePicture(itemURL);
     const formData = new FormData();
     formData.append("profile_pic", event.target.files[0]);
+    formData.append("remove", false);
     profilePictureMutation.mutate({
       token: state.user.accessToken,
       userId: query.data.data.id,
