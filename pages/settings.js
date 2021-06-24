@@ -14,7 +14,7 @@ import { editUser, getUser, uploadProfilePicture } from "../api/user";
 import { changeUsername } from "../api/Auth";
 
 export default function Home() {
-  const [state, dispatch] = useContext(AppUiContext);
+  const [state] = useContext(AppUiContext);
   const [usernameAvailable, setUsernameAvailable] = useState(true);
   const [profilePicture, setProfilePicture] = useState("");
   const [link, setLink] = useState("");
