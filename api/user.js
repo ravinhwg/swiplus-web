@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://api.swiplus.com/v1";
+const API_URL = "https://api.swiplus.com/v1";
 async function getUser({ queryKey }) {
   const [, username, token] = queryKey;
   try {

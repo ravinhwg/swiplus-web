@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import axios from "axios";
 
-const API_URL = "http://api.swiplus.com/v1";
+const API_URL = "https://api.swiplus.com/v1";
 async function uploadDeck({ formdata, token }) {
   try {
     const response = await axios.post(`${API_URL}/decks`, formdata, {

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import axios from "axios";
 
-const API_URL = "http://api.swiplus.com/v1";
+const API_URL = "https://api.swiplus.com/v1";
 async function login({ email, password }) {
   try {
     const response = await axios.post(
