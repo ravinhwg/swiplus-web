@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import axios from "axios";
 
-const API_URL = "https://api.swiplus.com/v1";
+const API_URL = "http://localhost:4000/v1";
 async function uploadDeck({ formdata, token }) {
   try {
     const response = await axios.post(`${API_URL}/decks`, formdata, {
@@ -171,13 +171,30 @@ async function getReply({ pageParam = 0, queryKey }) {
     throw new Error(e);
   }
 }
-
+async function deleteDeck({ token, id }) {
+  try {
+    const response = await axios.delete(
+      `${API_URL}/decks/${id}`,
+      token !== undefined
+        ? {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        : {}
+    );
+    return response;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
 export {
   uploadDeck,
   getReply,
   getExplorerFeed,
   deleteComments,
   replyComment,
+  deleteDeck,
   getDeck,
   placeCommentLike,
   placeComment,

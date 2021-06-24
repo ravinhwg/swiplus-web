@@ -1,7 +1,7 @@
-import { useEffect } from "react";
 import "tailwindcss/tailwind.css";
 import "swiper/swiper.min.css";
 import "swiper/components/pagination/pagination.min.css";
+import NextNprogress from "nextjs-progressbar";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import InitialStateTree from "../initialStateTrees/AppUiTree";
@@ -20,6 +20,14 @@ function MyApp({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
       <AppUiContext.Provider value={[state, dispatch]}>
+        <NextNprogress
+          color="#fff"
+          startPosition={0.3}
+          stopDelayMs={200}
+          height={3}
+          options={{ showSpinner: false }}
+          showOnShallow
+        />
         <Component {...pageProps} />
         <ReactQueryDevtools initialIsOpen={false} />
       </AppUiContext.Provider>

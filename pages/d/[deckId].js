@@ -16,11 +16,18 @@ import {
   useQueryClient,
 } from "react-query";
 import Navbar from "../../components/molecules/NavBar";
-import { getDeck, placeComment, getComments, placeLike } from "../../api/deck";
+import {
+  getDeck,
+  placeComment,
+  getComments,
+  placeLike,
+  deleteDeck,
+} from "../../api/deck";
 import { AppUiContext } from "../../Context";
 import {
   BackButton,
   LikeOutline,
+  TrashCan,
   SpinnerBasic,
   LikeFill,
   Eye,
@@ -55,6 +62,18 @@ export default function Search({ deckId }) {
       queryClient.invalidateQueries("getDeck");
     },
   });
+  const deleteDeckMutation = useMutation("deleteDeck", deleteDeck, {
+    onSuccess: async () => {
+      queryClient.invalidateQueries();
+      router.replace("/");
+    },
+  });
+  const deleteDeckStart = () => {
+    deleteDeckMutation.mutate({
+      token: state.user.accessToken,
+      id: router.query.deckId,
+    });
+  };
   const {
     register,
     handleSubmit,
@@ -197,7 +216,8 @@ export default function Search({ deckId }) {
                 </Link>
               </div>
             </div>
-            {deckQuery.data.data.deck.deck_description ? (
+            {deckQuery.data.data.deck.deck_description ||
+            state.user.userId === +deckQuery.data.data.deck.user_id ? (
               <button
                 type="button"
                 onClick={() => setShowAll((showAllState) => !showAllState)}
@@ -212,9 +232,31 @@ export default function Search({ deckId }) {
               <></>
             )}
           </div>
-          <div className="text-gray-300 self-center font-light font-inter text-sm p-3.5 ">
-            {showAll ? deckQuery.data.data.deck?.deck_description : ""}
-          </div>
+          {showAll ? (
+            <div className="text-gray-300 self-center font-light font-inter text-sm p-3.5 ">
+              {deckQuery.data.data.deck?.deck_description}
+              {state.user.userId === +deckQuery.data.data.deck.user_id ? (
+                <div className="flex justify-evenly mt-7">
+                  <div className="flex items-center justify-center">
+                    <button type="button" onClick={() => deleteDeckStart()}>
+                      <TrashCan className="h-8 w-8 text-gray-400 hover:text-gray-300" />
+                    </button>
+                    <p>Delete</p>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <button type="button" onClick={() => deleteDeckStart()}>
+                      <TrashCan className="h-8 w-8 text-gray-400" />
+                    </button>
+                    <p>Edit</p>
+                  </div>
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
+          ) : (
+            <></>
+          )}
         </>
       ) : (
         // Error page
