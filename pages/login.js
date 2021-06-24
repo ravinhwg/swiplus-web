@@ -119,8 +119,14 @@ export default function Home() {
                 </button>
               </Link>
               <div className="flex flex-row">
-                <p className=" mr-2 text-indigo-400">Create new account</p>
-                <p className=" ml-2 text-indigo-400">Forgot password?</p>
+                <Link href="/register">
+                  <button type="button">
+                    <p className=" mr-2 text-indigo-400">Create new account</p>
+                  </button>
+                </Link>
+                <Link href="/resetpassword">
+                  <p className=" ml-2 text-indigo-400">Forgot password?</p>
+                </Link>
               </div>
             </div>
           </form>

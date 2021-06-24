@@ -198,7 +198,14 @@ export default function CommentDisplay({ comment }) {
                   </div>
                 </form>
               ) : (
-                <></>
+                <Link href="/login">
+                  <button
+                    type="button"
+                    className="bg-indigo-700 m-3 focus:outline-none  text-left p-1.5 px-8 rounded-lg text-white text-sm font-inter font-bold hover:bg-indigo-500"
+                  >
+                    Login to reply
+                  </button>
+                </Link>
               )}
               {getCommentReplies.isLoading ? (
                 <></>

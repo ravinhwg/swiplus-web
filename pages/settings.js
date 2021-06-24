@@ -86,6 +86,9 @@ export default function Home() {
     });
   };
   useEffect(() => {
+    if (!state.loggedIn) {
+      router.replace("/login");
+    }
     queryClient.invalidateQueries("getProfile");
     if (!query.isLoading) {
       setDisplayName(query.data.data.display_name);

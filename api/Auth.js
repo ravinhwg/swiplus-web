@@ -71,4 +71,53 @@ async function changeUsername({ active, username, token }) {
     throw new Error(e);
   }
 }
-export { login, logout, googleLogin, refreshToken, changeUsername };
+async function registerUser({ email, password, displayName }) {
+  try {
+    const response = await axios.post(
+      `${API_URL}/auth/register`,
+      {
+        email,
+        password,
+        name: displayName,
+        username: email.split("@")[0] + Math.round(Math.random() * 100),
+      },
+      { withCredentials: true }
+    );
+    return response;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+async function passwordResetInitiate({ email }) {
+  try {
+    const response = await axios.post(`${API_URL}/auth/resetpassword`, {
+      email,
+    });
+    return response;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+async function passwordResetFinish({ password, token }) {
+  try {
+    const response = await axios.post(
+      `${API_URL}/auth/resetpassword/${token}`,
+      {
+        password,
+      }
+    );
+    return response;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+export {
+  login,
+  logout,
+  googleLogin,
+  passwordResetFinish,
+  refreshToken,
+  changeUsername,
+  passwordResetInitiate,
+  registerUser,
+};

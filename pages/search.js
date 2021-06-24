@@ -1,10 +1,9 @@
-import React, { useContext, useRef } from "react";
+import React, { useRef } from "react";
 import { useRouter } from "next/router";
 import { useInfiniteQuery } from "react-query";
 import { InView } from "react-intersection-observer";
 import Navbar from "../components/molecules/NavBar";
 import SearchBar from "../components/atoms/SearchBar";
-import { AppUiContext } from "../Context";
 import SingleCard from "../components/atoms/SingleCard";
 import { Mobile } from "../components/utils/Breakpoints";
 import ProfileCard from "../components/atoms/ProfileCard";
@@ -12,7 +11,6 @@ import getSearchResults from "../api/search";
 
 export default function Search() {
   const router = useRouter();
-  const [state, dispatch] = useContext(AppUiContext);
   const pageNumber = useRef(0);
   const query = useInfiniteQuery(
     ["searchResults", router.query.q],
