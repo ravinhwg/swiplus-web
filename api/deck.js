@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import axios from "axios";
+import API_URL from "./API_URL";
 
-const API_URL = "http://localhost:4000/v1";
 async function uploadDeck({ formdata, token }) {
   try {
     const response = await axios.post(`${API_URL}/decks`, formdata, {

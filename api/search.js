@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import axios from "axios";
-
-const API_URL = "http://localhost:4000/v1";
+import API_URL from "./API_URL";
 
 async function getSearchResults({ pageParam = 0, queryKey }) {
   const [, q] = queryKey;
