@@ -57,6 +57,8 @@ export default function ProfilePage({ children, showTopBarMobile }) {
         return router.push(`/${state.user.userId}`);
       case "create":
         return router.push("/create");
+      case "notifs":
+        return router.push("/notifications");
       default:
         return undefined;
     }
@@ -123,7 +125,14 @@ export default function ProfilePage({ children, showTopBarMobile }) {
               }`}
             />
             {loggedIn ? (
-              <NotificationsIcon className=" h-8 w-8 text-gray-200 self-center" />
+              <NotificationsIcon
+                onClick={() => handleMobileNavigation("notifs")}
+                className={`h-8 w-8 flex self-center ${
+                  state.focusedMenuItem === "notifs"
+                    ? "text-indigo-800"
+                    : "text-gray-200"
+                }`}
+              />
             ) : (
               <> </>
             )}

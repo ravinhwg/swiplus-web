@@ -87,4 +87,28 @@ async function uploadProfilePicture({ token, formData, userId }) {
     throw new Error(e);
   }
 }
-export { getUser, getUserDecks, placeFollow, editUser, uploadProfilePicture };
+
+async function grabNotifications({ pageParam = 0, queryKey }) {
+  const [, token] = queryKey;
+  try {
+    const response = await axios.get(
+      `${API_URL}/users/notifs?pageNumber=${pageParam}&resultsPerPage=10`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+export {
+  getUser,
+  getUserDecks,
+  placeFollow,
+  editUser,
+  uploadProfilePicture,
+  grabNotifications,
+};
