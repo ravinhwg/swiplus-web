@@ -14,6 +14,7 @@ class MyDocument extends Document {
             async
             src="https://www.googletagmanager.com/gtag/js?id=G-SEGNLPJ9WK"
           />
+          <meta name="theme-color" content="#111827" />
           {/* <script
             dangerouslySetInnerHTML={{
               __html: `                 

@@ -109,7 +109,7 @@ export default function Home() {
               >
                 Log in
               </button>
-              <Link href="https://accounts.google.com/o/oauth2/v2/auth?client_id=310683804890-fp1donhti2695qfni1qjcr6e5eihelvc.apps.googleusercontent.com&redirect_uri=http://localhost:3000/googlecallback&response_type=id_token&scope=email%20profile&nonce=2234">
+              <Link href="https://accounts.google.com/o/oauth2/v2/auth?client_id=310683804890-fp1donhti2695qfni1qjcr6e5eihelvc.apps.googleusercontent.com&redirect_uri=https://www.swiplus.com/googlecallback&response_type=id_token&scope=email%20profile&nonce=2234">
                 <button
                   type="button"
                   className="bg-indigo-700 text-white text-sm font-inter font-bold  hover:bg-indigo-500 flex justify-center items-center border-2 mb-5 border-transparent rounded-full w-11/12 h-12 py-2 px-4 leading-tight focus:outline-none  focus:border-blue-600"
