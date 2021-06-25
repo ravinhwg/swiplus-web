@@ -1,7 +1,7 @@
 import { useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
-import { googleLogin } from "../api/Auth";
+import { googleLogin } from "../apiPlugs/Auth";
 import { AppUiContext } from "../Context";
 import { SpinnerBasic } from "../components/atoms/Icons";
 

@@ -12,7 +12,7 @@ import {
   getReply,
   placeCommentLike,
   replyComment,
-} from "../../api/deck";
+} from "../../apiPlugs/deck";
 import { AppUiContext } from "../../Context";
 import { LikeOutline, LikeFill } from "../atoms/Icons";
 import ReplyCommentDisplay from "./ReplyCommentDisplay";

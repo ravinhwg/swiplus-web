@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../components/molecules/NavBar";
 import SingleCard from "../components/atoms/SingleCard";
 import ProfileHeader from "../components/molecules/ProfileHeader";
-import { getUser, getUserDecks } from "../api/user";
+import { getUser, getUserDecks } from "../apiPlugs/user";
 import { AppUiContext } from "../Context";
 
 export default function Home({ profile }) {

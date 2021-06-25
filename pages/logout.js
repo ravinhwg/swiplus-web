@@ -5,7 +5,7 @@ import { useMutation } from "react-query";
 import { useRouter } from "next/router";
 import { AppUiContext } from "../Context";
 import { SpinnerBasic } from "../components/atoms/Icons";
-import { logout } from "../api/Auth";
+import { logout } from "../apiPlugs/Auth";
 
 export default function Home() {
   const [state, dispatch] = useContext(AppUiContext);

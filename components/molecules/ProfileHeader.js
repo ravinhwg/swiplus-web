@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { Default, Mobile } from "../utils/Breakpoints";
 import FollowButton from "../atoms/Button";
 import { AppUiContext } from "../../Context";
-import { placeFollow } from "../../api/user";
+import { placeFollow } from "../../apiPlugs/user";
 
 export default function ProfilePage({ user }) {
   const [state, dispatch] = useContext(AppUiContext);

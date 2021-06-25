@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { useMutation, useQueryClient } from "react-query";
-import { deleteComments, placeCommentLike } from "../../api/deck";
+import { deleteComments, placeCommentLike } from "../../apiPlugs/deck";
 import { AppUiContext } from "../../Context";
 import { LikeOutline, LikeFill } from "../atoms/Icons";
 import { useRouter } from "next/router";

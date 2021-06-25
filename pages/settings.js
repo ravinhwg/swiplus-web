@@ -10,8 +10,8 @@ import { useForm } from "react-hook-form";
 import Navbar from "../components/molecules/NavBar";
 import { AppUiContext } from "../Context";
 import { BackButton } from "../components/atoms/Icons";
-import { editUser, getUser, uploadProfilePicture } from "../api/user";
-import { changeUsername } from "../api/Auth";
+import { editUser, getUser, uploadProfilePicture } from "../apiPlugs/user";
+import { changeUsername } from "../apiPlugs/Auth";
 
 export default function Home() {
   const [state] = useContext(AppUiContext);

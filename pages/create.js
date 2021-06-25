@@ -15,7 +15,7 @@ import {
   ArrowCircleRight,
   SpinnerBasic,
 } from "../components/atoms/Icons";
-import { uploadDeck } from "../api/deck";
+import { uploadDeck } from "../apiPlugs/deck";
 
 export default function Home() {
   const [state, dispatch] = useContext(AppUiContext);

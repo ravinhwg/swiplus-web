@@ -4,7 +4,7 @@ import { useInfiniteQuery } from "react-query";
 import { InView } from "react-intersection-observer";
 import Navbar from "../components/molecules/NavBar";
 import { AppUiContext } from "../Context";
-import { getExplorerFeed } from "../api/deck";
+import { getExplorerFeed } from "../apiPlugs/deck";
 import SingleCard from "../components/atoms/SingleCard";
 import JoinSwiplusBanner from "../components/molecules/JoinSwiplusBanner";
 

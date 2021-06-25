@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { AppUiContext } from "../../../Context";
-import { passwordResetFinish } from "../../../api/Auth";
+import { passwordResetFinish } from "../../../apiPlugs/Auth";
 import Icon from "../../../components/atoms/SwiplusLogo";
 
 export default function Home() {

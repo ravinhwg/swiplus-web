@@ -4,7 +4,7 @@ import { useInfiniteQuery } from "react-query";
 import { InView } from "react-intersection-observer";
 import Navbar from "../components/molecules/NavBar";
 import { AppUiContext } from "../Context";
-import { grabNotifications } from "../api/user";
+import { grabNotifications } from "../apiPlugs/user";
 import DisplayNotif from "../components/molecules/NotificationDisplay";
 
 export default function Home() {

@@ -6,7 +6,7 @@ import { useMutation } from "react-query";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { AppUiContext } from "../Context";
-import { login } from "../api/Auth";
+import { login } from "../apiPlugs/Auth";
 import Icon from "../components/atoms/SwiplusLogo";
 import { GoogleLogo } from "../components/atoms/Icons";
 

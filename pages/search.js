@@ -7,7 +7,7 @@ import SearchBar from "../components/atoms/SearchBar";
 import SingleCard from "../components/atoms/SingleCard";
 import { Mobile } from "../components/utils/Breakpoints";
 import ProfileCard from "../components/atoms/ProfileCard";
-import getSearchResults from "../api/search";
+import getSearchResults from "../apiPlugs/search";
 
 export default function Search() {
   const router = useRouter();

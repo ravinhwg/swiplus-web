@@ -22,7 +22,7 @@ import {
   getComments,
   placeLike,
   deleteDeck,
-} from "../../api/deck";
+} from "../../apiPlugs/deck";
 import { AppUiContext } from "../../Context";
 import {
   BackButton,

@@ -1,5 +1,7 @@
 import axios from "axios";
-import API_URL from "./API_URL";
+
+// eslint-disable-next-line prefer-destructuring
+const API_URL = process.env.API_URL;
 
 async function getUser({ queryKey }) {
   const [, username, token] = queryKey;
