@@ -34,6 +34,24 @@ async function getDeck({ queryKey }) {
     throw new Error(e);
   }
 }
+
+async function getChronologicalFeed({ pageParam = 0, queryKey }) {
+  const [, token] = queryKey;
+  try {
+    const response = await axios.get(
+      `${API_URL}/feed/followers?pageNumber=${pageParam}&resultsPerPage=10`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
 async function getExplorerFeed({ pageParam = 0 }) {
   try {
     const response = await axios.get(
@@ -265,6 +283,7 @@ export {
   replyComment,
   deleteDeck,
   getDeck,
+  getChronologicalFeed,
   placeCommentLike,
   placeComment,
   getComments,

@@ -4,16 +4,20 @@ import { useInfiniteQuery } from "react-query";
 import { InView } from "react-intersection-observer";
 import Navbar from "../components/molecules/NavBar";
 import { AppUiContext } from "../Context";
-import { getExplorerFeed } from "../apiPlugs/deck";
+import { getChronologicalFeed, getExplorerFeed } from "../apiPlugs/deck";
 import SingleCard from "../components/atoms/SingleCard";
 import JoinSwiplusBanner from "../components/molecules/JoinSwiplusBanner";
 
 export default function Home() {
   const [state] = useContext(AppUiContext);
   const pageNumber = useRef(0);
-  const query = useInfiniteQuery("projects", getExplorerFeed, {
-    staleTime: 900000, // 15 minutes
-  });
+  const query = useInfiniteQuery(
+    ["projects", state.user?.accessToken],
+    state.loggedIn ? getChronologicalFeed : getExplorerFeed,
+    {
+      staleTime: 900000, // 15 minutes
+    }
+  );
   return (
     <>
       <Head>
