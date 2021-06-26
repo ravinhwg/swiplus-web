@@ -105,7 +105,7 @@ export default function ProfilePage({ children, showTopBarMobile }) {
         )}
         {/* app body */}
         <div className="bg-gray-900">{children}</div>
-        <div className="bg-gray-900 inset-x-0 h-12 bottom-0 border-t-2 border-gray-900 " />
+        <div className="bg-gray-900 inset-x-0 h-12 bottom-0 border-t-2 border-gray-900 mt-1 " />
         <div className="bg-gray-900 fixed inset-x-0 h-12 bottom-0 border-t-2 border-gray-800 ">
           <div className="flex justify-around p-1.5">
             <HomeIcon
