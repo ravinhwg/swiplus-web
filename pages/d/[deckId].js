@@ -130,7 +130,6 @@ export default function Search({ deckId }) {
         <div className="flex h-screen">
           <div className="m-auto  items-center flex flex-col">
             <SpinnerBasic className="animate-spin -ml-1 mr-3 h-16 w-16 text-indigo-600" />
-            <p className="text-gray-100 text-xl m-3">Loading</p>
           </div>
         </div>
       ) : !deckQuery.isLoading && !deckQuery.error ? (
