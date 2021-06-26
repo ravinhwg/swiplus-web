@@ -1,12 +1,15 @@
+/* eslint-disable no-nested-ternary */
 import Head from "next/head";
-import { useInfiniteQuery, useMutation, useQuery } from "react-query";
+import { isError, useInfiniteQuery, useQuery } from "react-query";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Navbar from "../components/molecules/NavBar";
 import SingleCard from "../components/atoms/SingleCard";
+import { SpinnerBasic } from "../components/atoms/Icons";
 import ProfileHeader from "../components/molecules/ProfileHeader";
 import { getUser, getUserDecks } from "../apiPlugs/user";
 import { AppUiContext } from "../Context";
+import ErrorPage from "../components/molecules/ErrorPage";
 
 export default function Home({ profile }) {
   const router = useRouter();
@@ -57,8 +60,18 @@ export default function Home({ profile }) {
               )}
             </div>
           </>
+        ) : query.isLoading ? (
+          <div className="flex h-40">
+            <div className="m-auto  items-center flex flex-col">
+              <SpinnerBasic className="animate-spin -ml-1 mr-3 h-10 w-10 text-indigo-600" />
+            </div>
+          </div>
+        ) : query.isError ? (
+          <div className="p-3">
+            <ErrorPage />
+          </div>
         ) : (
-          <p>Error</p>
+          <></>
         )}
       </Navbar>
     </>
