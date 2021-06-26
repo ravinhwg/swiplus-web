@@ -237,17 +237,11 @@ export default function Search({ deckId }) {
               {deckQuery.data.data.deck?.deck_description}
               {state.user.userId === +deckQuery.data.data.deck.user_id ? (
                 <div className="flex justify-evenly mt-7">
-                  <div className="flex items-center justify-center">
+                  <div className="flex items-center justify-left">
                     <button type="button" onClick={() => deleteDeckStart()}>
                       <TrashCan className="h-8 w-8 text-gray-400 hover:text-gray-300" />
                     </button>
-                    <p>Delete</p>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <button type="button" onClick={() => deleteDeckStart()}>
-                      <TrashCan className="h-8 w-8 text-gray-400" />
-                    </button>
-                    <p>Edit</p>
+                    <p>Delete deck</p>
                   </div>
                 </div>
               ) : (

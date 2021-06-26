@@ -141,17 +141,17 @@ export default function Home() {
       </Head>
       <Navbar>
         <div className="flex justify-center max-w-md ">
-          <div className="flex flex-col w-11/12">
+          <div className="flex flex-col w-full">
             <div className="flex">
               <button onClick={() => router.back()} type="button">
-                <BackButton className="text-gray-100 m-3 mt-10 font-inter font-bold h-10 w-10" />
+                <BackButton className="text-gray-100  font-inter font-bold h-10 w-10" />
               </button>
-              <h3 className="text-gray-100 text-xl m-3 mt-10 font-inter font-bold self-center">
+              <h3 className="text-gray-100 text-xl font-inter font-bold self-center">
                 Edit user
               </h3>
             </div>
             {!query.isLoading && !query.error ? (
-              <>
+              <div className="flex flex-col justify-center">
                 <form>
                   <div className="self-center flex justify-center ">
                     <label htmlFor="file-upload">
@@ -179,7 +179,10 @@ export default function Home() {
                     </button>
                   </div>
                 </form>
-                <form onSubmit={handleSubmit(() => editUserData())}>
+                <form
+                  onSubmit={handleSubmit(() => editUserData())}
+                  className="w-11/12 justify-center items-center self-center"
+                >
                   <div className=" text-red-500  p-2 rounded-md text-sm text-left w-full">
                     {errors.displyName?.type === "required" &&
                       "Name is required"}
@@ -238,7 +241,7 @@ export default function Home() {
                     />
                   </div>
                 </form>
-                <form>
+                <form className="w-11/12 justify-center items-center self-center">
                   <h3 className="text-gray-100 text-xl mb-3 font-inter self-center">
                     Change username
                   </h3>
@@ -290,7 +293,7 @@ export default function Home() {
                     LOG OUT
                   </button>
                 </div>
-              </>
+              </div>
             ) : (
               <></>
             )}

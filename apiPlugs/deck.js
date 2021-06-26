@@ -44,6 +44,49 @@ async function getExplorerFeed({ pageParam = 0 }) {
     throw new Error(e);
   }
 }
+async function getDecksAsAdmin({ pageParam = 0, queryKey }) {
+  const [, token] = queryKey;
+  try {
+    const response = await axios.get(
+      `${API_URL}/user/1234/decks/admin?pageNumber=${pageParam}&resultsPerPage=10`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
+async function editDecks({
+  deckDescription,
+  deckTags,
+  deckTitle,
+  token,
+  deckId,
+}) {
+  try {
+    const response = await axios.put(
+      `${API_URL}/decks/${deckId}`,
+      {
+        deckDescription,
+        deckTitle,
+        deckTags,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
 async function placeComment({ comment, token, deckId }) {
   try {
     const response = await axios.post(
@@ -190,10 +233,34 @@ async function deleteDeck({ token, id }) {
     throw new Error(e);
   }
 }
+
+async function unpublishDecks({ token, status, id }) {
+  try {
+    const response = await axios.put(
+      `${API_URL}/decks/${id}/unpublish`,
+      {
+        status,
+      },
+      token !== undefined
+        ? {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        : {}
+    );
+    return response;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
 export {
   uploadDeck,
   getReply,
+  getDecksAsAdmin,
   getExplorerFeed,
+  editDecks,
+  unpublishDecks,
   deleteComments,
   replyComment,
   deleteDeck,
