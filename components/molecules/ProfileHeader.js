@@ -94,20 +94,25 @@ export default function ProfilePage({ user }) {
               {user?.data.link}
             </div>
           </a>
-          <div className="items-stretch m-3 px-2 ">
-            <div className="flex justify-around">
-              <Link href="/settings">
-                <button type="button">
-                  <FollowButton text="Edit profile" />
-                </button>
-              </Link>
-              <Link href="/admin">
-                <button type="button">
-                  <FollowButton text="Manage" />
-                </button>
-              </Link>
+          {state.user.userId === Number(user?.data.id) ? (
+            <div className="items-stretch m-3 px-2 ">
+              <div className="flex justify-around">
+                <Link href="/settings">
+                  <button type="button">
+                    <FollowButton text="Edit profile" />
+                  </button>
+                </Link>
+                <Link href="/admin">
+                  <button type="button">
+                    <FollowButton text="Manage" />
+                  </button>
+                </Link>
+              </div>
             </div>
-          </div>
+          ) : (
+            <></>
+          )}
+
           <div className="items-stretch m-3 px-2 ">
             <div className="flex justify-around">
               <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 px-0 text-center ">
