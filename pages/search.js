@@ -91,8 +91,9 @@ export default function Search() {
                 if (inView) {
                   // Check if data has all the decks
                   if (
-                    getExplorerFeedQuery.data.pages[query.data.pages.length - 1]
-                      .data.nextPage
+                    getExplorerFeedQuery.data.pages[
+                      getExplorerFeedQuery.data.pages.length - 1
+                    ].data.nextPage
                   ) {
                     pageNumberFeed.current += 1;
                     query.fetchNextPage({ pageParam: pageNumberFeed.current });
