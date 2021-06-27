@@ -34,13 +34,13 @@ export default function Home({ profile, metaData }) {
         <title>{`${metaData.display_name || "Not found"} (@${
           metaData.username || ""
         }) - Swiplus`}</title>
-        <meta property="og:url" content={metaData.url} />
+        <meta property="og:url" content={`${metaData.url}`} />
         <meta
           property="og:title"
           content={`${metaData.display_name} (@${metaData.username}) - Swiplus`}
         />
-        <meta property="og:description" content={metaData.bio} />
-        <meta property="og:image" content={metaData.profile_pic} />
+        <meta property="og:description" content={`${metaData.bio}`} />
+        <meta property="og:image" content={`${metaData.profile_pic}`} />
       </Head>
       <Navbar showTopBarMobile>
         {!query.isLoading && !query.error ? (

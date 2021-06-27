@@ -144,14 +144,17 @@ export default function Search({ deckId, blurhashImages, metaData }) {
         <title>{`${metaData.deck_title || "Not found"} | ${
           metaData.deck_author || ""
         } - Swiplus`}</title>
-        <meta property="og:url" content={metaData.url} />
+        <meta property="og:url" content={`${metaData.url}`} />
         <meta property="og:type" content="article" />
         <meta
           property="og:title"
           content={`${metaData.deck_title}| ${metaData.deck_author} - Swiplus`}
         />
-        <meta property="og:description" content={metaData.deck_description} />
-        <meta property="og:image" content={metaData.thumb} />
+        <meta
+          property="og:description"
+          content={`${metaData.deck_description}`}
+        />
+        <meta property="og:image" content={`${metaData.thumb}`} />
       </Head>
       {deckQuery.isLoading ? (
         <div className="flex h-screen">
