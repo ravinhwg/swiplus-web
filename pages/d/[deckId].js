@@ -63,11 +63,7 @@ export default function Search({ deckId, blurhashImages, metaData }) {
     ["comments", router.query.deckId, state?.user.accessToken],
     getComments
   );
-  const likeDeck = useMutation("likeDeck", placeLike, {
-    onSuccess: async () => {
-      queryClient.invalidateQueries("getDeck");
-    },
-  });
+  const likeDeck = useMutation("likeDeck", placeLike);
   const deleteDeckMutation = useMutation("deleteDeck", deleteDeck, {
     onSuccess: async () => {
       queryClient.invalidateQueries();
@@ -119,11 +115,24 @@ export default function Search({ deckId, blurhashImages, metaData }) {
   SwiperCore.use([Mousewheel, Pagination]);
   const setLike = (active) => {
     if (state.loggedIn) {
-      likeDeck.mutate({
-        active,
-        deckId: router.query.deckId,
-        token: state?.user.accessToken,
-      });
+      likeDeck.mutate(
+        {
+          active,
+          deckId: router.query.deckId,
+          token: state?.user.accessToken,
+        },
+        {
+          onSuccess: async () => {
+            if (active) {
+              deckQuery.data.data.likes += 1;
+              deckQuery.data.data.userLiked = true;
+            } else {
+              deckQuery.data.data.likes -= 1;
+              deckQuery.data.data.userLiked = false;
+            }
+          },
+        }
+      );
     } else {
       router.replace("/login");
     }
@@ -151,8 +160,8 @@ export default function Search({ deckId, blurhashImages, metaData }) {
             />
             <div className="w-11/12 text-xl text-gray-200 self-center font-inter font-medium">
               <div className="flex align-text-top">
-                {deckQuery.data.data.deck?.deck_title.slice(0, 19)}
-                {deckQuery.data.data.deck?.deck_title.length > 22 ? "..." : ""}
+                {deckQuery.data.data.deck?.deck_title.slice(0, 27)}
+                {deckQuery.data.data.deck?.deck_title.length > 30 ? "..." : ""}
               </div>
             </div>
           </div>
@@ -183,23 +192,23 @@ export default function Search({ deckId, blurhashImages, metaData }) {
               <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
                 {deckQuery.data.data.userLiked ? (
                   <LikeFill
-                    className="h-10 w-10 text-red-600"
+                    className="h-8 w-8 text-red-600"
                     onClick={() => setLike(false)}
                   />
                 ) : (
                   <LikeOutline
-                    className="h-10 w-10 text-red-600"
+                    className="h-8 w-8 text-red-600"
                     onClick={() => setLike(true)}
                   />
                 )}
-                {abbreviateNumber(deckQuery.data.data.likes)}
+                {abbreviateNumber(+deckQuery.data.data.likes)}
               </div>
               <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
-                <Eye className="h-10 w-10 text-gray-300" />
+                <Eye className="h-8 w-8 text-gray-300" />
                 {abbreviateNumber(deckQuery.data.data.views)}
               </div>
               <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
-                <Share className="h-10 w-10 text-gray-300" />
+                <Share className="h-8 w-8 text-gray-300" />
                 share
               </div>
             </div>
