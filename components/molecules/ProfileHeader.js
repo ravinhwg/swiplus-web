@@ -97,16 +97,20 @@ export default function ProfilePage({ user }) {
           {state.user.userId === Number(user?.data.id) ? (
             <div className="items-stretch m-3 px-2 ">
               <div className="flex justify-around">
-                <Link href="/settings">
-                  <button type="button">
-                    <FollowButton text="Edit profile" />
-                  </button>
-                </Link>
-                <Link href="/admin">
-                  <button type="button">
-                    <FollowButton text="Manage" />
-                  </button>
-                </Link>
+                <div className="flex flex-1 bg-indigo-700 w-full mr-3 rounded-xl justify-center">
+                  <Link href="/settings">
+                    <button type="button">
+                      <FollowButton text="Edit Profile" />
+                    </button>
+                  </Link>
+                </div>
+                <div className="flex flex-1 bg-indigo-700 rounded-xl justify-center">
+                  <Link href="/admin">
+                    <button type="button">
+                      <FollowButton text="Manage Decks" />
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
           ) : (
