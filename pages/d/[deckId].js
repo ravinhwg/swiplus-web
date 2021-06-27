@@ -148,7 +148,7 @@ export default function Search({ deckId, blurhashImages, metaData }) {
         <meta property="og:type" content="article" />
         <meta
           property="og:title"
-          content={`${metaData.deck_title}| ${metaData.deck_author}`}
+          content={`${metaData.deck_title}| ${metaData.deck_author} - Swiplus`}
         />
         <meta property="og:description" content={metaData.deck_description} />
         <meta property="og:image" content={metaData.thumb} />

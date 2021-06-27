@@ -37,7 +37,7 @@ export default function Home({ profile, metaData }) {
         <meta property="og:url" content={metaData.url} />
         <meta
           property="og:title"
-          content={`${metaData.display_name} (@${metaData.username})`}
+          content={`${metaData.display_name} (@${metaData.username}) - Swiplus`}
         />
         <meta property="og:description" content={metaData.bio} />
         <meta property="og:image" content={metaData.profile_pic} />
