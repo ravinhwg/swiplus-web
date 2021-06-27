@@ -10,7 +10,7 @@ export default function SingleCardThumb({ deck }) {
     >
       {deck ? (
         <Link href={`/d/${deck.id}`}>
-          <img src={deck.card_order[0]} alt={deck.deck_title} layout="fill" />
+          <Image src={deck.card_order[0]} alt={deck.deck_title} layout="fill" />
         </Link>
       ) : (
         <></>

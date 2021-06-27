@@ -3,6 +3,7 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
+import Image from "next/image";
 import SwiperCore, { Mousewheel, Pagination } from "swiper";
 import { useForm } from "react-hook-form";
 import TimeAgo from "javascript-time-ago";
@@ -145,9 +146,8 @@ export default function Search({ deckId }) {
               </div>
             </div>
           </div>
-          <div className="bg-gray-800 w-full ">
+          <div className="w-full">
             <Swiper
-              lazy
               zoom={{ maxRatio: 5 }}
               spaceBetween={1}
               slidesPerView={1}
@@ -156,7 +156,13 @@ export default function Search({ deckId }) {
             >
               {deckQuery.data.data.deck?.card_order.map((item, index) => (
                 <SwiperSlide key={`${index.length}-${item}`}>
-                  <img src={item} alt={index} />
+                  <Image
+                    placeholder={() => <div>loading</div>}
+                    src={item}
+                    alt={index}
+                    height="1350"
+                    width="1080"
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>
