@@ -1,5 +1,6 @@
 import React, { useContext, useRef } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 import { useInfiniteQuery } from "react-query";
 import { InView } from "react-intersection-observer";
 import Navbar from "../components/molecules/NavBar";
@@ -36,6 +37,19 @@ export default function Search() {
 
   return (
     <Navbar>
+      <Head>
+        <title>Search Swiplus</title>
+        <meta property="og:url" content="https://www.swiplus.com" />
+        <meta property="og:title" content="Welcome to Swiplus" />
+        <meta
+          property="og:description"
+          content="Log in or sign up! Swiplus is a visual blogging platform."
+        />
+        <meta
+          property="og:image"
+          content="https://storage.googleapis.com/swiplusimages/assets/og-icon.jpg"
+        />
+      </Head>
       <Mobile>
         <div className="flex flex-row m-3 justify-start">
           <svg
