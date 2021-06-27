@@ -132,7 +132,9 @@ export default function Search({ deckId, blurhashImages, metaData }) {
   return (
     <Navbar>
       <Head>
-        <title>{`${metaData.deck_title} - ${metaData.deck_author}`}</title>
+        <title>{`${metaData.deck_title || "Not found"} | ${
+          metaData.deck_author || ""
+        } - Swiplus`}</title>
       </Head>
       {deckQuery.isLoading ? (
         <div className="flex h-screen">
@@ -149,7 +151,8 @@ export default function Search({ deckId, blurhashImages, metaData }) {
             />
             <div className="w-11/12 text-xl text-gray-200 self-center font-inter font-medium">
               <div className="flex align-text-top">
-                {deckQuery.data.data.deck?.deck_title}
+                {deckQuery.data.data.deck?.deck_title.slice(0, 19)}
+                {deckQuery.data.data.deck?.deck_title.length > 22 ? "..." : ""}
               </div>
             </div>
           </div>
@@ -229,24 +232,23 @@ export default function Search({ deckId, blurhashImages, metaData }) {
                 </Link>
               </div>
             </div>
-            {deckQuery.data.data.deck.deck_description ||
-            state.user.userId === +deckQuery.data.data.deck.user_id ? (
-              <button
-                type="button"
-                onClick={() => setShowAll((showAllState) => !showAllState)}
-              >
-                <BackButton
-                  className={`h-10 w-10  transform ${
-                    showAll ? "rotate-90" : "-rotate-90"
-                  } text-gray-400 `}
-                />
-              </button>
-            ) : (
-              <></>
-            )}
+
+            <button
+              type="button"
+              onClick={() => setShowAll((showAllState) => !showAllState)}
+            >
+              <BackButton
+                className={`h-10 w-10  transform ${
+                  showAll ? "rotate-90" : "-rotate-90"
+                } text-gray-400 `}
+              />
+            </button>
           </div>
           {showAll ? (
             <div className="text-gray-300 self-center font-light font-inter text-sm p-3.5 ">
+              <p className="font-bold mb-4">
+                {deckQuery.data.data.deck?.deck_title}
+              </p>
               {deckQuery.data.data.deck?.deck_description}
               {state.user.userId === +deckQuery.data.data.deck.user_id ? (
                 <div className="flex justify-evenly mt-7">
@@ -368,14 +370,20 @@ export async function getServerSideProps(context) {
     metaData.deck_title = response.data.deck.deck_title || "Not Found";
     metaData.deck_author = response.data.deck.display_name || "Swiplus";
     metaData.deck_description = response.data.deck.deck_description;
+    return {
+      props: {
+        deckId,
+        blurhashImages,
+        metaData,
+      },
+    };
   } catch (e) {
-    throw new Error(e);
+    return {
+      props: {
+        deckId,
+        blurhashImages,
+        metaData,
+      },
+    };
   }
-  return {
-    props: {
-      deckId,
-      blurhashImages,
-      metaData,
-    },
-  };
 }
