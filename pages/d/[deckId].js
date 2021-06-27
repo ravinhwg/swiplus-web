@@ -361,11 +361,8 @@ export async function getServerSideProps(context) {
   const metaData = {};
 
   const generatePlaceholderFromBlurhash = async (blurhashString) => {
-    const timeStart = Date.now();
     const pixels = decode(blurhashString, 108, 135);
     const png = await UPNG.encode([pixels], 108, 135, 64);
-    const timeend = Date.now();
-    // console.log("time took: ", timeend - timeStart);
     return `data:image/png;base64,${encode(png)}`;
   };
   try {
