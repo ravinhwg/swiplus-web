@@ -4,6 +4,10 @@ import React, { useContext, useState, useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
 import Image from "next/image";
+import { decode } from "blurhash";
+import UPNG from "upng-js";
+import Head from "next/head";
+import { encode } from "base64-arraybuffer-es6";
 import SwiperCore, { Mousewheel, Pagination } from "swiper";
 import { useForm } from "react-hook-form";
 import TimeAgo from "javascript-time-ago";
@@ -38,7 +42,7 @@ import CommentDisplay from "../../components/molecules/CommentDisplay";
 import abbreviateNumber from "../../components/utils/numberFormatter";
 import ErrorPage from "../../components/molecules/ErrorPage";
 
-export default function Search({ deckId }) {
+export default function Search({ deckId, blurhashImages, metaData }) {
   const router = useRouter();
   const pageNumber = useRef(0);
   const [showAll, setShowAll] = useState(false);
@@ -46,6 +50,7 @@ export default function Search({ deckId }) {
   const [comment, setComment] = useState("");
   const [createdAt, setCreatedAt] = useState("");
   const [state] = useContext(AppUiContext);
+
   const deckQuery = useQuery(
     ["getDeck", router.query.deckId || deckId, state.user?.accessToken],
     getDeck,
@@ -89,7 +94,6 @@ export default function Search({ deckId }) {
       queryClient.invalidateQueries("comments");
     },
   });
-
   const submitComment = () => {
     commentMutation.mutate({
       comment,
@@ -127,6 +131,9 @@ export default function Search({ deckId }) {
 
   return (
     <Navbar>
+      <Head>
+        <title>{`${metaData.deck_title} - ${metaData.deck_author}`}</title>
+      </Head>
       {deckQuery.isLoading ? (
         <div className="flex h-screen">
           <div className="m-auto  items-center flex flex-col">
@@ -157,7 +164,8 @@ export default function Search({ deckId }) {
               {deckQuery.data.data.deck?.card_order.map((item, index) => (
                 <SwiperSlide key={`${index.length}-${item}`}>
                   <Image
-                    placeholder={() => <div>loading</div>}
+                    placeholder="blur"
+                    blurDataURL={blurhashImages[index]}
                     src={item}
                     alt={index}
                     height="1350"
@@ -338,9 +346,36 @@ export default function Search({ deckId }) {
 
 export async function getServerSideProps(context) {
   const { deckId } = context.params;
+  const blurhashImages = [];
+  const metaData = {};
+
+  const generatePlaceholderFromBlurhash = async (blurhashString) => {
+    const timeStart = Date.now();
+    const pixels = decode(blurhashString, 108, 135);
+    const png = await UPNG.encode([pixels], 108, 135, 64);
+    const timeend = Date.now();
+    // console.log("time took: ", timeend - timeStart);
+    return `data:image/png;base64,${encode(png)}`;
+  };
+  try {
+    const response = await getDeck({ queryKey: ["getDeck", deckId] });
+    // eslint-disable-next-line no-restricted-syntax
+    for (const item of response.data.deck.blurhash_strings) {
+      // eslint-disable-next-line no-await-in-loop
+      const transformedImage = await generatePlaceholderFromBlurhash(item);
+      blurhashImages.push(transformedImage);
+    }
+    metaData.deck_title = response.data.deck.deck_title || "Not Found";
+    metaData.deck_author = response.data.deck.display_name || "Swiplus";
+    metaData.deck_description = response.data.deck.deck_description;
+  } catch (e) {
+    throw new Error(e);
+  }
   return {
     props: {
       deckId,
+      blurhashImages,
+      metaData,
     },
   };
 }
