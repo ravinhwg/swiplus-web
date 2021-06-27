@@ -16,7 +16,9 @@ import { changeUsername } from "../apiPlugs/Auth";
 export default function Home() {
   const [state] = useContext(AppUiContext);
   const [usernameAvailable, setUsernameAvailable] = useState(true);
-  const [profilePicture, setProfilePicture] = useState("");
+  const [profilePicture, setProfilePicture] = useState(
+    "https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
+  );
   const [link, setLink] = useState("");
   const [username, setUsername] = useState("");
   const [initialUsername, setInitialUsername] = useState("");
@@ -142,7 +144,7 @@ export default function Home() {
       <Navbar>
         <div className="flex justify-center max-w-md ">
           <div className="flex flex-col w-full">
-            <div className="flex">
+            <div className="flex m-2">
               <button onClick={() => router.back()} type="button">
                 <BackButton className="text-gray-100  font-inter font-bold h-10 w-10" />
               </button>

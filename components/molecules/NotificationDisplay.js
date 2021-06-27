@@ -45,39 +45,45 @@ export default function DisplayNotif({ notifData }) {
     );
   }, [notifData]);
   return (
-    <div className="text-gray-200 flex m-5">
-      <Link href={`/${notifData.trigger_id}`}>
-        <a>
-          {notifData.profile_pic === null ? (
-            <img
-              alt="profile-pic"
-              className="h-10 w-10 rounded-full m-2"
-              src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
-            />
-          ) : (
-            <img
-              className="h-10 w-10 rounded-full m-2"
-              alt="profile-pic"
-              src={notifData.profile_pic}
-            />
-          )}
-        </a>
-      </Link>
-      <Link
-        href={`/d/${
-          notifData.action_data.deck_id
-            ? notifData.action_data.deck_id
-            : "notfound"
-        }`}
-      >
-        <div className="m-2">
-          {`${notifData.display_name} ${verb}`}
-          <div className="text-gray-500">
-            {notifData.action_data?.comment_text}
+    <div className="text-gray-200 flex m-3">
+      <div className="mr-1">
+        <Link href={`/${notifData.trigger_id}`}>
+          <a>
+            {notifData.profile_pic === null ? (
+              <img
+                alt="profile-pic"
+                className="h-10 w-10 rounded-full m-2"
+                src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
+              />
+            ) : (
+              <img
+                className="h-10 w-10 rounded-full m-2"
+                alt="profile-pic"
+                src={notifData.profile_pic}
+              />
+            )}
+          </a>
+        </Link>
+      </div>
+      <div className="ml-3">
+        <Link
+          href={`/d/${
+            notifData.action_data.deck_id
+              ? notifData.action_data.deck_id
+              : "notfound"
+          }`}
+        >
+          <div className="text-left">
+            {`${notifData.display_name} ${verb}`}
+            <div className="text-gray-500">
+              {notifData.action_data?.comment_text || " "}
+            </div>
+            <div className="text-gray-600 text-xs">
+              {createdAt.toUpperCase()}
+            </div>
           </div>
-          <div className="text-gray-600 text-xs">{createdAt.toUpperCase()}</div>
-        </div>
-      </Link>
+        </Link>
+      </div>
     </div>
   );
 }

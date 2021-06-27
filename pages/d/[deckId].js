@@ -3,6 +3,11 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
+import Image from "next/image";
+import { decode } from "blurhash";
+import UPNG from "upng-js";
+import Head from "next/head";
+import { encode } from "base64-arraybuffer-es6";
 import SwiperCore, { Mousewheel, Pagination } from "swiper";
 import { useForm } from "react-hook-form";
 import TimeAgo from "javascript-time-ago";
@@ -37,7 +42,7 @@ import CommentDisplay from "../../components/molecules/CommentDisplay";
 import abbreviateNumber from "../../components/utils/numberFormatter";
 import ErrorPage from "../../components/molecules/ErrorPage";
 
-export default function Search({ deckId }) {
+export default function Search({ deckId, blurhashImages, metaData }) {
   const router = useRouter();
   const pageNumber = useRef(0);
   const [showAll, setShowAll] = useState(false);
@@ -45,6 +50,7 @@ export default function Search({ deckId }) {
   const [comment, setComment] = useState("");
   const [createdAt, setCreatedAt] = useState("");
   const [state] = useContext(AppUiContext);
+
   const deckQuery = useQuery(
     ["getDeck", router.query.deckId || deckId, state.user?.accessToken],
     getDeck,
@@ -57,11 +63,7 @@ export default function Search({ deckId }) {
     ["comments", router.query.deckId, state?.user.accessToken],
     getComments
   );
-  const likeDeck = useMutation("likeDeck", placeLike, {
-    onSuccess: async () => {
-      queryClient.invalidateQueries("getDeck");
-    },
-  });
+  const likeDeck = useMutation("likeDeck", placeLike);
   const deleteDeckMutation = useMutation("deleteDeck", deleteDeck, {
     onSuccess: async () => {
       queryClient.invalidateQueries();
@@ -88,7 +90,6 @@ export default function Search({ deckId }) {
       queryClient.invalidateQueries("comments");
     },
   });
-
   const submitComment = () => {
     commentMutation.mutate({
       comment,
@@ -114,11 +115,24 @@ export default function Search({ deckId }) {
   SwiperCore.use([Mousewheel, Pagination]);
   const setLike = (active) => {
     if (state.loggedIn) {
-      likeDeck.mutate({
-        active,
-        deckId: router.query.deckId,
-        token: state?.user.accessToken,
-      });
+      likeDeck.mutate(
+        {
+          active,
+          deckId: router.query.deckId,
+          token: state?.user.accessToken,
+        },
+        {
+          onSuccess: async () => {
+            if (active) {
+              deckQuery.data.data.likes += 1;
+              deckQuery.data.data.userLiked = true;
+            } else {
+              deckQuery.data.data.likes -= 1;
+              deckQuery.data.data.userLiked = false;
+            }
+          },
+        }
+      );
     } else {
       router.replace("/login");
     }
@@ -126,11 +140,15 @@ export default function Search({ deckId }) {
 
   return (
     <Navbar>
+      <Head>
+        <title>{`${metaData.deck_title || "Not found"} | ${
+          metaData.deck_author || ""
+        } - Swiplus`}</title>
+      </Head>
       {deckQuery.isLoading ? (
         <div className="flex h-screen">
           <div className="m-auto  items-center flex flex-col">
             <SpinnerBasic className="animate-spin -ml-1 mr-3 h-16 w-16 text-indigo-600" />
-            <p className="text-gray-100 text-xl m-3">Loading</p>
           </div>
         </div>
       ) : !deckQuery.isLoading && !deckQuery.error ? (
@@ -142,13 +160,13 @@ export default function Search({ deckId }) {
             />
             <div className="w-11/12 text-xl text-gray-200 self-center font-inter font-medium">
               <div className="flex align-text-top">
-                {deckQuery.data.data.deck?.deck_title}
+                {deckQuery.data.data.deck?.deck_title.slice(0, 27)}
+                {deckQuery.data.data.deck?.deck_title.length > 30 ? "..." : ""}
               </div>
             </div>
           </div>
-          <div className="bg-gray-800 w-full ">
+          <div className="w-full">
             <Swiper
-              lazy
               zoom={{ maxRatio: 5 }}
               spaceBetween={1}
               slidesPerView={1}
@@ -157,7 +175,14 @@ export default function Search({ deckId }) {
             >
               {deckQuery.data.data.deck?.card_order.map((item, index) => (
                 <SwiperSlide key={`${index.length}-${item}`}>
-                  <img src={item} alt={index} />
+                  <Image
+                    placeholder="blur"
+                    blurDataURL={blurhashImages[index]}
+                    src={item}
+                    alt={index}
+                    height="1350"
+                    width="1080"
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -167,23 +192,23 @@ export default function Search({ deckId }) {
               <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
                 {deckQuery.data.data.userLiked ? (
                   <LikeFill
-                    className="h-10 w-10 text-red-600"
+                    className="h-8 w-8 text-red-600"
                     onClick={() => setLike(false)}
                   />
                 ) : (
                   <LikeOutline
-                    className="h-10 w-10 text-red-600"
+                    className="h-8 w-8 text-red-600"
                     onClick={() => setLike(true)}
                   />
                 )}
-                {abbreviateNumber(deckQuery.data.data.likes)}
+                {abbreviateNumber(+deckQuery.data.data.likes)}
               </div>
               <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
-                <Eye className="h-10 w-10 text-gray-300" />
+                <Eye className="h-8 w-8 text-gray-300" />
                 {abbreviateNumber(deckQuery.data.data.views)}
               </div>
               <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
-                <Share className="h-10 w-10 text-gray-300" />
+                <Share className="h-8 w-8 text-gray-300" />
                 share
               </div>
             </div>
@@ -216,24 +241,23 @@ export default function Search({ deckId }) {
                 </Link>
               </div>
             </div>
-            {deckQuery.data.data.deck.deck_description ||
-            state.user.userId === +deckQuery.data.data.deck.user_id ? (
-              <button
-                type="button"
-                onClick={() => setShowAll((showAllState) => !showAllState)}
-              >
-                <BackButton
-                  className={`h-10 w-10  transform ${
-                    showAll ? "rotate-90" : "-rotate-90"
-                  } text-gray-400 `}
-                />
-              </button>
-            ) : (
-              <></>
-            )}
+
+            <button
+              type="button"
+              onClick={() => setShowAll((showAllState) => !showAllState)}
+            >
+              <BackButton
+                className={`h-10 w-10  transform ${
+                  showAll ? "rotate-90" : "-rotate-90"
+                } text-gray-400 `}
+              />
+            </button>
           </div>
           {showAll ? (
             <div className="text-gray-300 self-center font-light font-inter text-sm p-3.5 ">
+              <p className="font-bold mb-4">
+                {deckQuery.data.data.deck?.deck_title}
+              </p>
               {deckQuery.data.data.deck?.deck_description}
               {state.user.userId === +deckQuery.data.data.deck.user_id ? (
                 <div className="flex justify-evenly mt-7">
@@ -333,9 +357,42 @@ export default function Search({ deckId }) {
 
 export async function getServerSideProps(context) {
   const { deckId } = context.params;
-  return {
-    props: {
-      deckId,
-    },
+  const blurhashImages = [];
+  const metaData = {};
+
+  const generatePlaceholderFromBlurhash = async (blurhashString) => {
+    const timeStart = Date.now();
+    const pixels = decode(blurhashString, 108, 135);
+    const png = await UPNG.encode([pixels], 108, 135, 64);
+    const timeend = Date.now();
+    // console.log("time took: ", timeend - timeStart);
+    return `data:image/png;base64,${encode(png)}`;
   };
+  try {
+    const response = await getDeck({ queryKey: ["getDeck", deckId] });
+    // eslint-disable-next-line no-restricted-syntax
+    for (const item of response.data.deck.blurhash_strings) {
+      // eslint-disable-next-line no-await-in-loop
+      const transformedImage = await generatePlaceholderFromBlurhash(item);
+      blurhashImages.push(transformedImage);
+    }
+    metaData.deck_title = response.data.deck.deck_title || "Not Found";
+    metaData.deck_author = response.data.deck.display_name || "Swiplus";
+    metaData.deck_description = response.data.deck.deck_description;
+    return {
+      props: {
+        deckId,
+        blurhashImages,
+        metaData,
+      },
+    };
+  } catch (e) {
+    return {
+      props: {
+        deckId,
+        blurhashImages,
+        metaData,
+      },
+    };
+  }
 }

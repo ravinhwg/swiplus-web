@@ -12,13 +12,14 @@ import {
   CloseIcon,
   PlusIcon,
   ArrowCircleLeft,
+  BackButton,
   ArrowCircleRight,
   SpinnerBasic,
 } from "../components/atoms/Icons";
 import { uploadDeck } from "../apiPlugs/deck";
 
 export default function Home() {
-  const [state, dispatch] = useContext(AppUiContext);
+  const [state] = useContext(AppUiContext);
   const [title, setTitle] = useState("");
   const router = useRouter();
   const [description, setDescription] = useState("");
@@ -80,11 +81,22 @@ export default function Home() {
       </Head>
       <Navbar>
         <div className="flex justify-center">
-          <div className="flex flex-col w-11/12">
-            <h3 className="text-gray-100 text-5xl m-3 mt-10 font-inter font-bold w-full">
-              Create deck
-            </h3>
-            <form onSubmit={handleSubmit(() => uploadDecks())}>
+          <div className="flex flex-col w-full">
+            <div className="flex items-center m-2">
+              <button
+                onClick={() => router.replace(`/${state.user.userId}`)}
+                type="button"
+              >
+                <BackButton className="text-gray-100 text-md font-inter font-bold h-10 w-10" />
+              </button>
+              <h3 className="text-gray-100 text-xl  font-inter font-bold w-full">
+                Create deck
+              </h3>
+            </div>
+            <form
+              onSubmit={handleSubmit(() => uploadDecks())}
+              className="w-11/12 self-center"
+            >
               <div className=" text-red-500  p-2 rounded-md text-sm text-left w-full">
                 {errors.deckTitle?.type === "required" && "Title is required"}
               </div>

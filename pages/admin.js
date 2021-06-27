@@ -31,7 +31,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar>
-        <div className="flex items-center">
+        <div className="flex items-center m-2">
           <button
             onClick={() => router.replace(`/${state.user.userId}`)}
             type="button"
