@@ -93,7 +93,9 @@ export async function getServerSideProps(context) {
     const response = await getUser({ queryKey: ["getUser", profile] });
     metaData.display_name = response.data.display_name;
     metaData.username = response.data.username;
-    metaData.profile_pic = response.data.profile_pic;
+    metaData.profile_pic =
+      response.data.profile_pic ||
+      "https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg";
     metaData.url = `https://swiplus.com/${username}`;
     metaData.bio = response.data.bio;
     return {
