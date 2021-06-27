@@ -96,7 +96,7 @@ export async function getServerSideProps(context) {
     metaData.profile_pic =
       response.data.profile_pic ||
       "https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg";
-    metaData.url = `https://swiplus.com/${username}`;
+    metaData.url = `https://swiplus.com/${metaData.username}`;
     metaData.bio = response.data.bio;
     return {
       props: {
