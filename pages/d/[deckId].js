@@ -144,6 +144,14 @@ export default function Search({ deckId, blurhashImages, metaData }) {
         <title>{`${metaData.deck_title || "Not found"} | ${
           metaData.deck_author || ""
         } - Swiplus`}</title>
+        <meta property="og:url" content={metaData.url} />
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:title"
+          content={`${metaData.deck_title}| ${metaData.deck_author} - Swiplus`}
+        />
+        <meta property="og:description" content={metaData.deck_description} />
+        <meta property="og:image" content={metaData.thumb} />
       </Head>
       {deckQuery.isLoading ? (
         <div className="flex h-screen">
@@ -361,11 +369,8 @@ export async function getServerSideProps(context) {
   const metaData = {};
 
   const generatePlaceholderFromBlurhash = async (blurhashString) => {
-    const timeStart = Date.now();
     const pixels = decode(blurhashString, 108, 135);
     const png = await UPNG.encode([pixels], 108, 135, 64);
-    const timeend = Date.now();
-    // console.log("time took: ", timeend - timeStart);
     return `data:image/png;base64,${encode(png)}`;
   };
   try {
@@ -378,7 +383,10 @@ export async function getServerSideProps(context) {
     }
     metaData.deck_title = response.data.deck.deck_title || "Not Found";
     metaData.deck_author = response.data.deck.display_name || "Swiplus";
+    // eslint-disable-next-line prefer-destructuring
+    metaData.thumb = response.data.deck.card_order[0];
     metaData.deck_description = response.data.deck.deck_description;
+    metaData.url = `https://swiplus.com/d/${deckId}`;
     return {
       props: {
         deckId,

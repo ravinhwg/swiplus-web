@@ -25,7 +25,6 @@ class MyDocument extends Document {
                  gtag('config', 'G-SEGNLPJ9WK');`,
             }}
           /> */}
-
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"

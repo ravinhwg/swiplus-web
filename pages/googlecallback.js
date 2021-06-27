@@ -1,13 +1,14 @@
 import { useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
+import Head from "next/head";
 import { googleLogin } from "../apiPlugs/Auth";
 import { AppUiContext } from "../Context";
 import { SpinnerBasic } from "../components/atoms/Icons";
 
 export default function GoogleCallback(props) {
   const router = useRouter();
-  const [state, dispatch] = useContext(AppUiContext);
+  const [dispatch] = useContext(AppUiContext);
   const mutation = useMutation(googleLogin);
   let idToken;
   if (typeof window !== "undefined") {
@@ -37,6 +38,9 @@ export default function GoogleCallback(props) {
   }, []);
   return (
     <>
+      <Head>
+        <title>Please wait</title>
+      </Head>
       <div className="flex h-screen">
         <div className="m-auto  items-center flex flex-col">
           <SpinnerBasic className="animate-spin -ml-1 mr-3 h-16 w-16 text-indigo-600" />
