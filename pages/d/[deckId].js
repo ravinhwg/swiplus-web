@@ -41,6 +41,7 @@ import {
 import CommentDisplay from "../../components/molecules/CommentDisplay";
 import abbreviateNumber from "../../components/utils/numberFormatter";
 import ErrorPage from "../../components/molecules/ErrorPage";
+import * as ga from "../../lib/ga";
 
 export default function Search({ deckId, blurhashImages, metaData }) {
   const router = useRouter();
@@ -111,6 +112,16 @@ export default function Search({ deckId, blurhashImages, metaData }) {
             ))
       )
     );
+    // Deck view
+    ga.event({
+      action: "Deck View",
+      params: {
+        deck_title: deckQuery.data?.deck?.deck_title,
+        deck_id: router.query.deckId,
+        deck_author: deckQuery.data?.deck?.deck_author,
+        deck_author_id: deckQuery.data?.deck?.username,
+      },
+    });
   }, [deckQuery.isLoading]);
   SwiperCore.use([Mousewheel, Pagination]);
   const setLike = (active) => {
