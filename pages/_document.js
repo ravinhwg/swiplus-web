@@ -12,19 +12,21 @@ class MyDocument extends Document {
         <Head>
           <script
             async
-            src="https://www.googletagmanager.com/gtag/js?id=G-SEGNLPJ9WK"
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_TRACKING_ID}`}
           />
           <meta name="theme-color" content="#111827" />
-          {/* <script
+          <script
             dangerouslySetInnerHTML={{
               __html: `                 
                  window.dataLayer = window.dataLayer || [];
                  function gtag(){dataLayer.push(arguments);}
                  gtag('js', new Date());
                
-                 gtag('config', 'G-SEGNLPJ9WK');`,
+                 gtag('config', '${process.env.GOOGLE_TRACKING_ID}', {
+                   page_path: window.location.pathname,
+                 });`,
             }}
-          /> */}
+          />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"
