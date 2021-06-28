@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import Link from "next/link";
 import { AppUiContext } from "../../Context";
 import Button from "../atoms/Button";
 import { Default, Mobile } from "../utils/Breakpoints";
@@ -15,7 +16,12 @@ const InnerBanner = ({ dispatch }) => {
         own decks and follow other creators!
       </p>
       <div className="flex self-center mt-1 justify-center w-full">
-        <Button text="Join" />
+        <Link href="/login">
+          <a>
+            <Button text="Join" />
+          </a>
+        </Link>
+
         <div className="flex flex-row">
           <CloseIcon className="h-4 w-4 flex ml-3 text-gray-200 self-center" />
           <button

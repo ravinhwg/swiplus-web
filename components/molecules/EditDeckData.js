@@ -61,7 +61,7 @@ export default function EditDeckData({ deck }) {
     });
   };
   return (
-    <div className="p-1 flex flex-col sm:flex-row justify-center">
+    <div className="p-1 flex flex-col sm:flex-row justify-center items-center">
       <div className="flex justify-center">
         {deck ? (
           <Link href={`/d/${deck.id}`}>
@@ -80,7 +80,7 @@ export default function EditDeckData({ deck }) {
         <div
           className={`${
             !done ? "text-red-500" : "text-green-500"
-          }  p-2 rounded-md text-sm w-full justify-center text-center`}
+          }  p-2 rounded-md text-sm w-full justify-center text-center `}
         >
           {errors.deckTitle?.type === "required" && "Deck title is required."}
           {errors.deckDescription?.type === "required" &&
