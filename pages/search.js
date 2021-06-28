@@ -36,7 +36,7 @@ export default function Search() {
   );
 
   return (
-    <Navbar>
+    <>
       <Head>
         <title>Search Swiplus</title>
         <meta property="og:url" content="https://www.swiplus.com" />
@@ -50,155 +50,181 @@ export default function Search() {
           content="https://storage.googleapis.com/swiplusimages/assets/og-icon.jpg"
         />
       </Head>
-      <Mobile>
-        <div className="flex flex-row m-3 justify-start">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className=" h-8 text-gray-200 self-center w-auto"
-            fill="none"
-            onClick={goBackfromSearch}
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-          <div className="w-11/12">
-            <SearchBar q={router.query.q} />
+      <Navbar>
+        <div className="sm:w-full sm:flex sm:justify-evenly ">
+          <div className="lg:w-8/12 md:w-10/12">
+            <div className="flex flex-row m-3 justify-start md:hidden">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className=" h-8 text-gray-200 self-center w-auto"
+                fill="none"
+                onClick={goBackfromSearch}
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+              <div className="w-11/12">
+                <SearchBar q={router.query.q} />
+              </div>
+            </div>
+            {!router.query.q && state.loggedIn ? (
+              <>
+                <div className="grid grid-flow-row-dense row-auto grid-cols-2 max-w-6xl md:self-center sm:grid-cols-3 md:grid-cols-3 md:mx-3 lg:grid-cols-4 gap-1 lg:gap-6 sm:my-8 m-2">
+                  {getExplorerFeedQuery.isLoading ? (
+                    <>
+                      <SingleCard />
+                      <SingleCard />
+                      <SingleCard />
+                      <SingleCard />
+                      <SingleCard />
+                      <SingleCard />
+                      <SingleCard />
+                      <SingleCard />
+                      <SingleCard />
+                      <SingleCard />
+                      <SingleCard />
+                      <SingleCard />
+                    </>
+                  ) : (
+                    getExplorerFeedQuery.data.pages.map((page) => (
+                      <React.Fragment key={page.nextId}>
+                        {page.data.data.map((project) => (
+                          <>
+                            <SingleCard deck={project} />
+                          </>
+                        ))}
+                      </React.Fragment>
+                    ))
+                  )}
+                </div>
+                {!getExplorerFeedQuery.isLoading &&
+                !getExplorerFeedQuery.error ? (
+                  <InView
+                    as="div"
+                    onChange={(inView) => {
+                      if (inView) {
+                        // Check if data has all the decks
+                        if (
+                          getExplorerFeedQuery.data.pages[
+                            getExplorerFeedQuery.data.pages.length - 1
+                          ].data.nextPage
+                        ) {
+                          pageNumberFeed.current += 1;
+                          query.fetchNextPage({
+                            pageParam: pageNumberFeed.current,
+                          });
+                        }
+                      }
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
+              </>
+            ) : (
+              <div className="h-screen p-1">
+                <div className="text-xl font-bold text-white m-3">Users</div>
+                <div className="flex overflow-x-scroll pb-10">
+                  <div className="flex flex-nowrap">
+                    {query.isLoading ? (
+                      <>
+                        <ProfileCard key={0} />
+                        <ProfileCard key={1} />
+                        <ProfileCard key={2} />
+                        <ProfileCard key={3} />
+                      </>
+                    ) : (
+                      query.data.pages.map((page) => (
+                        <React.Fragment key={page.nextId}>
+                          {page.data.users.users.map((user) => (
+                            <>
+                              <ProfileCard user={user} />
+                            </>
+                          ))}
+                        </React.Fragment>
+                      ))
+                    )}
+                    {!query.isLoading && !query.isError ? (
+                      <InView
+                        as="div"
+                        onChange={(inView) => {
+                          if (inView) {
+                            // Check if data has all the decks
+                            if (
+                              query.data.pages[query.data.pages.length - 1].data
+                                .users.nextPage
+                            ) {
+                              pageNumber.current += 1;
+                              query.fetchNextPage({
+                                pageParam: pageNumber.current,
+                              });
+                            }
+                          }
+                        }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </div>
+                <div className="h-4/6">
+                  <div className="text-xl m-3 font-bold text-white">Decks</div>
+
+                  <div className="grid row-auto grid-cols-2 sm:grid-cols-3 md:grid-cols-3 md:mx-3 lg:grid-cols-4 xl:grid-cols-4 gap-1 sm:my-8">
+                    {query.isLoading ? (
+                      <>
+                        <SingleCard key={0} />
+                        <SingleCard key={1} />
+                        <SingleCard key={2} />
+                        <SingleCard key={3} />
+                        <SingleCard key={4} />
+                        <SingleCard key={5} />
+                      </>
+                    ) : (
+                      query.data.pages.map((page) => (
+                        <React.Fragment key={page.nextId}>
+                          {page.data.decks.decks.map((deck) => (
+                            <>
+                              <SingleCard deck={deck} key={`${deck.id}`} />
+                            </>
+                          ))}
+                        </React.Fragment>
+                      ))
+                    )}
+                    {!query.isLoading && !query.isError ? (
+                      <InView
+                        as="div"
+                        onChange={(inView) => {
+                          if (inView) {
+                            // Check if data has all the decks
+                            if (
+                              query.data.pages[query.data.pages.length - 1].data
+                                .decks.nextPage
+                            ) {
+                              pageNumber.current += 1;
+                              query.fetchNextPage({
+                                pageParam: pageNumber.current,
+                              });
+                            }
+                          }
+                        }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-        {!router.query.q && state.loggedIn ? (
-          <>
-            <div className="grid row-auto grid-cols-2 lg:m-20  sm:grid-cols-2 md:grid-cols-3 md:mx-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 sm:my-8">
-              {getExplorerFeedQuery.isLoading ? (
-                <>
-                  <SingleCard />
-                  <SingleCard />
-                  <SingleCard />
-                  <SingleCard />
-                  <SingleCard />
-                  <SingleCard />
-                  <SingleCard />
-                  <SingleCard />
-                  <SingleCard />
-                  <SingleCard />
-                  <SingleCard />
-                  <SingleCard />
-                </>
-              ) : (
-                getExplorerFeedQuery.data.pages.map((page) => (
-                  <React.Fragment key={page.nextId}>
-                    {page.data.data.map((project) => (
-                      <SingleCard deck={project} />
-                    ))}
-                  </React.Fragment>
-                ))
-              )}
-            </div>
-            {!getExplorerFeedQuery.isLoading && !getExplorerFeedQuery.error ? (
-              <InView
-                as="div"
-                onChange={(inView) => {
-                  if (inView) {
-                    // Check if data has all the decks
-                    if (
-                      getExplorerFeedQuery.data.pages[
-                        getExplorerFeedQuery.data.pages.length - 1
-                      ].data.nextPage
-                    ) {
-                      pageNumberFeed.current += 1;
-                      query.fetchNextPage({
-                        pageParam: pageNumberFeed.current,
-                      });
-                    }
-                  }
-                }}
-              />
-            ) : (
-              <></>
-            )}
-          </>
-        ) : (
-          <div className="h-screen p-1">
-            <div className="flex overflow-x-scroll pb-10">
-              <div className="flex flex-nowrap">
-                {query.isLoading ? (
-                  <>
-                    <ProfileCard key={0} />
-                    <ProfileCard key={1} />
-                    <ProfileCard key={2} />
-                    <ProfileCard key={3} />
-                  </>
-                ) : (
-                  query.data.pages.map((page) => (
-                    <React.Fragment key={page.nextId}>
-                      {page.data.users.users.map((user) => (
-                        <ProfileCard user={user} />
-                      ))}
-                    </React.Fragment>
-                  ))
-                )}
-                <InView
-                  as="div"
-                  onChange={(inView) => {
-                    if (inView) {
-                      // Check if data has all the decks
-                      if (
-                        query.data.pages[query.data.pages.length - 1].data.users
-                          .nextPage
-                      ) {
-                        pageNumber.current += 1;
-                        query.fetchNextPage({ pageParam: pageNumber.current });
-                      }
-                    }
-                  }}
-                />
-              </div>
-            </div>
-            <div className="h-4/6">
-              <div className="grid row-auto grid-cols-2 sm:grid-cols-3 md:grid-cols-3 md:mx-3 lg:grid-cols-4 xl:grid-cols-4 gap-1 sm:my-8">
-                {query.isLoading ? (
-                  <>
-                    <SingleCard key={0} />
-                    <SingleCard key={1} />
-                    <SingleCard key={2} />
-                    <SingleCard key={3} />
-                    <SingleCard key={4} />
-                    <SingleCard key={5} />
-                  </>
-                ) : (
-                  query.data.pages.map((page) => (
-                    <React.Fragment key={page.nextId}>
-                      {page.data.decks.decks.map((deck) => (
-                        <SingleCard deck={deck} key={`${deck.id}`} />
-                      ))}
-                    </React.Fragment>
-                  ))
-                )}
-                <InView
-                  as="div"
-                  onChange={(inView) => {
-                    if (inView) {
-                      // Check if data has all the decks
-                      if (
-                        query.data.pages[query.data.pages.length - 1].data.decks
-                          .nextPage
-                      ) {
-                        pageNumber.current += 1;
-                        query.fetchNextPage({ pageParam: pageNumber.current });
-                      }
-                    }
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-      </Mobile>
-    </Navbar>
+      </Navbar>
+    </>
   );
 }

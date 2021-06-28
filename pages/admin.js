@@ -31,45 +31,51 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar>
-        <div className="flex items-center m-2">
-          <button
-            onClick={() => router.replace(`/${state.user.userId}`)}
-            type="button"
-          >
-            <BackButton className="text-gray-100 text-md font-inter font-bold h-10 w-10" />
-          </button>
-          <h3 className="text-gray-100 text-xl  font-inter font-bold w-full">
-            Deck manager
-          </h3>
-        </div>
-        <div className="grid row-auto grid-cols-1 lg:m-20  sm:grid-cols-2 md:grid-cols-2 gap-1 sm:my-8">
-          {query.isLoading ? (
-            <></>
-          ) : (
-            <>
-              {query.data.pages.map((page) => (
-                <React.Fragment key={page.nextId}>
-                  {page.data.decks.map((project) => (
-                    <EditDeckData deck={project} />
+        <div className="flex justify-center ">
+          <div className="flex md:w-5/12 flex-col">
+            <div className="flex items-center m-2">
+              <button
+                onClick={() => router.replace(`/${state.user.userId}`)}
+                type="button"
+              >
+                <BackButton className="text-gray-100 text-md font-inter font-bold h-10 w-10" />
+              </button>
+              <h3 className="text-gray-100 text-xl  font-inter font-bold w-full">
+                Deck manager
+              </h3>
+            </div>
+            <div className="grid row-auto grid-cols-1 gap-1 sm:my-8">
+              {query.isLoading ? (
+                <></>
+              ) : (
+                <>
+                  {query.data.pages.map((page) => (
+                    <React.Fragment key={page.nextId}>
+                      {page.data.decks.map((project) => (
+                        <EditDeckData deck={project} />
+                      ))}
+                    </React.Fragment>
                   ))}
-                </React.Fragment>
-              ))}
-              <InView
-                as="div"
-                onChange={(inView) => {
-                  if (inView) {
-                    // Check if data has all the decks
-                    if (
-                      query.data.pages[query.data.pages.length - 1].nextPage
-                    ) {
-                      pageNumber.current += 1;
-                      query.fetchNextPage({ pageParam: pageNumber.current });
-                    }
-                  }
-                }}
-              />
-            </>
-          )}
+                  <InView
+                    as="div"
+                    onChange={(inView) => {
+                      if (inView) {
+                        // Check if data has all the decks
+                        if (
+                          query.data.pages[query.data.pages.length - 1].nextPage
+                        ) {
+                          pageNumber.current += 1;
+                          query.fetchNextPage({
+                            pageParam: pageNumber.current,
+                          });
+                        }
+                      }
+                    }}
+                  />
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </Navbar>
     </>

@@ -39,7 +39,7 @@ export default function Home() {
         ) : (
           <JoinSwiplusBanner />
         )}
-        <div className="grid row-auto grid-cols-2 lg:m-20  sm:grid-cols-2 md:grid-cols-3 md:mx-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 sm:my-8">
+        <div className="grid grid-flow-row-dense row-auto grid-cols-2 max-w-6xl md:self-center sm:grid-cols-3 md:grid-cols-3 md:mx-3 lg:grid-cols-4 gap-1 lg:gap-6 sm:my-8 m-2">
           {query.isLoading ? (
             <>
               <SingleCard />

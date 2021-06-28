@@ -52,43 +52,49 @@ export default function Home({ profile, metaData }) {
         <meta property="og:image" content={`${metaData.profile_pic}`} />
       </Head>
       <Navbar showTopBarMobile>
-        {!query.isLoading && !query.error ? (
-          <>
-            <ProfileHeader user={query.data} />
-            <div className="grid row-auto grid-cols-2 lg:m-20 sm:grid-cols-3 md:grid-cols-3 md:mx-3 lg:grid-cols-3 gap-1 sm:my-8">
-              {userDecks.isLoading ? (
-                <>
-                  <SingleCard key={0} />
-                  <SingleCard key={1} />
-                  <SingleCard key={2} />
-                  <SingleCard key={3} />
-                  <SingleCard key={4} />
-                  <SingleCard key={5} />
-                </>
-              ) : (
-                userDecks.data.pages.map((page) => (
-                  <React.Fragment key={page.nextId}>
-                    {page.data.decks.map((deck) => (
-                      <SingleCard deck={deck} key={deck.id} />
-                    ))}
-                  </React.Fragment>
-                ))
-              )}
-            </div>
-          </>
-        ) : query.isLoading ? (
-          <div className="flex h-40">
-            <div className="m-auto  items-center flex flex-col">
-              <SpinnerBasic className="animate-spin -ml-1 mr-3 h-10 w-10 text-indigo-600" />
-            </div>
+        <div className="w-full flex justify-evenly ">
+          <div className="lg:w-8/12 md:w-10/12">
+            {!query.isLoading && !query.error ? (
+              <>
+                <div className="flex w-full justify-center">
+                  <ProfileHeader user={query.data} />
+                </div>
+                <div className="grid grid-flow-row-dense row-auto grid-cols-2 max-w-6xl md:self-center sm:grid-cols-3 md:grid-cols-3 md:mx-3 lg:grid-cols-4 gap-1 lg:gap-6 sm:my-8 m-2">
+                  {userDecks.isLoading ? (
+                    <>
+                      <SingleCard key={0} />
+                      <SingleCard key={1} />
+                      <SingleCard key={2} />
+                      <SingleCard key={3} />
+                      <SingleCard key={4} />
+                      <SingleCard key={5} />
+                    </>
+                  ) : (
+                    userDecks.data.pages.map((page) => (
+                      <React.Fragment key={page.nextId}>
+                        {page.data.decks.map((deck) => (
+                          <SingleCard deck={deck} key={deck.id} />
+                        ))}
+                      </React.Fragment>
+                    ))
+                  )}
+                </div>
+              </>
+            ) : query.isLoading ? (
+              <div className="flex h-40">
+                <div className="m-auto  items-center flex flex-col">
+                  <SpinnerBasic className="animate-spin -ml-1 mr-3 h-10 w-10 text-indigo-600" />
+                </div>
+              </div>
+            ) : query.isError ? (
+              <div className="p-3">
+                <ErrorPage />
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
-        ) : query.isError ? (
-          <div className="p-3">
-            <ErrorPage />
-          </div>
-        ) : (
-          <></>
-        )}
+        </div>
       </Navbar>
     </>
   );
