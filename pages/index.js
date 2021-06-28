@@ -65,18 +65,24 @@ export default function Home() {
             ))
           )}
         </div>
-        <InView
-          as="div"
-          onChange={(inView) => {
-            if (inView) {
-              // Check if data has all the decks
-              if (query.data.pages[query.data.pages.length - 1].data.nextPage) {
-                pageNumber.current += 1;
-                query.fetchNextPage({ pageParam: pageNumber.current });
+        {!query.isLoading && !query.isError ? (
+          <InView
+            as="div"
+            onChange={(inView) => {
+              if (inView) {
+                // Check if data has all the decks
+                if (
+                  query.data.pages[query.data.pages.length - 1].data.nextPage
+                ) {
+                  pageNumber.current += 1;
+                  query.fetchNextPage({ pageParam: pageNumber.current });
+                }
               }
-            }
-          }}
-        />
+            }}
+          />
+        ) : (
+          <></>
+        )}
       </Navbar>
     </>
   );

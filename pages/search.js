@@ -99,22 +99,28 @@ export default function Search() {
                 ))
               )}
             </div>
-            <InView
-              as="div"
-              onChange={(inView) => {
-                if (inView) {
-                  // Check if data has all the decks
-                  if (
-                    getExplorerFeedQuery.data.pages[
-                      getExplorerFeedQuery.data.pages.length - 1
-                    ].data.nextPage
-                  ) {
-                    pageNumberFeed.current += 1;
-                    query.fetchNextPage({ pageParam: pageNumberFeed.current });
+            {!getExplorerFeedQuery.isLoading && !getExplorerFeedQuery.error ? (
+              <InView
+                as="div"
+                onChange={(inView) => {
+                  if (inView) {
+                    // Check if data has all the decks
+                    if (
+                      getExplorerFeedQuery.data.pages[
+                        getExplorerFeedQuery.data.pages.length - 1
+                      ].data.nextPage
+                    ) {
+                      pageNumberFeed.current += 1;
+                      query.fetchNextPage({
+                        pageParam: pageNumberFeed.current,
+                      });
+                    }
                   }
-                }
-              }}
-            />
+                }}
+              />
+            ) : (
+              <></>
+            )}
           </>
         ) : (
           <div className="h-screen p-1">

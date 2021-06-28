@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import * as ga from "../../lib/ga";
 
 export default function SrarchBar({ q }) {
   const router = useRouter();
@@ -28,6 +29,13 @@ export default function SrarchBar({ q }) {
             undefined,
             { shallow: true }
           );
+          // Log the event in Google analytics
+          ga.event({
+            action: "Search",
+            params: {
+              search_term: e.target.value,
+            },
+          });
         }}
         value={q}
         placeholder="Search Swiplus"
