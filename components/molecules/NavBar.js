@@ -10,6 +10,7 @@ import {
   HomeIcon,
   NotificationsIcon,
   ProfileIcon,
+  GlobeIcon,
   SearchIcon,
   PlusIcon,
 } from "../atoms/Icons";
@@ -62,6 +63,8 @@ export default function ProfilePage({ children, showTopBarMobile }) {
         return router.push("/create");
       case "notifs":
         return router.push("/notifications");
+      case "explorer":
+        return router.push("/search");
       default:
         return undefined;
     }
@@ -143,14 +146,16 @@ export default function ProfilePage({ children, showTopBarMobile }) {
         </div>
       </Mobile>
       <Default>
-        <div className="bg-gray-900 inset-x-0 h-12 top-0 w-full sticky z-50 border-gray-800">
-          <div className="flex flex-row justify-between">
+        <div className="bg-gray-800 mb-3 inset-x-0 h-12 top-0 w-full sticky z-50 border-gray-800 items-center">
+          <div className="flex flex-row justify-around items-center bg-gray-800">
             <Link href="/" passHref>
               <a>
                 <Icon />
               </a>
             </Link>
-            <Search />
+            <div>
+              <Search />
+            </div>
             <div className="flex flex-row">
               {loggedIn ? (
                 <>
@@ -161,6 +166,14 @@ export default function ProfilePage({ children, showTopBarMobile }) {
                         : "text-gray-200"
                     }`}
                     onClick={() => handleMobileNavigation("home")}
+                  />
+                  <GlobeIcon
+                    className={`h-8 w-8 flex self-center m-3 ${
+                      state.focusedMenuItem === "explorer"
+                        ? "text-indigo-800"
+                        : "text-gray-200"
+                    }`}
+                    onClick={() => handleMobileNavigation("explorer")}
                   />
                   <ProfileIcon
                     onClick={() => handleMobileNavigation("profile")}
