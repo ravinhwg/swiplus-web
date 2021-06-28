@@ -183,7 +183,14 @@ export default function ProfilePage({ children, showTopBarMobile }) {
                         : "text-gray-200"
                     }`}
                   />
-                  <NotificationsIcon className=" h-8 w-8 text-gray-200 self-center m-3" />
+                  <NotificationsIcon
+                    onClick={() => handleMobileNavigation("notifs")}
+                    className={`h-8 w-8 flex self-center m-3 ${
+                      state.focusedMenuItem === "notifs"
+                        ? "text-indigo-800"
+                        : "text-gray-200"
+                    }`}
+                  />
                 </>
               ) : (
                 <>

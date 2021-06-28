@@ -243,7 +243,7 @@ export default function Search({ deckId, blurhashImages, metaData }) {
                 </div>
               </div>
               {/* end card and three buttons */}
-              <div className="lg:w-6/12">
+              <div className="lg:w-6/12 lg:mt-7 lg:h-3/6">
                 <div className="p-3 flex w-full justify-between">
                   <div className="flex">
                     {deckQuery.data.data.deck?.profile_pic ? (
@@ -355,7 +355,7 @@ export default function Search({ deckId, blurhashImages, metaData }) {
                 ) : (
                   <></>
                 )}
-                <div>
+                <div className="lg:overflow-scroll lg:h-96">
                   {!commentQuery.isLoading && !deckQuery.error ? (
                     commentQuery.data.pages.map((page) => (
                       <React.Fragment key={page.nextId}>
@@ -370,25 +370,25 @@ export default function Search({ deckId, blurhashImages, metaData }) {
                   ) : (
                     <></>
                   )}
-                </div>
-                <InView
-                  as="div"
-                  onChange={(inView) => {
-                    if (inView) {
-                      // Check if data has all the decks
-                      if (
-                        commentQuery.data?.pages[
-                          commentQuery.data.pages.length - 1
-                        ].data.nextPage
-                      ) {
-                        pageNumber.current += 1;
-                        commentQuery.fetchNextPage({
-                          pageParam: pageNumber.current,
-                        });
+                  <InView
+                    as="div"
+                    onChange={(inView) => {
+                      if (inView) {
+                        // Check if data has all the decks
+                        if (
+                          commentQuery.data?.pages[
+                            commentQuery.data.pages.length - 1
+                          ].data.nextPage
+                        ) {
+                          pageNumber.current += 1;
+                          commentQuery.fetchNextPage({
+                            pageParam: pageNumber.current,
+                          });
+                        }
                       }
-                    }
-                  }}
-                />
+                    }}
+                  />
+                </div>
               </div>
             </div>
           ) : (
