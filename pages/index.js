@@ -34,55 +34,60 @@ export default function Home() {
         />
       </Head>
       <Navbar showTopBarMobile>
-        {state.loggedIn || !state.askToJoinBannerVisible ? (
-          <></>
-        ) : (
-          <JoinSwiplusBanner />
-        )}
-        <div className="grid grid-flow-row-dense row-auto grid-cols-2 max-w-6xl md:self-center sm:grid-cols-3 md:grid-cols-3 md:mx-3 lg:grid-cols-4 gap-1 lg:gap-6 sm:my-8 m-2">
-          {query.isLoading ? (
-            <>
-              <SingleCard />
-              <SingleCard />
-              <SingleCard />
-              <SingleCard />
-              <SingleCard />
-              <SingleCard />
-              <SingleCard />
-              <SingleCard />
-              <SingleCard />
-              <SingleCard />
-              <SingleCard />
-              <SingleCard />
-            </>
-          ) : (
-            query.data.pages.map((page) => (
-              <React.Fragment key={page.nextId}>
-                {page.data.data.map((project) => (
-                  <SingleCard deck={project} />
-                ))}
-              </React.Fragment>
-            ))
-          )}
+        <div className="sm:w-full sm:flex sm:justify-evenly ">
+          <div className="lg:w-8/12 md:w-10/12">
+            {state.loggedIn || !state.askToJoinBannerVisible ? (
+              <></>
+            ) : (
+              <JoinSwiplusBanner />
+            )}
+            <div className="grid grid-flow-row-dense row-auto grid-cols-2 max-w-6xl md:self-center sm:grid-cols-3 md:grid-cols-3 md:mx-3 lg:grid-cols-4 gap-1 lg:gap-6 sm:my-8 m-2">
+              {query.isLoading ? (
+                <>
+                  <SingleCard />
+                  <SingleCard />
+                  <SingleCard />
+                  <SingleCard />
+                  <SingleCard />
+                  <SingleCard />
+                  <SingleCard />
+                  <SingleCard />
+                  <SingleCard />
+                  <SingleCard />
+                  <SingleCard />
+                  <SingleCard />
+                </>
+              ) : (
+                query.data.pages.map((page) => (
+                  <React.Fragment key={page.nextId}>
+                    {page.data.data.map((project) => (
+                      <SingleCard deck={project} />
+                    ))}
+                  </React.Fragment>
+                ))
+              )}
+            </div>
+            {!query.isLoading && !query.isError ? (
+              <InView
+                as="div"
+                onChange={(inView) => {
+                  if (inView) {
+                    // Check if data has all the decks
+                    if (
+                      query.data.pages[query.data.pages.length - 1].data
+                        .nextPage
+                    ) {
+                      pageNumber.current += 1;
+                      query.fetchNextPage({ pageParam: pageNumber.current });
+                    }
+                  }
+                }}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
-        {!query.isLoading && !query.isError ? (
-          <InView
-            as="div"
-            onChange={(inView) => {
-              if (inView) {
-                // Check if data has all the decks
-                if (
-                  query.data.pages[query.data.pages.length - 1].data.nextPage
-                ) {
-                  pageNumber.current += 1;
-                  query.fetchNextPage({ pageParam: pageNumber.current });
-                }
-              }
-            }}
-          />
-        ) : (
-          <></>
-        )}
       </Navbar>
     </>
   );

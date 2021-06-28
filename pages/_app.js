@@ -1,6 +1,8 @@
 import "tailwindcss/tailwind.css";
+import "../styles/globals.css";
 import "swiper/swiper.min.css";
 import "swiper/components/pagination/pagination.min.css";
+import "swiper/components/navigation/navigation.min.css";
 import NextNprogress from "nextjs-progressbar";
 import { useEffect } from "react";
 import { QueryClientProvider, QueryClient } from "react-query";

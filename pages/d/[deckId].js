@@ -8,7 +8,7 @@ import { decode } from "blurhash";
 import UPNG from "upng-js";
 import Head from "next/head";
 import { encode } from "base64-arraybuffer-es6";
-import SwiperCore, { Mousewheel, Pagination } from "swiper";
+import SwiperCore, { Mousewheel, Pagination, Navigation } from "swiper";
 import { useForm } from "react-hook-form";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
@@ -123,7 +123,7 @@ export default function Search({ deckId, blurhashImages, metaData }) {
       },
     });
   }, [deckQuery.isLoading]);
-  SwiperCore.use([Mousewheel, Pagination]);
+  SwiperCore.use([Mousewheel, Pagination, Navigation]);
   const setLike = (active) => {
     if (state.loggedIn) {
       likeDeck.mutate(
@@ -168,215 +168,234 @@ export default function Search({ deckId, blurhashImages, metaData }) {
         <meta property="og:image" content={`${metaData.thumb}`} />
       </Head>
       <Navbar>
-        {deckQuery.isLoading ? (
-          <div className="flex h-screen">
-            <div className="m-auto  items-center flex flex-col">
-              <SpinnerBasic className="animate-spin -ml-1 mr-3 h-16 w-16 text-indigo-600" />
-            </div>
-          </div>
-        ) : !deckQuery.isLoading && !deckQuery.error ? (
-          <>
-            <div className="flex flex-row m-3 justify-start">
-              <BackButton
-                className=" h-8 text-gray-200 self-center w-auto"
-                onClick={goBackfromSearch}
-              />
-              <div className="w-11/12 text-xl text-gray-200 self-center font-inter font-medium">
-                <div className="flex align-text-top">
-                  {deckQuery.data.data.deck?.deck_title.slice(0, 27)}
-                  {deckQuery.data.data.deck?.deck_title.length > 30
-                    ? "..."
-                    : ""}
-                </div>
+        <div className="flex justify-center ">
+          {deckQuery.isLoading ? (
+            <div className="flex h-screen">
+              <div className="m-auto  items-center flex flex-col">
+                <SpinnerBasic className="animate-spin -ml-1 mr-3 h-16 w-16 text-indigo-600" />
               </div>
             </div>
-            <div className="w-full">
-              <Swiper
-                zoom={{ maxRatio: 5 }}
-                spaceBetween={1}
-                slidesPerView={1}
-                mousewheel
-                pagination={{ dynamicBullets: true }}
-              >
-                {deckQuery.data.data.deck?.card_order.map((item, index) => (
-                  <SwiperSlide key={`${index.length}-${item}`}>
-                    <Image
-                      placeholder="blur"
-                      blurDataURL={blurhashImages[index]}
-                      src={item}
-                      alt={index}
-                      height="1350"
-                      width="1080"
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
-            <div className="items-stretch m-3 px-2 ">
-              <div className="flex justify-around">
-                <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
-                  {deckQuery.data.data.userLiked ? (
-                    <LikeFill
-                      className="h-8 w-8 text-red-600"
-                      onClick={() => setLike(false)}
-                    />
-                  ) : (
-                    <LikeOutline
-                      className="h-8 w-8 text-red-600"
-                      onClick={() => setLike(true)}
-                    />
-                  )}
-                  {abbreviateNumber(+deckQuery.data.data.likes)}
-                </div>
-                <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
-                  <Eye className="h-8 w-8 text-gray-300" />
-                  {abbreviateNumber(deckQuery.data.data.views)}
-                </div>
-                <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
-                  <Share className="h-8 w-8 text-gray-300" />
-                  share
-                </div>
-              </div>
-            </div>
-            <div className="p-3 flex w-full justify-between">
-              <div className="flex">
-                {deckQuery.data.data.deck?.profile_pic ? (
-                  <img
-                    src={deckQuery.data.data?.deck.profile_pic}
-                    alt="profile-pic"
-                    className="rounded-full h-12 w-12 my-1"
+          ) : !deckQuery.isLoading && !deckQuery.error ? (
+            <div className="lg:flex w-full lg:w-8/12">
+              <div className="lg:w-6/12 lg:h-3/6">
+                <div className="flex flex-row m-3 justify-start">
+                  <BackButton
+                    className=" h-8 text-gray-200 self-center w-auto"
+                    onClick={goBackfromSearch}
                   />
-                ) : (
-                  <img
-                    src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
-                    alt="profile-pic"
-                    className="rounded-full h-12 w-12 my-1"
-                  />
-                )}
-                <div className="mx-2">
-                  <Link href={`/${deckQuery.data.data.deck?.username}`}>
-                    <button type="button">
-                      <p className="text-gray-50 text-left text-md m-1">
-                        {deckQuery.data.data.deck?.display_name}
-                      </p>
-                      <p className="text-gray-300 text-xs m-1">
-                        {`PUBLISHED ${createdAt.toUpperCase()}`}
-                      </p>
-                    </button>
-                  </Link>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setShowAll((showAllState) => !showAllState)}
-              >
-                <BackButton
-                  className={`h-10 w-10  transform ${
-                    showAll ? "rotate-90" : "-rotate-90"
-                  } text-gray-400 `}
-                />
-              </button>
-            </div>
-            {showAll ? (
-              <div className="text-gray-300 self-center font-light font-inter text-sm p-3.5 ">
-                <p className="font-bold mb-4">
-                  {deckQuery.data.data.deck?.deck_title}
-                </p>
-                {deckQuery.data.data.deck?.deck_description}
-                {state.user.userId === +deckQuery.data.data.deck.user_id ? (
-                  <div className="flex justify-evenly mt-7">
-                    <div className="flex items-center justify-left">
-                      <button type="button" onClick={() => deleteDeckStart()}>
-                        <TrashCan className="h-8 w-8 text-gray-400 hover:text-gray-300" />
-                      </button>
-                      <p>Delete deck</p>
+                  <div className="w-11/12 text-xl text-gray-200 self-center font-inter font-medium">
+                    <div className="flex align-text-top">
+                      {deckQuery.data.data.deck?.deck_title.slice(0, 27)}
+                      {deckQuery.data.data.deck?.deck_title.length > 30
+                        ? "..."
+                        : ""}
                     </div>
+                  </div>
+                </div>
+                <div className="w-full">
+                  <Swiper
+                    zoom={{ maxRatio: 5 }}
+                    spaceBetween={1}
+                    slidesPerView={1}
+                    navigation
+                    mousewheel
+                    pagination={{ dynamicBullets: true }}
+                  >
+                    {deckQuery.data.data.deck?.card_order.map((item, index) => (
+                      <SwiperSlide key={`${index.length}-${item}`}>
+                        <Image
+                          placeholder="blur"
+                          blurDataURL={blurhashImages[index]}
+                          src={item}
+                          alt={index}
+                          height="1350"
+                          width="1080"
+                        />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                </div>
+                <div className="items-stretch m-3 px-2 ">
+                  <div className="flex justify-around">
+                    <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
+                      {deckQuery.data.data.userLiked ? (
+                        <LikeFill
+                          className="h-8 w-8 text-red-600"
+                          onClick={() => setLike(false)}
+                        />
+                      ) : (
+                        <LikeOutline
+                          className="h-8 w-8 text-red-600"
+                          onClick={() => setLike(true)}
+                        />
+                      )}
+                      {abbreviateNumber(+deckQuery.data.data.likes)}
+                    </div>
+                    <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
+                      <Eye className="h-8 w-8 text-gray-300" />
+                      {abbreviateNumber(deckQuery.data.data.views)}
+                    </div>
+                    <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
+                      <Share className="h-8 w-8 text-gray-300" />
+                      share
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* end card and three buttons */}
+              <div className="lg:w-6/12">
+                <div className="p-3 flex w-full justify-between">
+                  <div className="flex">
+                    {deckQuery.data.data.deck?.profile_pic ? (
+                      <img
+                        src={deckQuery.data.data?.deck.profile_pic}
+                        alt="profile-pic"
+                        className="rounded-full h-12 w-12 my-1"
+                      />
+                    ) : (
+                      <img
+                        src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
+                        alt="profile-pic"
+                        className="rounded-full h-12 w-12 my-1"
+                      />
+                    )}
+                    <div className="mx-2">
+                      <Link href={`/${deckQuery.data.data.deck?.username}`}>
+                        <button type="button">
+                          <p className="text-gray-50 text-left text-md m-1">
+                            {deckQuery.data.data.deck?.display_name}
+                          </p>
+                          <p className="text-gray-300 text-xs m-1">
+                            {`PUBLISHED ${createdAt.toUpperCase()}`}
+                          </p>
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowAll((showAllState) => !showAllState)}
+                  >
+                    <BackButton
+                      className={`h-10 w-10  transform ${
+                        showAll ? "rotate-90" : "-rotate-90"
+                      } text-gray-400 `}
+                    />
+                  </button>
+                </div>
+                {showAll ? (
+                  <div className="text-gray-300 self-center font-light font-inter text-sm p-3.5 ">
+                    <p className="font-bold mb-4">
+                      {deckQuery.data.data.deck?.deck_title}
+                    </p>
+                    {deckQuery.data.data.deck?.deck_description}
+                    {state.user.userId === +deckQuery.data.data.deck.user_id ? (
+                      <div className="flex justify-evenly mt-7">
+                        <div className="flex items-center justify-left">
+                          <button
+                            type="button"
+                            onClick={() => deleteDeckStart()}
+                          >
+                            <TrashCan className="h-8 w-8 text-gray-400 hover:text-gray-300" />
+                          </button>
+                          <p>Delete deck</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 ) : (
                   <></>
                 )}
+                {state.loggedIn && !deckQuery.error ? (
+                  <form onSubmit={handleSubmit(() => submitComment())}>
+                    <div className=" text-red-500  p-2 rounded-md text-sm text-left w-full">
+                      {errors.comment?.type === "required" &&
+                        "Comment text is required"}
+                      {errors.comment?.type === "minLength" &&
+                        "Comment has to be more than one character long"}
+                      {errors.comment?.type === "maxLength" &&
+                        "Comment has to be less than 500 characters"}
+                    </div>
+                    <div className="p-3 flex flex-col justify-end">
+                      <textarea
+                        value={comment}
+                        {...register("comment", {
+                          required: true,
+                          minLength: 1,
+                          maxLength: 500,
+                        })}
+                        onChange={(e) => setComment(e.target.value)}
+                        placeholder="Type a comment"
+                        className="bg-gray-600  h-full resize-y   border-2 border-transparent rounded-xl w-full py-2 px-4 text-gray-100 font-inter leading-tight focus:outline-none  focus:border-blue-600"
+                      />
+                      <p className="mb-4 text-right text-gray-500">
+                        {comment.length}/500
+                      </p>
+                      <button
+                        type="submit"
+                        className="bg-indigo-700 focus:outline-none  p-1.5 px-8 rounded-lg text-white text-sm font-inter font-bold hover:bg-indigo-500"
+                      >
+                        Comment
+                      </button>
+                    </div>
+                  </form>
+                ) : !deckQuery.error ? (
+                  <div className="flex justify-center">
+                    <button
+                      type="submit"
+                      onClick={() => router.push("/login")}
+                      className="bg-indigo-700 focus:outline-none w-8/12  self-center p-1.5 px-8 rounded-lg text-white text-sm font-inter font-bold hover:bg-indigo-500"
+                    >
+                      Login to comment
+                    </button>
+                  </div>
+                ) : (
+                  <></>
+                )}
+                <div>
+                  {!commentQuery.isLoading && !deckQuery.error ? (
+                    commentQuery.data.pages.map((page) => (
+                      <React.Fragment key={page.nextId}>
+                        {page.data.data.map((singleComment) => (
+                          <CommentDisplay
+                            comment={singleComment}
+                            key={comment.id}
+                          />
+                        ))}
+                      </React.Fragment>
+                    ))
+                  ) : (
+                    <></>
+                  )}
+                </div>
+                <InView
+                  as="div"
+                  onChange={(inView) => {
+                    if (inView) {
+                      // Check if data has all the decks
+                      if (
+                        commentQuery.data?.pages[
+                          commentQuery.data.pages.length - 1
+                        ].data.nextPage
+                      ) {
+                        pageNumber.current += 1;
+                        commentQuery.fetchNextPage({
+                          pageParam: pageNumber.current,
+                        });
+                      }
+                    }
+                  }}
+                />
               </div>
-            ) : (
-              <></>
-            )}
-          </>
-        ) : (
-          // Error page
-          <ErrorPage />
-        )}
-        {state.loggedIn && !deckQuery.error ? (
-          <form onSubmit={handleSubmit(() => submitComment())}>
-            <div className=" text-red-500  p-2 rounded-md text-sm text-left w-full">
-              {errors.comment?.type === "required" &&
-                "Comment text is required"}
-              {errors.comment?.type === "minLength" &&
-                "Comment has to be more than one character long"}
-              {errors.comment?.type === "maxLength" &&
-                "Comment has to be less than 500 characters"}
             </div>
-            <div className="p-3 flex flex-col justify-end">
-              <textarea
-                value={comment}
-                {...register("comment", {
-                  required: true,
-                  minLength: 1,
-                  maxLength: 500,
-                })}
-                onChange={(e) => setComment(e.target.value)}
-                placeholder="Type a comment"
-                className="bg-gray-600  h-full resize-y   border-2 border-transparent rounded-xl w-full py-2 px-4 text-gray-100 font-inter leading-tight focus:outline-none  focus:border-blue-600"
-              />
-              <p className="mb-4 text-right text-gray-500">
-                {comment.length}/500
-              </p>
-              <button
-                type="submit"
-                className="bg-indigo-700 focus:outline-none  p-1.5 px-8 rounded-lg text-white text-sm font-inter font-bold hover:bg-indigo-500"
-              >
-                Comment
-              </button>
-            </div>
-          </form>
-        ) : !deckQuery.error ? (
-          <div className="flex justify-center">
-            <button
-              type="submit"
-              onClick={() => router.push("/login")}
-              className="bg-indigo-700 focus:outline-none w-8/12  self-center p-1.5 px-8 rounded-lg text-white text-sm font-inter font-bold hover:bg-indigo-500"
-            >
-              Login to comment
-            </button>
-          </div>
-        ) : (
-          <></>
-        )}
-        {!commentQuery.isLoading && !deckQuery.error ? (
-          commentQuery.data.pages.map((page) => (
-            <React.Fragment key={page.nextId}>
-              {page.data.data.map((singleComment) => (
-                <CommentDisplay comment={singleComment} key={comment.id} />
-              ))}
-            </React.Fragment>
-          ))
-        ) : (
-          <></>
-        )}
-        <InView
-          as="div"
-          onChange={(inView) => {
-            if (inView) {
-              // Check if data has all the decks
-              if (
-                commentQuery.data?.pages[commentQuery.data.pages.length - 1]
-                  .data.nextPage
-              ) {
-                pageNumber.current += 1;
-                commentQuery.fetchNextPage({ pageParam: pageNumber.current });
-              }
-            }
-          }}
-        />
+          ) : (
+            // Error page
+            <ErrorPage />
+          )}
+        </div>
       </Navbar>
     </>
   );
