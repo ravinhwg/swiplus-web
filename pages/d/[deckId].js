@@ -43,7 +43,7 @@ import CommentDisplay from "../../components/molecules/CommentDisplay";
 import abbreviateNumber from "../../components/utils/numberFormatter";
 import ErrorPage from "../../components/molecules/ErrorPage";
 import * as ga from "../../lib/ga";
-import { getUserDecks } from "../../apiPlugs/user";
+// import { getUserDecks } from "../../apiPlugs/user";
 
 export default function Search({ deckId, blurhashImages, metaData }) {
   const router = useRouter();
@@ -257,22 +257,22 @@ export default function Search({ deckId, blurhashImages, metaData }) {
                 {/* end card and three buttons */}
                 <div className="lg:w-6/12 lg:mt-7 lg:h-3/6">
                   <div className="p-3 flex w-full justify-between">
-                    <div className="flex">
-                      {deckQuery.data.data.deck?.profile_pic ? (
-                        <img
-                          src={deckQuery.data.data?.deck.profile_pic}
-                          alt="profile-pic"
-                          className="rounded-full h-12 w-12 my-1"
-                        />
-                      ) : (
-                        <img
-                          src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
-                          alt="profile-pic"
-                          className="rounded-full h-12 w-12 my-1"
-                        />
-                      )}
-                      <div className="mx-2">
-                        <Link href={`/${deckQuery.data.data.deck?.username}`}>
+                    <Link href={`/${deckQuery.data.data.deck?.username}`}>
+                      <div className="flex">
+                        {deckQuery.data.data.deck?.profile_pic ? (
+                          <img
+                            src={deckQuery.data.data?.deck.profile_pic}
+                            alt="profile-pic"
+                            className="rounded-full h-12 w-12 my-1"
+                          />
+                        ) : (
+                          <img
+                            src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
+                            alt="profile-pic"
+                            className="rounded-full h-12 w-12 my-1"
+                          />
+                        )}
+                        <div className="mx-2">
                           <button type="button">
                             <p className="text-gray-50 text-left text-md m-1">
                               {deckQuery.data.data.deck?.display_name}
@@ -281,9 +281,9 @@ export default function Search({ deckId, blurhashImages, metaData }) {
                               {`PUBLISHED ${createdAt.toUpperCase()}`}
                             </p>
                           </button>
-                        </Link>
+                        </div>
                       </div>
-                    </div>
+                    </Link>
 
                     <button
                       type="button"
