@@ -8,7 +8,7 @@ import { SpinnerBasic } from "../components/atoms/Icons";
 
 export default function GoogleCallback(props) {
   const router = useRouter();
-  const [dispatch] = useContext(AppUiContext);
+  const [, dispatch] = useContext(AppUiContext);
   const mutation = useMutation(googleLogin);
   let idToken;
   if (typeof window !== "undefined") {
