@@ -33,7 +33,7 @@ export default function ProfilePage({ children, showTopBarMobile }) {
       console.log("New access token set");
     },
     onError: async () => {
-      router.replace("/logout");
+      router.reload(window.location.pathname);
     },
   });
 
