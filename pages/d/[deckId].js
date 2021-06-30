@@ -255,7 +255,7 @@ export default function Search({ deckId, blurhashImages, metaData }) {
                   </div>
                 </div>
                 {/* end card and three buttons */}
-                <div className="lg:w-6/12 lg:mt-7 lg:h-3/6">
+                <div className="lg:w-6/12 lg:mt-7 lg:h-3/6 lg:max-w-md">
                   <div className="p-3 flex w-full justify-between">
                     <Link href={`/${deckQuery.data.data.deck?.username}`}>
                       <div className="flex">

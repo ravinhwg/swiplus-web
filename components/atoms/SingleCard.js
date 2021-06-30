@@ -16,7 +16,7 @@ export default function SingleCardThumb({ deck }) {
       )}
       {deck ? (
         <Link href={`/d/${deck.id}`}>
-          <div className="absolute inset-0 flex p-2 justify-end flex-col bg-gradient-to-t from-indigo-800 via-transparent text-white font-inter text-left font-thin">
+          <div className="absolute inset-0 flex p-2 justify-end flex-col bg-gradient-to-t from-indigo-800 via-transparent text-white font-inter text-left font-medium">
             {`${deck.deck_title.slice(0, 40)}${
               deck.deck_title.length > 40 ? "..." : ""
             }`}

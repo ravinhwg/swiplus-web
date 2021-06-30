@@ -14,6 +14,10 @@ class MyDocument extends Document {
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_TRACKING_ID}`}
           />
+          <script
+            src="https://www.google.com/recaptcha/api.js?render=6Ldur2YbAAAAADDMSyYetW1GnPI78LDEApXtbewM"
+            defer
+          />
           <meta name="theme-color" content="#111827" />
           <script
             dangerouslySetInnerHTML={{

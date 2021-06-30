@@ -9,7 +9,7 @@ export default function ProfileCard({ user }) {
     >
       {user ? (
         <Link href={`/${user.username}`}>
-          <div>
+          <button type="button" className="focus:outline-none">
             {user.profile_pic === null ? (
               <img
                 src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
@@ -23,16 +23,16 @@ export default function ProfileCard({ user }) {
                 className="rounded-full h-12 w-12 my-1"
               />
             )}
-            <p className=" text-gray-50 font-inter font-bold text-2xl">
+            <p className=" text-gray-50 font-inter font-bold text-2xl text-left">
               {user.display_name}
             </p>
-            <p className=" text-gray-200 font-inter font-bold text-md">
+            <p className=" text-gray-200 font-inter font-bold text-md text-left">
               @{user.username}
             </p>
-            <p className=" text-gray-500 font-inter text-md">
+            <p className=" text-gray-500 font-inter text-md text-left">
               {user.bio?.substring(0, 60)}
             </p>
-          </div>
+          </button>
         </Link>
       ) : (
         <></>

@@ -10,7 +10,7 @@ import { passwordResetInitiate } from "../apiPlugs/Auth";
 import Icon from "../components/atoms/SwiplusLogo";
 
 export default function Home() {
-  const [state, dispatch] = useContext(AppUiContext);
+  const [state] = useContext(AppUiContext);
   const [email, setEmail] = useState("");
   const router = useRouter();
   const [showServerLoginError, setShowServerLoginError] = useState(false);
@@ -28,10 +28,10 @@ export default function Home() {
     formState: { errors },
   } = useForm();
   const mutation = useMutation(passwordResetInitiate, {
-    onError: async (data) => {
+    onError: async () => {
       setShowServerLoginError(true);
     },
-    onSuccess: async ({ data }) => {
+    onSuccess: async () => {
       setConfirmation(true);
     },
   });
@@ -55,8 +55,20 @@ export default function Home() {
             <form
               className="max-w-xl"
               onSubmit={handleSubmit(() => {
-                mutation.mutate({
-                  email,
+                window.grecaptcha.ready(() => {
+                  window.grecaptcha
+                    .execute("6Ldur2YbAAAAADDMSyYetW1GnPI78LDEApXtbewM", {
+                      action: "submit",
+                    })
+                    .then((token) => {
+                      mutation.mutate({
+                        email,
+                        recaptcha: token,
+                      });
+                    })
+                    .catch((e) => {
+                      throw new Error(`Recaptcha error: ${e}`);
+                    });
                 });
               })}
             >
@@ -80,6 +92,23 @@ export default function Home() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email"
                 />
+                <div className="text-gray-500">
+                  This site is protected by reCAPTCHA and the Google{" "}
+                  <a
+                    href="https://policies.google.com/privacy"
+                    className="text-indigo-500"
+                  >
+                    Privacy Policy
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="https://policies.google.com/terms"
+                    className="text-indigo-500"
+                  >
+                    Terms of Service
+                  </a>{" "}
+                  apply.
+                </div>
                 <button
                   type="submit"
                   className="bg-indigo-700 text-white text-sm font-inter m-3 font-bold  hover:bg-indigo-500 flex justify-center items-center border-2 mb-5 border-transparent rounded-full w-11/12 h-12 py-2 px-4 leading-tight focus:outline-none  focus:border-blue-600"
