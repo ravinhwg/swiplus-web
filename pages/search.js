@@ -6,7 +6,6 @@ import { InView } from "react-intersection-observer";
 import Navbar from "../components/molecules/NavBar";
 import SearchBar from "../components/atoms/SearchBar";
 import SingleCard from "../components/atoms/SingleCard";
-import { Mobile } from "../components/utils/Breakpoints";
 import ProfileCard from "../components/atoms/ProfileCard";
 import getSearchResults from "../apiPlugs/search";
 import { AppUiContext } from "../Context";
