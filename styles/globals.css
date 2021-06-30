@@ -17,3 +17,6 @@
   background-color: #4338ca00 !important;
   color: #4338ca !important;
 }
+.grecaptcha-badge {
+  visibility: hidden;
+}

@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { AppUiContext } from "../Context";
 import { registerUser } from "../apiPlugs/Auth";
 import Icon from "../components/atoms/SwiplusLogo";
-import { GoogleLogo } from "../components/atoms/Icons";
+import { GoogleLogo, SpinnerBasic } from "../components/atoms/Icons";
 
 export default function Home() {
   const [state] = useContext(AppUiContext);
@@ -16,10 +16,14 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [serverError, setServerError] = useState(false);
   const [confirmPassword, setConfirmpassword] = useState("");
   const registerUserMutation = useMutation(registerUser, {
     onSuccess: async () => {
       setRegisterSuccess(true);
+    },
+    onError: async () => {
+      setServerError(true);
     },
   });
   const router = useRouter();
@@ -36,10 +40,23 @@ export default function Home() {
     formState: { errors },
   } = useForm();
   const createAccountInitiate = () => {
-    registerUserMutation.mutate({
-      email,
-      password,
-      displayName: name,
+    window.grecaptcha.ready(() => {
+      window.grecaptcha
+        .execute("6Ldur2YbAAAAADDMSyYetW1GnPI78LDEApXtbewM", {
+          action: "submit",
+        })
+        .then((token) => {
+          // Add your logic to submit to your backend server here.
+          registerUserMutation.mutate({
+            email,
+            password,
+            recaptcha: token,
+            displayName: name,
+          });
+        })
+        .catch((e) => {
+          throw new Error(`Recaptcha error: ${e}`);
+        });
     });
   };
   return (
@@ -89,6 +106,10 @@ export default function Home() {
                 onSubmit={handleSubmit(() => createAccountInitiate())}
               >
                 <div className="flex items-center mt-10 flex-col w-xl">
+                  <div className=" text-red-500  p-2 rounded-md text-sm text-left w-full">
+                    {serverError &&
+                      "Whoops! looks like the email you entered is already in use. Please use a different email address to continue."}
+                  </div>
                   <input
                     className="bg-gray-600  border-2 border-transparent rounded-xl w-full h-14 py-2 px-4 text-gray-100 font-inter leading-tight m-2 focus:outline-none  focus:border-blue-600"
                     id="inline-full-name"
@@ -139,7 +160,7 @@ export default function Home() {
                       "Password has to be less than 70 characters"}
                   </div>
                   <input
-                    className="bg-gray-600 border-2 border-transparent rounded-xl w-full h-14 py-2 px-4  m-2 text-gray-100 font-inter leading-tight focus:outline-none  focus:border-blue-600"
+                    className="bg-gray-600 border-2 border-transparent rounded-xl w-full h-14 py-2 px-4  text-gray-100 font-inter leading-tight focus:outline-none  focus:border-blue-600"
                     id="inline-password-confirm"
                     value={confirmPassword}
                     {...register("confirmpassword", {
@@ -154,11 +175,33 @@ export default function Home() {
                     {errors.confirmpassword?.type === "validate" &&
                       "Passwords does not match"}
                   </div>
+                  <div className="text-gray-500">
+                    This site is protected by reCAPTCHA and the Google{" "}
+                    <a
+                      href="https://policies.google.com/privacy"
+                      className="text-indigo-500"
+                    >
+                      Privacy Policy
+                    </a>{" "}
+                    and{" "}
+                    <a
+                      href="https://policies.google.com/terms"
+                      className="text-indigo-500"
+                    >
+                      Terms of Service
+                    </a>{" "}
+                    apply.
+                  </div>
                   <button
                     type="submit"
+                    disabled={registerUserMutation.isLoading}
                     className="bg-indigo-700 text-white m-2 text-sm font-inter font-bold  hover:bg-indigo-500 flex justify-center items-center border-2 mb-5 border-transparent rounded-full w-11/12 h-12 py-2 px-4 leading-tight focus:outline-none  focus:border-blue-600"
                   >
-                    Register
+                    {registerUserMutation.isLoading ? (
+                      <SpinnerBasic className="animate-spin -ml-1 mr-3 h-5 w-5 text-indigo-600" />
+                    ) : (
+                      "Register"
+                    )}
                   </button>
                   <Link href="https://accounts.google.com/o/oauth2/v2/auth?client_id=310683804890-fp1donhti2695qfni1qjcr6e5eihelvc.apps.googleusercontent.com&redirect_uri=http://localhost:3000/googlecallback&response_type=id_token&scope=email%20profile&nonce=2234">
                     <button
@@ -171,7 +214,9 @@ export default function Home() {
                   </Link>
                   <div className="flex flex-row">
                     <Link href="/login">
-                      <p className=" ml-2 text-indigo-400">Log in instead</p>
+                      <button className=" ml-2 text-indigo-400" type="button">
+                        Log in instead
+                      </button>
                     </Link>
                   </div>
                 </div>

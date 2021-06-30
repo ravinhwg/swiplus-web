@@ -73,7 +73,7 @@ async function changeUsername({ active, username, token }) {
     throw new Error(e);
   }
 }
-async function registerUser({ email, password, displayName }) {
+async function registerUser({ email, password, displayName, recaptcha }) {
   try {
     const response = await axios.post(
       `${API_URL}/auth/register`,
@@ -82,6 +82,7 @@ async function registerUser({ email, password, displayName }) {
         password,
         name: displayName,
         username: email.split("@")[0] + Math.round(Math.random() * 100),
+        recaptcha,
       },
       { withCredentials: true }
     );
@@ -90,10 +91,11 @@ async function registerUser({ email, password, displayName }) {
     throw new Error(e);
   }
 }
-async function passwordResetInitiate({ email }) {
+async function passwordResetInitiate({ email, recaptcha }) {
   try {
     const response = await axios.post(`${API_URL}/auth/resetpassword`, {
       email,
+      recaptcha,
     });
     return response;
   } catch (e) {
