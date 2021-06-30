@@ -115,10 +115,19 @@ async function passwordResetFinish({ password, token }) {
     throw new Error(e);
   }
 }
+async function confirmAccount({ token }) {
+  try {
+    const response = await axios.get(`${API_URL}/user/activate/${token}`);
+    return response;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
 export {
   login,
   logout,
   googleLogin,
+  confirmAccount,
   passwordResetFinish,
   refreshToken,
   changeUsername,
