@@ -198,7 +198,7 @@ export default function Home() {
                     className="bg-indigo-700 text-white m-2 text-sm font-inter font-bold  hover:bg-indigo-500 flex justify-center items-center border-2 mb-5 border-transparent rounded-full w-11/12 h-12 py-2 px-4 leading-tight focus:outline-none  focus:border-blue-600"
                   >
                     {registerUserMutation.isLoading ? (
-                      <SpinnerBasic className="animate-spin -ml-1 mr-3 h-5 w-5 text-indigo-600" />
+                      <SpinnerBasic className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-200" />
                     ) : (
                       "Register"
                     )}
