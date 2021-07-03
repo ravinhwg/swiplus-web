@@ -1,7 +1,10 @@
+/* eslint-disable no-nested-ternary */
 import React, { useContext, useRef } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import { useInfiniteQuery } from "react-query";
 import { InView } from "react-intersection-observer";
+import Button from "../components/atoms/Button";
 import Navbar from "../components/molecules/NavBar";
 import { AppUiContext } from "../Context";
 import { getChronologicalFeed, getExplorerFeed } from "../apiPlugs/deck";
@@ -67,6 +70,29 @@ export default function Home() {
                 ))
               )}
             </div>
+            {!query.isLoading && query.data.pages[0].data.data.length === 0 ? (
+              // Show list empty component if there is no data to  show to the user.
+              <div className=" text-gray-100 flex flex-col justify-center h-96   items-center">
+                <div className="text-6xl font-inter">👋</div>
+                <div className="text-4xl font-inter max-w-xl text-center m-2">
+                  Hello there! Welcome to Swiplus
+                </div>
+                <div className="text-xl font-normal max-w-lg text-center m-3">
+                  Looks like you don't follow anybody yet. You can go to the
+                  explore feed and find new decks and people there!
+                </div>
+                <div className="text-xl font-normal max-w-lg text-center m-3">
+                  <Link href="/search">
+                    {/* // eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                    <a>
+                      <Button text="Explore Feed" />
+                    </a>
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
             {!query.isLoading && !query.isError ? (
               <InView
                 as="div"
