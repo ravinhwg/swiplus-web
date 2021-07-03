@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { useContext, useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -171,10 +172,33 @@ export default function Search() {
                       <></>
                     )}
                   </div>
+                  {!query.isLoading &&
+                  router.query.q &&
+                  query.data.pages[0].data.users.users.length === 0 ? (
+                    <div className=" text-gray-100 flex justify-center  items-center m-3 w-full">
+                      <div className="text-3xl font-inter">🔍</div>
+                      <div className="text-2xl font-inter max-w-xl text-center m-2">
+                        No users that match "{router.query.q}"
+                      </div>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
                 <div className="h-4/6">
                   <div className="text-xl m-3 font-bold text-white">Decks</div>
-
+                  {!query.isLoading &&
+                  router.query.q &&
+                  query.data.pages[0].data.decks.decks.length === 0 ? (
+                    <div className=" text-gray-100 flex justify-center  items-center m-3">
+                      <div className="text-3xl font-inter">🔍</div>
+                      <div className="text-2xl font-inter max-w-xl text-center m-2">
+                        No decks that match "{router.query.q}"
+                      </div>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                   <div className="grid row-auto grid-cols-2 sm:grid-cols-3 md:grid-cols-3 md:mx-3 lg:grid-cols-4 xl:grid-cols-4 gap-1 sm:my-8">
                     {query.isLoading ? (
                       <>

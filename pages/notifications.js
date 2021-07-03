@@ -48,6 +48,19 @@ export default function Home() {
                 ))
               )}
             </div>
+            {!query.isLoading && query.data.pages[0].data.data.length === 0 ? (
+              <div className=" text-gray-100 flex flex-col justify-center h-96   items-center">
+                <div className="text-6xl font-inter">🔔</div>
+                <div className="text-4xl font-inter max-w-xl text-center m-2">
+                  Looks like you don't have any notifications yet.
+                </div>
+                <div className="text-xl font-normal max-w-lg text-center m-3">
+                  You will recive new notifications here
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
             {query.isLoading && !query.error ? (
               <></>
             ) : (
