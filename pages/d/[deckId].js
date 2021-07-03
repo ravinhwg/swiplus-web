@@ -389,7 +389,7 @@ export default function DeckViewer({ deckId, blurhashImages, metaData }) {
                     ) : (
                       <></>
                     )}
-                    <div className="lg:overflow-scroll  lg:h-96 no-scrollbar">
+                    <div className="lg:overflow-y-scroll  lg:h-96">
                       {!commentQuery.isLoading && !deckQuery.error ? (
                         commentQuery.data.pages.map((page) => (
                           <React.Fragment key={page.nextId}>
