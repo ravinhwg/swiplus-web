@@ -44,6 +44,7 @@ import abbreviateNumber from "../../components/utils/numberFormatter";
 import ErrorPage from "../../components/molecules/ErrorPage";
 import * as ga from "../../lib/ga";
 import ReportDialogBox from "../../components/molecules/ReportDialog";
+import DialogBox from "../../components/atoms/DialogBox";
 // import { getUserDecks } from "../../apiPlugs/user";
 
 export default function DeckViewer({ deckId, blurhashImages, metaData }) {
@@ -51,6 +52,7 @@ export default function DeckViewer({ deckId, blurhashImages, metaData }) {
   const pageNumber = useRef(0);
   const [showAll, setShowAll] = useState(false);
   const [showReportDialog, setShowReportDialog] = useState(false);
+  const [showDeleteDialogBox, setShowDeleteDialogBox] = useState(false);
   const queryClient = useQueryClient();
   const [comment, setComment] = useState("");
   const [createdAt, setCreatedAt] = useState("");
@@ -316,7 +318,7 @@ export default function DeckViewer({ deckId, blurhashImages, metaData }) {
                             <div className="flex items-center justify-left ">
                               <button
                                 type="button"
-                                onClick={() => deleteDeckStart()}
+                                onClick={() => setShowDeleteDialogBox(true)}
                                 className="flex items-center font-regular"
                               >
                                 <TrashCan className="h-8 w-8 text-gray-400 hover:text-gray-300 m-2" />
@@ -463,6 +465,20 @@ export default function DeckViewer({ deckId, blurhashImages, metaData }) {
                   type="deck"
                   id={deckId}
                   dialogChanger={changeDialogState}
+                />
+              ) : (
+                <></>
+              )}
+              {showDeleteDialogBox ? (
+                <DialogBox
+                  submitText={
+                    deleteDeckMutation.isLoading ? "Please wait..." : "Delete"
+                  }
+                  dialogTitle="Delete this deck?"
+                  dialogDescription={`You cannot undo this operation.
+               If you want to temporaliy unpublish this deck go to profile > Manage and then Unpublish this deck.`}
+                  dialogSubmit={deleteDeckStart}
+                  dialogCloser={() => setShowDeleteDialogBox(false)}
                 />
               ) : (
                 <></>
