@@ -173,6 +173,7 @@ export default function Search() {
                     )}
                   </div>
                   {!query.isLoading &&
+                  router.query.q &&
                   query.data.pages[0].data.users.users.length === 0 ? (
                     <div className=" text-gray-100 flex justify-center  items-center m-3 w-full">
                       <div className="text-3xl font-inter">🔍</div>
@@ -187,6 +188,7 @@ export default function Search() {
                 <div className="h-4/6">
                   <div className="text-xl m-3 font-bold text-white">Decks</div>
                   {!query.isLoading &&
+                  router.query.q &&
                   query.data.pages[0].data.decks.decks.length === 0 ? (
                     <div className=" text-gray-100 flex justify-center  items-center m-3">
                       <div className="text-3xl font-inter">🔍</div>

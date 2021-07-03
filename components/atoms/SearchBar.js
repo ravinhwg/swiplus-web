@@ -1,23 +1,28 @@
 import { useRouter } from "next/router";
+import { useContext } from "react";
+import { AppUiContext } from "../../Context";
 import * as ga from "../../lib/ga";
 
 export default function SrarchBar({ q }) {
   const router = useRouter();
+  const [state] = useContext(AppUiContext);
 
   return (
     <div className=" flex self-center focus:outline-none">
       <input
         type="text"
-        onFocus={() =>
-          router.replace(
-            {
-              pathname: "/search",
-              query: {},
-            },
-            undefined,
-            { shallow: true }
-          )
-        }
+        onFocus={() => {
+          if (state.loggedIn) {
+            router.replace(
+              {
+                pathname: "/search",
+                query: {},
+              },
+              undefined,
+              { shallow: true }
+            );
+          }
+        }}
         onChange={(e) => {
           if (!e.target.value) {
             return router.replace(
