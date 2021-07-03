@@ -26,14 +26,15 @@ export default function Home() {
       <Navbar>
         <div className="sm:w-full sm:flex sm:justify-center ">
           <div className="lg:w-6/12 md:w-10/12 lg:bg-gray-800">
-            <div className="flex m-2">
+            <div className="flex fixed bg-gray-900 w-full p-2 -m-1">
               <button onClick={() => router.back()} type="button">
                 <BackButton className="text-gray-100  font-inter font-bold h-10 w-10" />
               </button>
-              <h3 className="text-gray-100 text-xl font-inter font-bold self-center">
+              <h3 className="text-gray-100 text-xl font-inter font-bold self-center ">
                 Notifications
               </h3>
             </div>
+            <div className="flex bg-gray-900 h-11 w-full p-2" />
             <div className="p-1">
               {query.isLoading && !query.error ? (
                 <></>
