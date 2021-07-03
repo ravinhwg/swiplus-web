@@ -73,7 +73,7 @@ export default function DisplayNotif({ notifData }) {
               : "notfound"
           }`}
         >
-          <div className="text-left">
+          <div className="text-left max-w-md">
             {`${notifData.display_name} ${verb}`}
             <div className="text-gray-500">
               {notifData.action_data?.comment_text || " "}
