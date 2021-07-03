@@ -141,7 +141,7 @@ export default function Home() {
       </Head>
       <Navbar>
         <div className="flex justify-center ">
-          <div className="flex md:w-5/12 flex-col">
+          <div className="flex md:w-5/12 flex-col w-full">
             <div className="flex m-2">
               <button onClick={() => router.back()} type="button">
                 <BackButton className="text-gray-100  font-inter font-bold h-10 w-10" />

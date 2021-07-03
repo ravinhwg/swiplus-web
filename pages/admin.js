@@ -32,7 +32,7 @@ export default function Home() {
       </Head>
       <Navbar>
         <div className="flex justify-center ">
-          <div className="flex md:w-5/12 flex-col">
+          <div className="flex md:w-5/12 flex-col w-full">
             <div className="flex items-center m-2">
               <button
                 onClick={() => router.replace(`/${state.user.userId}`)}
