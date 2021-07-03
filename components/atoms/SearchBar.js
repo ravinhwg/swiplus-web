@@ -8,6 +8,16 @@ export default function SrarchBar({ q }) {
     <div className=" flex self-center focus:outline-none">
       <input
         type="text"
+        onFocus={() =>
+          router.replace(
+            {
+              pathname: "/search",
+              query: {},
+            },
+            undefined,
+            { shallow: true }
+          )
+        }
         onChange={(e) => {
           if (!e.target.value) {
             return router.replace(
