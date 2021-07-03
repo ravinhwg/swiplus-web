@@ -46,10 +46,10 @@ export default function ProfilePage({ children, showTopBarMobile }) {
         mutation.mutate();
       }
     }, 300000);
+    dispatch({ type: "focused-menu-icon", payload: router.asPath });
     return () => clearInterval(interval);
   }, []);
   const handleMobileNavigation = (navPage) => {
-    dispatch({ type: "focused-menu-icon", payload: navPage });
     switch (navPage) {
       case "home":
         return router.push("/");
@@ -85,7 +85,7 @@ export default function ProfilePage({ children, showTopBarMobile }) {
                   <ProfileIcon
                     onClick={() => handleMobileNavigation("profile")}
                     className={`h-8 w-8 flex self-center m-3 ${
-                      state.focusedMenuItem === "profile"
+                      state.focusedMenuItem === `/${state.user.userId}`
                         ? "text-indigo-800"
                         : "text-gray-200"
                     }`}
@@ -117,7 +117,7 @@ export default function ProfilePage({ children, showTopBarMobile }) {
             <HomeIcon
               onClick={() => handleMobileNavigation("home")}
               className={`h-8 w-8 flex self-center ${
-                state.focusedMenuItem === "home"
+                state.focusedMenuItem === "/"
                   ? "text-indigo-800"
                   : "text-gray-200"
               }`}
@@ -125,7 +125,7 @@ export default function ProfilePage({ children, showTopBarMobile }) {
             <SearchIcon
               onClick={() => handleMobileNavigation("search")}
               className={`h-8 w-8 flex self-center ${
-                state.focusedMenuItem === "search"
+                state.focusedMenuItem === "/search"
                   ? "text-indigo-800"
                   : "text-gray-200"
               }`}
@@ -134,7 +134,7 @@ export default function ProfilePage({ children, showTopBarMobile }) {
               <NotificationsIcon
                 onClick={() => handleMobileNavigation("notifs")}
                 className={`h-8 w-8 flex self-center ${
-                  state.focusedMenuItem === "notifs"
+                  state.focusedMenuItem === "/notifications"
                     ? "text-indigo-800"
                     : "text-gray-200"
                 }`}
@@ -161,7 +161,7 @@ export default function ProfilePage({ children, showTopBarMobile }) {
                 <>
                   <HomeIcon
                     className={`h-8 w-8 flex self-center m-3 ${
-                      state.focusedMenuItem === "home"
+                      state.focusedMenuItem === "/"
                         ? "text-indigo-800"
                         : "text-gray-200"
                     }`}
@@ -169,7 +169,7 @@ export default function ProfilePage({ children, showTopBarMobile }) {
                   />
                   <GlobeIcon
                     className={`h-8 w-8 flex self-center m-3 ${
-                      state.focusedMenuItem === "explorer"
+                      state.focusedMenuItem === "/search"
                         ? "text-indigo-800"
                         : "text-gray-200"
                     }`}
@@ -178,7 +178,15 @@ export default function ProfilePage({ children, showTopBarMobile }) {
                   <ProfileIcon
                     onClick={() => handleMobileNavigation("profile")}
                     className={`h-8 w-8 flex self-center m-3 ${
-                      state.focusedMenuItem === "profile"
+                      state.focusedMenuItem === `/${state.user.userId}`
+                        ? "text-indigo-800"
+                        : "text-gray-200"
+                    }`}
+                  />
+                  <PlusIcon
+                    onClick={() => handleMobileNavigation("create")}
+                    className={`h-8 w-8 flex self-center m-3 ${
+                      state.focusedMenuItem === "/create"
                         ? "text-indigo-800"
                         : "text-gray-200"
                     }`}
@@ -186,7 +194,7 @@ export default function ProfilePage({ children, showTopBarMobile }) {
                   <NotificationsIcon
                     onClick={() => handleMobileNavigation("notifs")}
                     className={`h-8 w-8 flex self-center m-3 ${
-                      state.focusedMenuItem === "notifs"
+                      state.focusedMenuItem === "/notifications"
                         ? "text-indigo-800"
                         : "text-gray-200"
                     }`}
