@@ -53,7 +53,7 @@ export default function Home({ profile, metaData }) {
       </Head>
       <Navbar showTopBarMobile>
         <div className="w-full flex justify-evenly ">
-          <div className="lg:w-8/12 md:w-10/12">
+          <div className="lg:w-9/12 md:w-10/12 w-full">
             {!query.isLoading && !query.error ? (
               <>
                 <div className="flex w-full justify-center">
