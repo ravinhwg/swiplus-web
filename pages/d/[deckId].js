@@ -184,6 +184,19 @@ export default function DeckViewer({ deckId, blurhashImages, metaData }) {
           content={`${metaData.deck_description}`}
         />
         <meta property="og:image" content={`${metaData.thumb}`} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content={`${metaData.url}`} />
+        <meta name="twitter:creator" content="@swiplus" />
+        <meta
+          name="twitter:title"
+          content={`${metaData.deck_title}| ${metaData.deck_author} - Swiplus`}
+        />
+        <meta
+          name="twitter:description"
+          content={`${metaData.deck_description}`}
+        />
+        <meta name="twitter:image" content={`${metaData.thumb}`} />
       </Head>
       <Navbar>
         <>
