@@ -20,6 +20,7 @@ import {
   useQuery,
   useQueryClient,
 } from "react-query";
+import ShareDialogBox from "../../components/molecules/ShareDialog";
 import Navbar from "../../components/molecules/NavBar";
 import {
   getDeck,
@@ -52,6 +53,7 @@ export default function DeckViewer({ deckId, blurhashImages, metaData }) {
   const pageNumber = useRef(0);
   const [showAll, setShowAll] = useState(false);
   const [showReportDialog, setShowReportDialog] = useState(false);
+  const [showShareDialog, setShowShareDialog] = useState(false);
   const [showDeleteDialogBox, setShowDeleteDialogBox] = useState(false);
   const queryClient = useQueryClient();
   const [comment, setComment] = useState("");
@@ -256,7 +258,10 @@ export default function DeckViewer({ deckId, blurhashImages, metaData }) {
                           {abbreviateNumber(deckQuery.data.data.views)}
                         </div>
                         <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
-                          <Share className="h-8 w-8 text-gray-300" />
+                          <Share
+                            className="h-8 w-8 text-gray-300"
+                            onClick={() => setShowShareDialog(true)}
+                          />
                           share
                         </div>
                       </div>
@@ -479,6 +484,16 @@ export default function DeckViewer({ deckId, blurhashImages, metaData }) {
                If you want to temporaliy unpublish this deck go to profile > Manage and then Unpublish this deck.`}
                   dialogSubmit={deleteDeckStart}
                   dialogCloser={() => setShowDeleteDialogBox(false)}
+                />
+              ) : (
+                <></>
+              )}
+              {showShareDialog ? (
+                <ShareDialogBox
+                  media={metaData.thumb}
+                  url={`https://www.swiplus.com/d/${router.query.deckId}`}
+                  title={metaData.deck_title}
+                  closeDialogBox={() => setShowShareDialog(false)}
                 />
               ) : (
                 <></>
