@@ -33,6 +33,7 @@
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
   background: transparent;
 }
 
@@ -50,4 +51,7 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #494949;
+}
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0);
 }
