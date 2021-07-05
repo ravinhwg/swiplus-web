@@ -247,10 +247,10 @@ export default function ProfilePage({
         {showCopyrightNotice ? (
           <div className="bg-gray-900  inset-x-0 h-16 bottom-0 border-t-2 border-gray-900 mt-1 flex flex-col justify-center ">
             <div className="flex justify-center items-center">
-              <div className="text-gray-600 justify-center flex mr-4 underline">
+              <div className=" justify-center flex mr-4 underline text-gray-900">
                 about
               </div>
-              <div className="text-gray-600 justify-center flex ml-4 underline">
+              <div className=" justify-center flex ml-4 underline text-gray-900">
                 <a
                   href="https://www.notion.so/39ceb071ee834c5da854dcacf23cdf15?v=221881b95c71439b8e4abf242bf04037"
                   rel="noreferrer"
