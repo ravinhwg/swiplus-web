@@ -17,7 +17,11 @@ import {
 import Search from "../atoms/SearchBar";
 import Button from "../atoms/Button";
 
-export default function ProfilePage({ children, showTopBarMobile }) {
+export default function ProfilePage({
+  children,
+  showTopBarMobile,
+  showCopyrightNotice,
+}) {
   const [state, dispatch] = useContext(AppUiContext);
   const { loggedIn } = state;
   const router = useRouter();
@@ -111,7 +115,25 @@ export default function ProfilePage({ children, showTopBarMobile }) {
         )}
         {/* app body */}
         <div className="bg-gray-900">{children}</div>
-        <div className="bg-gray-900 inset-x-0 h-12 bottom-0 border-t-2 border-gray-900 mt-1 " />
+        {showCopyrightNotice ? (
+          <div className="bg-gray-900  inset-x-0 h-16 bottom-0 border-t-2 border-gray-900 mt-1 flex flex-col justify-center ">
+            <div className="flex justify-center items-center">
+              <div className="text-gray-600 justify-center flex mr-4 underline">
+                about
+              </div>
+              <div className="text-gray-600 justify-center flex ml-4 underline">
+                blog
+              </div>
+            </div>
+            <div className="text-gray-600 justify-center flex">
+              © 2021 Swiplus.com
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+
+        <div className="bg-gray-900  inset-x-0 h-12 bottom-0 border-t-2 border-gray-900 mt-1 flex flex-col justify-center " />
         <div className="bg-gray-900 fixed inset-x-0 h-12 bottom-0 border-t-2 border-gray-800 ">
           <div className="flex justify-around p-1.5">
             <HomeIcon
@@ -216,6 +238,23 @@ export default function ProfilePage({ children, showTopBarMobile }) {
         </div>
         {/* app body */}
         <div className="bg-gray-900">{children}</div>
+        {showCopyrightNotice ? (
+          <div className="bg-gray-900  inset-x-0 h-16 bottom-0 border-t-2 border-gray-900 mt-1 flex flex-col justify-center ">
+            <div className="flex justify-center items-center">
+              <div className="text-gray-600 justify-center flex mr-4 underline">
+                about
+              </div>
+              <div className="text-gray-600 justify-center flex ml-4 underline">
+                blog
+              </div>
+            </div>
+            <div className="text-gray-600 justify-center flex">
+              © 2021 Swiplus.com
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
       </Default>
     </>
   );
