@@ -346,18 +346,22 @@ export default function DeckViewer({ deckId, blurhashImages, metaData }) {
                           ) : (
                             <></>
                           )}
-                          <div className="flex items-center justify-left ">
-                            <div className="flex items-center justify-left">
-                              <button
-                                type="button"
-                                onClick={() => changeDialogState()}
-                                className="flex items-center font-regular"
-                              >
-                                <FlagIcon className="h-8 w-8 text-gray-400 hover:text-gray-300 m-2" />
-                                Report Deck
-                              </button>
+                          {state.loggedIn ? (
+                            <div className="flex items-center justify-left ">
+                              <div className="flex items-center justify-left">
+                                <button
+                                  type="button"
+                                  onClick={() => changeDialogState()}
+                                  className="flex items-center font-regular"
+                                >
+                                  <FlagIcon className="h-8 w-8 text-gray-400 hover:text-gray-300 m-2" />
+                                  Report Deck
+                                </button>
+                              </div>
                             </div>
-                          </div>
+                          ) : (
+                            <></>
+                          )}
                         </div>
                       </div>
                     ) : (
