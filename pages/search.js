@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unescaped-entities */
 import React, { useContext, useRef } from "react";
 import { useRouter } from "next/router";
@@ -127,6 +128,13 @@ export default function Search() {
                   <></>
                 )}
               </>
+            ) : !router.query.q && !state.loggedIn ? (
+              <div className=" text-gray-300 flex flex-col justify-center h-96   items-center">
+                <div className="text-6xl font-inter">🔍</div>
+                <div className="text-3xl font-inter max-w-xl text-center m-2">
+                  Start typing to search
+                </div>
+              </div>
             ) : (
               <div className="h-screen p-1">
                 <div className="text-xl font-bold text-white m-3">Users</div>
