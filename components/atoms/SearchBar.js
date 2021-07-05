@@ -12,16 +12,14 @@ export default function SrarchBar({ q }) {
       <input
         type="text"
         onFocus={() => {
-          if (state.loggedIn) {
-            router.replace(
-              {
-                pathname: "/search",
-                query: {},
-              },
-              undefined,
-              { shallow: true }
-            );
-          }
+          router.replace(
+            {
+              pathname: "/search",
+              query: {},
+            },
+            undefined,
+            { shallow: true }
+          );
         }}
         onChange={(e) => {
           if (!e.target.value) {

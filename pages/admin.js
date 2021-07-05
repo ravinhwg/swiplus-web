@@ -75,6 +75,17 @@ export default function Home() {
                 </>
               )}
             </div>
+            {!query.isLoading && query.data.pages[0].data.decks.length === 0 ? (
+              // Show list empty component if there is no data to  show to the user.
+              <div className=" text-gray-300 flex flex-col justify-center h-96   items-center">
+                <div className="text-6xl font-inter">🤞</div>
+                <div className="text-3xl font-inter max-w-xl text-center m-2">
+                  No decks yet
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </Navbar>

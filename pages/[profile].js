@@ -51,7 +51,7 @@ export default function Home({ profile, metaData }) {
         <meta property="og:description" content={`${metaData.bio}`} />
         <meta property="og:image" content={`${metaData.profile_pic}`} />
       </Head>
-      <Navbar showTopBarMobile>
+      <Navbar showTopBarMobile showCopyrightNotice>
         <div className="w-full flex justify-evenly ">
           <div className="lg:w-9/12 md:w-10/12 w-full">
             {!query.isLoading && !query.error ? (

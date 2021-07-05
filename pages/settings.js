@@ -139,7 +139,7 @@ export default function Home() {
       <Head>
         <title>Settings | Swiplus</title>
       </Head>
-      <Navbar>
+      <Navbar showCopyrightNotice>
         <div className="flex justify-center ">
           <div className="flex md:w-5/12 flex-col w-full">
             <div className="flex m-2">
