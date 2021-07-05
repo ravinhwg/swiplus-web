@@ -112,16 +112,19 @@ export default function ProfilePage({ user }) {
       <div className="items-stretch m-3 px-2 ">
         <div className="flex justify-around">
           <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 px-0 text-center ">
-            {user?.data.number_of_followers} followers
+            {user?.data.number_of_followers}{" "}
+            {+user?.data.number_of_followers === 1 ? "follower" : "followers"}
           </div>
           <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
             {user?.data.number_of_following} following
           </div>
           <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
-            {user?.data.number_of_decks} decks
+            {user?.data.number_of_decks}{" "}
+            {+user?.data.number_of_decks === 1 ? "deck" : "decks"}
           </div>
           <div className="text-gray-100 font-bold text-sm overflow-ellipsis p-2.5 text-center">
-            {user?.data.number_of_likes} likes
+            {user?.data.number_of_likes}{" "}
+            {+user?.data.number_of_likes === 1 ? "like" : "likes"}
           </div>
         </div>
       </div>
