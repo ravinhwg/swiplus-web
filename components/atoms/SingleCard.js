@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import PropTypes from "prop-types";
 
 export default function SingleCardThumb({ deck }) {
   return (
@@ -28,3 +29,10 @@ export default function SingleCardThumb({ deck }) {
     </button>
   );
 }
+SingleCardThumb.propTypes = {
+  deck: PropTypes.shape({
+    card_order: [PropTypes.string],
+    deck_title: PropTypes.string,
+    id: PropTypes.string,
+  }),
+};

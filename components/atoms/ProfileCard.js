@@ -1,4 +1,5 @@
 import Link from "next/link";
+import PropTypes from "prop-types";
 
 export default function ProfileCard({ user }) {
   return (
@@ -40,3 +41,12 @@ export default function ProfileCard({ user }) {
     </div>
   );
 }
+
+ProfileCard.propTypes = {
+  user: PropTypes.shape({
+    username: PropTypes.string,
+    profile_pic: PropTypes.string,
+    display_name: PropTypes.string,
+    bio: PropTypes.string,
+  }),
+};

@@ -62,7 +62,7 @@ export default function Home() {
         queryClient.invalidateQueries("getProfileForEditing");
         return router.replace(`/`);
       }
-      setUsernameAvailable(true);
+      return setUsernameAvailable(true);
     },
     onError: async () => {
       setUsernameAvailable(false);
@@ -160,14 +160,14 @@ export default function Home() {
                         alt="profile"
                         className="h-40 w-40 rounded-full self-center"
                       />
+                      <input
+                        type="file"
+                        id="file-upload"
+                        onChange={addImage}
+                        className="hidden"
+                        accept="image/png, image/jpeg"
+                      />
                     </label>
-                    <input
-                      type="file"
-                      id="file-upload"
-                      onChange={addImage}
-                      className="hidden"
-                      accept="image/png, image/jpeg"
-                    />
                   </div>
                   <div className="flex justify-center">
                     <button

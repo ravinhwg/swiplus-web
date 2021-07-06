@@ -10,7 +10,7 @@ import { passwordResetFinish } from "../../../apiPlugs/Auth";
 import Icon from "../../../components/atoms/SwiplusLogo";
 
 export default function Home() {
-  const [state, dispatch] = useContext(AppUiContext);
+  const [state] = useContext(AppUiContext);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
@@ -29,10 +29,10 @@ export default function Home() {
     formState: { errors },
   } = useForm();
   const mutation = useMutation(passwordResetFinish, {
-    onError: async (data) => {
+    onError: async () => {
       setShowServerLoginError(true);
     },
-    onSuccess: async ({ data }) => {
+    onSuccess: async () => {
       setConfirmation(true);
     },
   });
@@ -47,9 +47,9 @@ export default function Home() {
           <div className="flex flex-col p-5 w-md max-w-md">
             <div className="mb-5">
               <Link href="/">
-                <a>
+                <button type="button">
                   <Icon />
-                </a>
+                </button>
               </Link>
             </div>
             <p className="font-inter text-4xl mr-5 text-gray-100 font-bold">

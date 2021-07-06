@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
+import PropTypes from "prop-types";
 import { refreshToken } from "../../apiPlugs/Auth";
 import { AppUiContext } from "../../Context";
 import { Default, Mobile } from "../utils/Breakpoints";
@@ -17,7 +18,7 @@ import {
 import Search from "../atoms/SearchBar";
 import Button from "../atoms/Button";
 
-export default function ProfilePage({
+export default function NavBar({
   children,
   showTopBarMobile,
   showCopyrightNotice,
@@ -34,6 +35,7 @@ export default function ProfilePage({
           expiresIn: data.expiresIn,
         },
       });
+      // eslint-disable-next-line no-console
       console.log("New access token set");
     },
     onError: async () => {
@@ -80,9 +82,9 @@ export default function ProfilePage({
           <div className="bg-gray-900 inset-x-0 h-12 top-0 w-full sticky z-50 border-gray-500">
             <div className="flex justify-between flex-row">
               <Link href="/" passHref>
-                <a>
+                <button type="button">
                   <Icon />
-                </a>
+                </button>
               </Link>
               {loggedIn ? (
                 <div className="flex justify-around flex-row">
@@ -102,9 +104,9 @@ export default function ProfilePage({
               ) : (
                 <div className="flex self-center m-3">
                   <Link href="/login" passHref>
-                    <a>
+                    <button type="button">
                       <Button text="Log in" />
-                    </a>
+                    </button>
                   </Link>{" "}
                 </div>
               )}
@@ -177,9 +179,9 @@ export default function ProfilePage({
         <div className="bg-gray-800 mb-3 inset-x-0 h-12 top-0 w-full sticky z-50 border-gray-800 items-center">
           <div className="flex flex-row justify-around items-center bg-gray-800">
             <Link href="/" passHref>
-              <a>
+              <button type="button">
                 <Icon />
-              </a>
+              </button>
             </Link>
             <div>
               <Search />
@@ -260,9 +262,9 @@ export default function ProfilePage({
                 <>
                   <div className="flex self-center m-3">
                     <Link href="/login" passHref>
-                      <a>
+                      <button type="button">
                         <Button text="Log in" />
-                      </a>
+                      </button>
                     </Link>
                   </div>
                 </>
@@ -299,3 +301,9 @@ export default function ProfilePage({
     </>
   );
 }
+
+NavBar.propTypes = {
+  children: PropTypes.func,
+  showTopBarMobile: PropTypes.bool,
+  showCopyrightNotice: PropTypes.bool,
+};

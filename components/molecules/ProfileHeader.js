@@ -2,14 +2,13 @@
 import React, { useContext } from "react";
 import Link from "next/link";
 import { useMutation, useQueryClient } from "react-query";
+import PropTypes from "prop-types";
 import { useRouter } from "next/router";
-import { Default, Mobile } from "../utils/Breakpoints";
-import FollowButton from "../atoms/Button";
 import { AppUiContext } from "../../Context";
 import { placeFollow } from "../../apiPlugs/user";
 
 export default function ProfilePage({ user }) {
-  const [state, dispatch] = useContext(AppUiContext);
+  const [state] = useContext(AppUiContext);
   const queryClient = useQueryClient();
   const router = useRouter();
   const followPersonMutation = useMutation(placeFollow, {
@@ -131,3 +130,9 @@ export default function ProfilePage({ user }) {
     </div>
   );
 }
+ProfilePage.propTypes = {
+  user: PropTypes.shape({
+    // eslint-disable-next-line react/forbid-prop-types
+    data: PropTypes.object,
+  }),
+};

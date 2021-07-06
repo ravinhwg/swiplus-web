@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import PropTypes from "prop-types";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 
@@ -48,7 +49,7 @@ export default function DisplayNotif({ notifData }) {
     <div className="text-gray-200 flex m-3">
       <div className="mr-1">
         <Link href={`/${notifData.trigger_id}`}>
-          <a>
+          <button type="button">
             {notifData.profile_pic === null ? (
               <img
                 alt="profile-pic"
@@ -62,7 +63,7 @@ export default function DisplayNotif({ notifData }) {
                 src={notifData.profile_pic}
               />
             )}
-          </a>
+          </button>
         </Link>
       </div>
       <div className="ml-3">
@@ -87,3 +88,14 @@ export default function DisplayNotif({ notifData }) {
     </div>
   );
 }
+DisplayNotif.propTypes = {
+  notifData: PropTypes.shape({
+    trigger_type: PropTypes.string,
+    // eslint-disable-next-line react/forbid-prop-types
+    action_data: PropTypes.object,
+    created_at: PropTypes.string,
+    trigger_id: PropTypes.string,
+    profile_pic: PropTypes.string,
+    display_name: PropTypes.string,
+  }),
+};

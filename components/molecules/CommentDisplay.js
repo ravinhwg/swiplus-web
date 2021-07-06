@@ -2,6 +2,7 @@
 import Link from "next/link";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import TimeAgo from "javascript-time-ago";
+import PropTypes from "prop-types";
 import en from "javascript-time-ago/locale/en";
 import { useRouter } from "next/router";
 import { InView } from "react-intersection-observer";
@@ -54,7 +55,7 @@ export default function CommentDisplay({ comment }) {
   const getCommentReplies = useInfiniteQuery(
     ["commentReplies", comment.id, state?.user.accessToken],
     getReply,
-    { enabled: false, onSuccess: async (data) => console.log(data) }
+    { enabled: false }
   );
   useEffect(() => {
     if (comment.comment_text.length > 70) {
@@ -119,11 +120,12 @@ export default function CommentDisplay({ comment }) {
         )}
         <div className="mx-2">
           <Link href={`/${comment.username}`}>
-            <a>
+            <button type="button">
               <p className="text-gray-50 text-sm m-1">{comment.display_name}</p>
-            </a>
+            </button>
           </Link>
-          <p
+          <button
+            type="button"
             className="text-gray-50 text-sm m-1"
             onClick={() =>
               comment.comment_text.length > 70
@@ -132,7 +134,7 @@ export default function CommentDisplay({ comment }) {
             }
           >{`${commentText} ${
             comment.comment_text.length > 70 && !showAll ? "... Read more" : ""
-          }`}</p>
+          }`}</button>
           <p className="text-gray-500 text-xs m-1">{createdAt.toUpperCase()}</p>
           {+comment.user_id === state.user.userId ? (
             <button
@@ -212,10 +214,10 @@ export default function CommentDisplay({ comment }) {
               ) : (
                 getCommentReplies.data.pages.map((page) => (
                   <React.Fragment key={page.nextId}>
-                    {page.data.data.map((comment, index) => (
+                    {page.data.data.map((singleComment, index) => (
                       <ReplyCommentDisplay
-                        key={`${comment.id}-${index.length}`}
-                        comment={comment}
+                        key={`${singleComment.id}-${index.length}`}
+                        comment={singleComment}
                       />
                     ))}
                   </React.Fragment>
@@ -232,7 +234,6 @@ export default function CommentDisplay({ comment }) {
                       ].data.nextPage
                     ) {
                       pageNumber.current += 1;
-                      console.log(pageNumber.current);
                       getCommentReplies.fetchNextPage({
                         pageParam: pageNumber.current,
                       });
@@ -263,3 +264,17 @@ export default function CommentDisplay({ comment }) {
     </div>
   );
 }
+
+CommentDisplay.propTypes = {
+  comment: PropTypes.shape({
+    likes: PropTypes.number,
+    userLiked: PropTypes.bool,
+    display_name: PropTypes.string,
+    comment_text: PropTypes.string,
+    username: PropTypes.string,
+    profile_pic: PropTypes.string,
+    id: PropTypes.string,
+    created_at: PropTypes.string,
+    user_id: PropTypes.string,
+  }),
+};

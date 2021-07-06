@@ -1,11 +1,9 @@
 import { useRouter } from "next/router";
-import { useContext } from "react";
-import { AppUiContext } from "../../Context";
+import PropTypes from "prop-types";
 import * as ga from "../../lib/ga";
 
-export default function SrarchBar({ q }) {
+export default function SearchBar({ q }) {
   const router = useRouter();
-  const [state] = useContext(AppUiContext);
 
   return (
     <div className=" flex self-center focus:outline-none">
@@ -43,7 +41,7 @@ export default function SrarchBar({ q }) {
             { shallow: true }
           );
           // Log the event in Google analytics
-          ga.event({
+          return ga.event({
             action: "Search",
             params: {
               search_term: e.target.value,
@@ -57,3 +55,7 @@ export default function SrarchBar({ q }) {
     </div>
   );
 }
+
+SearchBar.propTypes = {
+  q: PropTypes.string,
+};

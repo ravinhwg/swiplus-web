@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
 import Image from "next/image";
 import { decode } from "blurhash";
+import PropTypes from "prop-types";
 import UPNG from "upng-js";
 import Head from "next/head";
 import { encode } from "base64-arraybuffer-es6";
@@ -565,3 +566,21 @@ export async function getServerSideProps(context) {
     };
   }
 }
+
+DeckViewer.propTypes = {
+  deckId: PropTypes.string,
+  blurhashImages: PropTypes.arrayOf(PropTypes.string),
+  metaData: PropTypes.shape({
+    deck_title: PropTypes.string,
+    deck_author: PropTypes.string,
+    thumb: PropTypes.string,
+    deck_description: PropTypes.string,
+    username: PropTypes.string,
+    url: PropTypes.string,
+  }),
+};
+DeckViewer.defaultProps = {
+  deckId: "",
+  blurhashImages: ["", ""],
+  metaData: {},
+};

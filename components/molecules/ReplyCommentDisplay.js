@@ -4,10 +4,11 @@ import { useContext, useEffect, useState } from "react";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { useMutation, useQueryClient } from "react-query";
+import PropTypes from "prop-types";
+import { useRouter } from "next/router";
 import { deleteComments, placeCommentLike } from "../../apiPlugs/deck";
 import { AppUiContext } from "../../Context";
 import { LikeOutline, LikeFill } from "../atoms/Icons";
-import { useRouter } from "next/router";
 
 export default function ReplyCommentDisplay({ comment }) {
   const [state] = useContext(AppUiContext);
@@ -83,11 +84,12 @@ export default function ReplyCommentDisplay({ comment }) {
         )}
         <div className="mx-2">
           <Link href={`/${comment.username}`}>
-            <a>
+            <button type="button">
               <p className="text-gray-50 text-sm m-1">{comment.display_name}</p>
-            </a>
+            </button>
           </Link>
-          <p
+          <button
+            type="button"
             className="text-gray-50 text-sm m-1"
             onClick={() =>
               comment.comment_text.length > 70
@@ -96,7 +98,7 @@ export default function ReplyCommentDisplay({ comment }) {
             }
           >{`${commentText} ${
             comment.comment_text.length > 70 && !showAll ? "... Read more" : ""
-          }`}</p>
+          }`}</button>
           <p className="text-gray-500 text-xs m-1">{createdAt.toUpperCase()}</p>
           {+comment.user_id === state.user.userId ? (
             <button
@@ -128,3 +130,8 @@ export default function ReplyCommentDisplay({ comment }) {
     </div>
   );
 }
+
+ReplyCommentDisplay.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  comment: PropTypes.object,
+};

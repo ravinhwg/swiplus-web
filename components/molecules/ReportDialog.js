@@ -2,11 +2,12 @@
 import { useContext, useState } from "react";
 import { useMutation } from "react-query";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
 import createReport from "../../apiPlugs/report";
 import { FlagIcon } from "../atoms/Icons";
 import { AppUiContext } from "../../Context";
 
-export default function ReportDialogBox(props) {
+export default function ReportDialogBox({ type, id, dialogChanger }) {
   const [reportText, setReportText] = useState("");
   const [state] = useContext(AppUiContext);
   const [success, setSuccess] = useState(false);
@@ -26,8 +27,8 @@ export default function ReportDialogBox(props) {
   const sendReport = () => {
     sendReportMutation.mutate({
       reportDescription: reportText,
-      reportType: props.type,
-      reportEntity: props.id,
+      reportType: type,
+      reportEntity: id,
       token: state.user.accessToken,
     });
   };
@@ -52,7 +53,7 @@ export default function ReportDialogBox(props) {
                     <div className="text-center md:text-right mt-4 md:flex md:justify-end">
                       <button
                         type="button"
-                        onClick={() => props.dialogChanger()}
+                        onClick={() => dialogChanger()}
                         className="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-indigo-200 text-indigo-800 rounded-lg font-semibold text-sm mt-4
                   md:mt-0 md:order-1"
                       >
@@ -64,9 +65,7 @@ export default function ReportDialogBox(props) {
               ) : (
                 <>
                   <div>
-                    <p className="font-bold text-gray-50">
-                      Report this {props.type}
-                    </p>
+                    <p className="font-bold text-gray-50">Report this {type}</p>
                   </div>
                   <div className="text-sm text-gray-200 mt-1 max-w-md ">
                     <ul className=" w-full flex h-10 overflow-scroll">
@@ -143,7 +142,7 @@ export default function ReportDialogBox(props) {
                       </button>
                       <button
                         type="button"
-                        onClick={() => props.dialogChanger()}
+                        onClick={() => dialogChanger()}
                         className="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-indigo-200 text-indigo-800 rounded-lg font-semibold text-sm mt-4
                       md:mt-0 md:order-1"
                       >
@@ -160,3 +159,8 @@ export default function ReportDialogBox(props) {
     </div>
   );
 }
+ReportDialogBox.propTypes = {
+  type: PropTypes.string,
+  id: PropTypes.string,
+  dialogChanger: PropTypes.func,
+};
