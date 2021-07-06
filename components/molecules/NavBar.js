@@ -187,46 +187,74 @@ export default function ProfilePage({
             <div className="flex flex-row">
               {loggedIn ? (
                 <>
-                  <HomeIcon
-                    className={`h-8 w-8 flex self-center m-3 ${
-                      state.focusedMenuItem === "/"
-                        ? "text-indigo-800"
-                        : "text-gray-200"
-                    }`}
+                  <button
+                    type="button"
+                    className="focus:outline-none"
                     onClick={() => handleMobileNavigation("home")}
-                  />
-                  <GlobeIcon
-                    className={`h-8 w-8 flex self-center m-3 ${
-                      state.focusedMenuItem === "/search"
-                        ? "text-indigo-800"
-                        : "text-gray-200"
-                    }`}
+                  >
+                    <HomeIcon
+                      className={`h-8 w-8 flex self-center m-3 ${
+                        state.focusedMenuItem === "/"
+                          ? "text-indigo-800"
+                          : "text-gray-200"
+                      }`}
+                    />
+                  </button>
+                  <button
+                    className="focus:outline-none"
+                    type="button"
                     onClick={() => handleMobileNavigation("explorer")}
-                  />
-                  <ProfileIcon
+                  >
+                    <GlobeIcon
+                      className={`h-8 w-8 flex self-center m-3 ${
+                        state.focusedMenuItem === "/search"
+                          ? "text-indigo-800"
+                          : "text-gray-200"
+                      }`}
+                    />
+                  </button>
+                  <button
+                    className="focus:outline-none"
+                    type="button"
                     onClick={() => handleMobileNavigation("profile")}
-                    className={`h-8 w-8 flex self-center m-3 ${
-                      state.focusedMenuItem === `/${state.user.userId}`
-                        ? "text-indigo-800"
-                        : "text-gray-200"
-                    }`}
-                  />
-                  <PlusIcon
+                  >
+                    <ProfileIcon
+                      onClick={() => handleMobileNavigation("profile")}
+                      className={`h-8 w-8 flex self-center m-3 ${
+                        state.focusedMenuItem === `/${state.user.userId}`
+                          ? "text-indigo-800"
+                          : "text-gray-200"
+                      }`}
+                    />
+                  </button>
+                  <button
+                    className="focus:outline-none"
+                    type="button"
                     onClick={() => handleMobileNavigation("create")}
-                    className={`h-8 w-8 flex self-center m-3 ${
-                      state.focusedMenuItem === "/create"
-                        ? "text-indigo-800"
-                        : "text-gray-200"
-                    }`}
-                  />
-                  <NotificationsIcon
+                  >
+                    <PlusIcon
+                      onClick={() => handleMobileNavigation("create")}
+                      className={`h-8 w-8 flex self-center m-3 ${
+                        state.focusedMenuItem === "/create"
+                          ? "text-indigo-800"
+                          : "text-gray-200"
+                      }`}
+                    />
+                  </button>
+                  <button
+                    className="focus:outline-none"
+                    type="button"
                     onClick={() => handleMobileNavigation("notifs")}
-                    className={`h-8 w-8 flex self-center m-3 ${
-                      state.focusedMenuItem === "/notifications"
-                        ? "text-indigo-800"
-                        : "text-gray-200"
-                    }`}
-                  />
+                  >
+                    <NotificationsIcon
+                      onClick={() => handleMobileNavigation("notifs")}
+                      className={`h-8 w-8 flex self-center m-3 ${
+                        state.focusedMenuItem === "/notifications"
+                          ? "text-indigo-800"
+                          : "text-gray-200"
+                      }`}
+                    />
+                  </button>
                 </>
               ) : (
                 <>
