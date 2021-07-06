@@ -4,7 +4,7 @@ function abbreviateNumber(value) {
     const suffixes = ["", "k", "m", "b", "t"];
     const suffixNum = Math.floor(`${value}`.length / 3);
     let shortValue = "";
-    for (let precision = 2; precision >= 1; precision--) {
+    for (let precision = 2; precision >= 1; precision -= 1) {
       shortValue = parseFloat(
         (suffixNum !== 0 ? value / 1000 ** suffixNum : value).toPrecision(
           precision

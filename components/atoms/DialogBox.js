@@ -1,4 +1,12 @@
-export default function DialogBox(props) {
+import PropTypes from "prop-types";
+
+export default function DialogBox({
+  dialogCloser,
+  dialogDescription,
+  dialogSubmit,
+  dialogTitle,
+  submitText,
+}) {
   return (
     <div className="antialiased text-gray-900 font-sans overflow-x-hidden">
       <div className="relative px-4 min-h-screen md:flex md:items-center md:justify-center">
@@ -6,22 +14,22 @@ export default function DialogBox(props) {
           <div className="md:flex items-center">
             <div className="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
               <div>
-                <p className="font-bold text-gray-50">{props.dialogTitle}</p>
+                <p className="font-bold text-gray-50">{dialogTitle}</p>
               </div>
               <div className="text-sm text-gray-200 mt-1 max-w-md ">
-                {props.dialogDescription}
+                {dialogDescription}
               </div>
               <div className="text-center md:text-right mt-4 md:flex md:justify-end">
                 <button
                   type="submit"
-                  onClick={() => props.dialogSubmit()}
+                  onClick={() => dialogSubmit()}
                   className="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-indigo-700 text-white rounded-lg font-semibold text-sm md:ml-2 md:order-2"
                 >
-                  {props.submitText}
+                  {submitText}
                 </button>
                 <button
                   type="button"
-                  onClick={() => props.dialogCloser()}
+                  onClick={() => dialogCloser()}
                   className="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-indigo-200 text-indigo-800 rounded-lg font-semibold text-sm mt-4
                       md:mt-0 md:order-1"
                 >
@@ -35,3 +43,11 @@ export default function DialogBox(props) {
     </div>
   );
 }
+
+DialogBox.propTypes = {
+  dialogTitle: PropTypes.string,
+  dialogDescription: PropTypes.string,
+  submitText: PropTypes.string,
+  dialogSubmit: PropTypes.func,
+  dialogCloser: PropTypes.func,
+};

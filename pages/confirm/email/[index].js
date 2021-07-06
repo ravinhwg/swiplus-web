@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import { useMutation } from "react-query";
+import Proptypes from "prop-types";
 import Link from "next/link";
 import { confirmAccount } from "../../../apiPlugs/Auth";
 import Icon from "../../../components/atoms/SwiplusLogo";
@@ -30,9 +31,9 @@ export default function ConfirmAccount({ index }) {
           <div className="flex flex-col p-5 w-md max-w-md">
             <div className="mb-5">
               <Link href="/">
-                <a>
+                <button type="button">
                   <Icon />
-                </a>
+                </button>
               </Link>
             </div>
             <div className="max-w-xl">
@@ -80,3 +81,7 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
+ConfirmAccount.propTypes = {
+  index: Proptypes.string,
+};

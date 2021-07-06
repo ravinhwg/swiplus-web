@@ -20,6 +20,7 @@ class MyDocument extends Document {
           />
           <meta name="theme-color" content="#111827" />
           <script
+            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{
               __html: `                 
                  window.dataLayer = window.dataLayer || [];

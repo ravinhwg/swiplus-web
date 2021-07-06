@@ -3,6 +3,7 @@ import Head from "next/head";
 import { useInfiniteQuery, useQuery } from "react-query";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect } from "react";
+import PropTypes from "prop-types";
 import Navbar from "../components/molecules/NavBar";
 import SingleCard from "../components/atoms/SingleCard";
 import { SpinnerBasic } from "../components/atoms/Icons";
@@ -12,7 +13,7 @@ import { AppUiContext } from "../Context";
 import ErrorPage from "../components/molecules/ErrorPage";
 import * as ga from "../lib/ga";
 
-export default function Home({ profile, metaData }) {
+export default function Profile({ profile, metaData }) {
   const router = useRouter();
   const [state] = useContext(AppUiContext);
   const queryKey = "profile";
@@ -140,3 +141,23 @@ export async function getServerSideProps(context) {
     };
   }
 }
+Profile.propTypes = {
+  profile: PropTypes.string,
+  metaData: PropTypes.shape({
+    display_name: PropTypes.string,
+    username: PropTypes.string,
+    profile_pic: PropTypes.string,
+    url: PropTypes.string,
+    bio: PropTypes.string,
+  }),
+};
+Profile.defaultProps = {
+  profile: "",
+  metaData: {
+    display_name: "",
+    username: "",
+    profile_pic: "",
+    url: "",
+    bio: "",
+  },
+};

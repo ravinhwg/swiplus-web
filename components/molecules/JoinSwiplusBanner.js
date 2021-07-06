@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import Link from "next/link";
+import PropTypes from "prop-types";
 import { AppUiContext } from "../../Context";
 import Button from "../atoms/Button";
 import { Default, Mobile } from "../utils/Breakpoints";
@@ -17,9 +18,9 @@ const InnerBanner = ({ dispatch }) => {
       </p>
       <div className="flex self-center mt-1 justify-center w-full">
         <Link href="/login">
-          <a>
+          <button type="button">
             <Button text="Join" />
-          </a>
+          </button>
         </Link>
 
         <div className="flex flex-row">
@@ -35,6 +36,10 @@ const InnerBanner = ({ dispatch }) => {
       </div>
     </div>
   );
+};
+
+InnerBanner.propTypes = {
+  dispatch: PropTypes.func,
 };
 
 export default function Banner() {

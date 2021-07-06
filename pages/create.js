@@ -189,16 +189,16 @@ export default function Home() {
                         <div className="m-auto  items-center flex flex-col">
                           <label htmlFor="file-upload">
                             <PlusIcon className="text-gray-100 h-20 w-20" />
+                            <input
+                              {...register("files", { required: true })}
+                              type="file"
+                              id="file-upload"
+                              onChange={addImages}
+                              className="hidden"
+                              multiple
+                              accept="image/png, image/jpeg"
+                            />
                           </label>
-                          <input
-                            {...register("files", { required: true })}
-                            type="file"
-                            id="file-upload"
-                            onChange={addImages}
-                            className="hidden"
-                            multiple
-                            accept="image/png, image/jpeg"
-                          />
                         </div>
                       </div>
                     </div>

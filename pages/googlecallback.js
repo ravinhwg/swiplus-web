@@ -6,7 +6,7 @@ import { googleLogin } from "../apiPlugs/Auth";
 import { AppUiContext } from "../Context";
 import { SpinnerBasic } from "../components/atoms/Icons";
 
-export default function GoogleCallback(props) {
+export default function GoogleCallback() {
   const router = useRouter();
   const [, dispatch] = useContext(AppUiContext);
   const mutation = useMutation(googleLogin);

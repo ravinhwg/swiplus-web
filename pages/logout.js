@@ -15,7 +15,7 @@ export default function Home() {
     onError: async () => {
       router.replace("/");
     },
-    onSuccess: async ({ data }) => {
+    onSuccess: async () => {
       dispatch({
         type: "logout-user",
       });

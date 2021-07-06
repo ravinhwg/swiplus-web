@@ -1,9 +1,12 @@
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/forbid-prop-types */
 import "tailwindcss/tailwind.css";
 import "../styles/globals.css";
 import "swiper/swiper.min.css";
 import "swiper/components/pagination/pagination.min.css";
 import "swiper/components/navigation/navigation.min.css";
 import NextNprogress from "nextjs-progressbar";
+import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -55,3 +58,7 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp;
+MyApp.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+  pageProps: PropTypes.object,
+};

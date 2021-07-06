@@ -78,15 +78,15 @@ export default function Home() {
                   Hello there! Welcome to Swiplus
                 </div>
                 <div className="text-xl font-normal max-w-lg text-center m-3">
-                  Looks like you don't follow anybody yet. You can go to the
-                  explore feed and find new decks and people there!
+                  {` Looks like you don't follow anybody yet. You can go to the
+                  explore feed and find new decks and people there!`}
                 </div>
                 <div className="text-xl font-normal max-w-lg text-center m-3">
                   <Link href="/search">
                     {/* // eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                    <a>
+                    <button type="button">
                       <Button text="Explore Feed" />
-                    </a>
+                    </button>
                   </Link>
                 </div>
               </div>

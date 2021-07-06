@@ -1,10 +1,10 @@
 // next.config.js
 module.exports = {
   images: {
-    domains: ["picsum.photos", "storage.googleapis.com"],
+    domains: ["storage.googleapis.com"],
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   env: {
     API_URL: process.env.API_URL,

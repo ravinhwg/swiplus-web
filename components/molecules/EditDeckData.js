@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
 import { useContext, useEffect, useState } from "react";
 import { useQueryClient, useMutation } from "react-query";
 import { editDecks, unpublishDecks } from "../../apiPlugs/deck";
@@ -65,7 +66,7 @@ export default function EditDeckData({ deck }) {
       <div className="flex justify-center">
         {deck ? (
           <Link href={`/d/${deck.id}`}>
-            <img
+            <Image
               src={deck.card_order[0]}
               alt={deck.deck_title}
               layout="cover"
@@ -135,3 +136,13 @@ export default function EditDeckData({ deck }) {
     </div>
   );
 }
+
+EditDeckData.propTypes = {
+  deck: PropTypes.shape({
+    deck_description: PropTypes.string,
+    deck_title: PropTypes.string,
+    deck_status: PropTypes.string,
+    id: PropTypes.string,
+    card_order: [PropTypes.string],
+  }),
+};

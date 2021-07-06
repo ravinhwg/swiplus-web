@@ -52,7 +52,7 @@ export default function Home() {
               <div className=" text-gray-100 flex flex-col justify-center h-96   items-center">
                 <div className="text-6xl font-inter">🔔</div>
                 <div className="text-4xl font-inter max-w-xl text-center m-2">
-                  Looks like you don't have any notifications yet.
+                  Looks like you don&apos;t have any notifications yet.
                 </div>
                 <div className="text-xl font-normal max-w-lg text-center m-3">
                   You will recive new notifications here

@@ -47,7 +47,7 @@ export default function Home() {
               <Icon />
             </div>
             <p className="font-inter text-4xl mr-5 text-gray-100 font-bold">
-              Forgot your password? Don't worry, That happens :)
+              Forgot your password? Don&apos;t worry, That happens :)
             </p>
             <p className="font-inter text-xl mr-5 mt-8 text-gray-100 font-thin ">
               Enter the email you used to create your Swiplus account.
