@@ -71,7 +71,7 @@ export default function Home() {
         />
         <meta
           property="og:image"
-          content="https://storage.googleapis.com/swiplusimages/assets/og-icon.jpg"
+          content="https://storage.googleapis.com/static.swiplus.com/assets/og-icon.jpg"
         />
       </Head>
       <div className="flex justify-center">

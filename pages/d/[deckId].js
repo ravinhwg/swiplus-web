@@ -298,7 +298,7 @@ export default function DeckViewer({ deckId, blurhashImages, metaData }) {
                             <Image
                               height="50"
                               width="50"
-                              src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
+                              src="https://storage.googleapis.com/static.swiplus.com/profile_pics/default.jpeg"
                               alt="profile-pic"
                               className="rounded-full h-12 w-12 my-1"
                             />

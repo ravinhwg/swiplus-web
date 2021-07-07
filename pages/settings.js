@@ -17,7 +17,7 @@ export default function Home() {
   const [state] = useContext(AppUiContext);
   const [usernameAvailable, setUsernameAvailable] = useState(true);
   const [profilePicture, setProfilePicture] = useState(
-    "https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
+    "https://storage.googleapis.com/static.swiplus.com/profile_pics/default.jpeg"
   );
   const [link, setLink] = useState("");
   const [username, setUsername] = useState("");
@@ -99,7 +99,7 @@ export default function Home() {
       setUsername(query.data.data.username || "");
       setProfilePicture(
         query.data.data.profile_pic ||
-          "https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
+          "https://storage.googleapis.com/static.swiplus.com/profile_pics/default.jpeg"
       );
       setInitialUsername(query.data.data.username || "");
     }

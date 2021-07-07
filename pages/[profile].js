@@ -123,7 +123,7 @@ export async function getServerSideProps(context) {
     metaData.username = response.data.username;
     metaData.profile_pic =
       response.data.profile_pic ||
-      "https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg";
+      "https://storage.googleapis.com/static.swiplus.com/profile_pics/default.jpeg";
     metaData.url = `https://swiplus.com/${metaData.username}`;
     metaData.bio = response.data.bio;
     return {
