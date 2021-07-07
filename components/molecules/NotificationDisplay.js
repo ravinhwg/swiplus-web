@@ -53,14 +53,16 @@ export default function DisplayNotif({ notifData }) {
           <button type="button">
             {notifData.profile_pic === null ? (
               <Image
-                layout="fill"
+                width="50"
+                height="50"
                 alt="profile-pic"
                 className="h-10 w-10 rounded-full m-2"
                 src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
               />
             ) : (
               <Image
-                layout="fill"
+                width="50"
+                height="50"
                 className="h-10 w-10 rounded-full m-2"
                 alt="profile-pic"
                 src={notifData.profile_pic}

@@ -12,27 +12,35 @@ export default function ProfileCard({ user }) {
       {user ? (
         <Link href={`/${user.username}`}>
           <button type="button" className="focus:outline-none">
-            {user.profile_pic === null ? (
-              <Image
-                layout="fill"
-                src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
-                alt="profile-pic"
-                className="rounded-full h-12 w-12 my-1"
-              />
-            ) : (
-              <Image
-                layout="fill"
-                src={user.profile_pic}
-                alt="profile-pic"
-                className="rounded-full h-12 w-12 my-1"
-              />
-            )}
-            <p className=" text-gray-50 font-inter font-bold text-2xl text-left">
-              {user.display_name}
-            </p>
-            <p className=" text-gray-200 font-inter font-bold text-md text-left">
-              @{user.username}
-            </p>
+            <div className="flex">
+              <div className="flex flex-1">
+                {user.profile_pic === null ? (
+                  <Image
+                    height="200"
+                    width="200"
+                    src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
+                    alt="profile-pic"
+                    className="rounded-full"
+                  />
+                ) : (
+                  <Image
+                    height="200"
+                    width="200"
+                    src={user.profile_pic}
+                    alt="profile-pic"
+                    className="rounded-full"
+                  />
+                )}
+              </div>
+              <div className="ml-3">
+                <p className=" text-gray-50 font-inter font-bold text-2xl text-left">
+                  {user.display_name}
+                </p>
+                <p className=" text-gray-200 font-inter font-bold text-md text-left">
+                  @{user.username}
+                </p>
+              </div>
+            </div>
             <p className=" text-gray-500 font-inter text-md text-left">
               {user.bio?.substring(0, 60)}
             </p>
