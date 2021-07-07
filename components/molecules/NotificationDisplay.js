@@ -57,7 +57,7 @@ export default function DisplayNotif({ notifData }) {
                 height="50"
                 alt="profile-pic"
                 className="h-10 w-10 rounded-full m-2"
-                src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
+                src="https://storage.googleapis.com/static.swiplus.com/profile_pics/default.jpeg"
               />
             ) : (
               <Image

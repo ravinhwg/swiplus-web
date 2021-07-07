@@ -35,7 +35,7 @@ export default function ProfilePage({ user }) {
           {user?.data.profile_pic === null ? (
             <Image
               alt="profile-pic"
-              src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
+              src="https://storage.googleapis.com/static.swiplus.com/profile_pics/default.jpeg"
               width="100"
               height="100"
               className="rounded-full"
