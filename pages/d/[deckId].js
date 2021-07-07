@@ -287,13 +287,15 @@ export default function DeckViewer({ deckId, blurhashImages, metaData }) {
                       <Link href={`/${deckQuery.data.data.deck?.username}`}>
                         <div className="flex">
                           {deckQuery.data.data.deck?.profile_pic ? (
-                            <img
+                            <Image
+                              layout="fill"
                               src={deckQuery.data.data?.deck.profile_pic}
                               alt="profile-pic"
                               className="rounded-full h-12 w-12 my-1"
                             />
                           ) : (
-                            <img
+                            <Image
+                              layout="fill"
                               src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
                               alt="profile-pic"
                               className="rounded-full h-12 w-12 my-1"

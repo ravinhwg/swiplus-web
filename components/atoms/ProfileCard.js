@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import PropTypes from "prop-types";
 
 export default function ProfileCard({ user }) {
@@ -12,13 +13,15 @@ export default function ProfileCard({ user }) {
         <Link href={`/${user.username}`}>
           <button type="button" className="focus:outline-none">
             {user.profile_pic === null ? (
-              <img
+              <Image
+                layout="fill"
                 src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
                 alt="profile-pic"
                 className="rounded-full h-12 w-12 my-1"
               />
             ) : (
-              <img
+              <Image
+                layout="fill"
                 src={user.profile_pic}
                 alt="profile-pic"
                 className="rounded-full h-12 w-12 my-1"

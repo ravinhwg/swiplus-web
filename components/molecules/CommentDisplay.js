@@ -2,6 +2,7 @@
 import Link from "next/link";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import TimeAgo from "javascript-time-ago";
+import Image from "next/image";
 import PropTypes from "prop-types";
 import en from "javascript-time-ago/locale/en";
 import { useRouter } from "next/router";
@@ -106,13 +107,15 @@ export default function CommentDisplay({ comment }) {
     <div className="p-3 flex w-full justify-between">
       <div className="flex">
         {comment.profile_pic ? (
-          <img
+          <Image
+            layout="fill"
             src={comment.profile_pic}
             alt="profile-pic"
             className="rounded-full h-8 w-8 my-1"
           />
         ) : (
-          <img
+          <Image
+            layout="fill"
             src="https://storage.googleapis.com/swiplusimages/profile_pics/default.jpeg"
             alt="profile-pic"
             className="rounded-full h-8 w-8 my-1"
