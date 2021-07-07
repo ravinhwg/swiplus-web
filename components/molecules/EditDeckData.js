@@ -69,7 +69,8 @@ export default function EditDeckData({ deck }) {
             <Image
               src={deck.card_order[0]}
               alt={deck.deck_title}
-              layout="cover"
+              height="250"
+              width="200"
               className=" h-40 w-36 sm:aspect-w-4 mr-3"
             />
           </Link>
