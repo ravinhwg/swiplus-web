@@ -1,7 +1,7 @@
 // next.config.js
 module.exports = {
   images: {
-    domains: ["storage.googleapis.com"],
+    domains: ["storage.googleapis.com", "static.swiplus.com"],
   },
   eslint: {
     ignoreDuringBuilds: false,

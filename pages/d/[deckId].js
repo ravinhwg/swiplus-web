@@ -178,7 +178,7 @@ export default function DeckViewer({ deckId, blurhashImages, metaData }) {
         <meta property="og:type" content="article" />
         <meta
           property="og:title"
-          content={`${metaData.deck_title}| ${metaData.deck_author} - Swiplus`}
+          content={`${metaData.deck_title} | ${metaData.deck_author} - Swiplus`}
         />
         <meta
           property="og:description"
@@ -191,7 +191,7 @@ export default function DeckViewer({ deckId, blurhashImages, metaData }) {
         <meta name="twitter:creator" content="@swiplus" />
         <meta
           name="twitter:title"
-          content={`${metaData.deck_title}| ${metaData.deck_author} - Swiplus`}
+          content={`${metaData.deck_title} | ${metaData.deck_author} - Swiplus`}
         />
         <meta
           name="twitter:description"
