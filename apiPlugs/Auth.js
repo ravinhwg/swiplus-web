@@ -81,7 +81,9 @@ async function registerUser({ email, password, displayName, recaptcha }) {
         email,
         password,
         name: displayName,
-        username: email.split("@")[0] + Math.round(Math.random() * 100),
+        username:
+          email.split("@")[0].replace(/-/g, "_") +
+          Math.round(Math.random() * 100),
         recaptcha,
       },
       { withCredentials: true }
