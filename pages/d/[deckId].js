@@ -418,6 +418,13 @@ export default function DeckViewer({ deckId, blurhashImages, metaData }) {
                     ) : (
                       <></>
                     )}
+                    <p className="text-gray-300 text-lg m-4 font-bold">
+                      {+deckQuery.data.data?.comments === 0
+                        ? "No Comments yet"
+                        : +deckQuery.data.data?.comments === 1
+                        ? "1 comment"
+                        : `${deckQuery.data.data?.comments} comments`}
+                    </p>
                     <div className="lg:overflow-y-scroll  lg:h-96">
                       {!commentQuery.isLoading && !deckQuery.error ? (
                         commentQuery.data.pages.map((page) => (
@@ -551,6 +558,7 @@ export async function getServerSideProps(context) {
     // eslint-disable-next-line prefer-destructuring
     metaData.thumb = response.data.deck.card_order[0];
     metaData.deck_description = response.data.deck.deck_description;
+    metaData.comments = response.data.comments;
     metaData.username = response.data.deck.username;
     metaData.url = `https://swiplus.com/d/${deckId}`;
     return {

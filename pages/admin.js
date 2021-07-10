@@ -16,7 +16,10 @@ export default function Home() {
 
   const query = useInfiniteQuery(
     ["grabDecksAsAdmin", state.user?.accessToken],
-    getDecksAsAdmin
+    getDecksAsAdmin,
+    {
+      refetchOnWindowFocus: false,
+    }
   );
   useEffect(() => {
     if (!state.loggedIn) {

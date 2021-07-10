@@ -68,32 +68,38 @@ export default function ReplyCommentDisplay({ comment }) {
     setCommentText(comment.comment_text);
   };
   return (
-    <div className="p-3 flex w-full justify-between">
+    <div className="p-3 flex w-full justify-between my-2">
       <div className="flex">
-        {comment.profile_pic ? (
-          <Image
-            layout="fill"
-            src={comment.profile_pic}
-            alt="profile-pic"
-            className="rounded-full h-8 w-8 my-1"
-          />
-        ) : (
-          <Image
-            layout="fill"
-            src="https://storage.googleapis.com/static.swiplus.com/profile_pics/default.jpeg"
-            alt="profile-pic"
-            className="rounded-full h-8 w-8 my-1"
-          />
-        )}
-        <div className="mx-2">
+        <div className="w-4/12">
+          {comment.profile_pic ? (
+            <Image
+              height="30"
+              width="30"
+              src={comment.profile_pic}
+              alt="profile-pic"
+              className="rounded-full align-top"
+            />
+          ) : (
+            <Image
+              height="30"
+              width="30"
+              src="https://storage.googleapis.com/static.swiplus.com/profile_pics/default.jpeg"
+              alt="profile-pic"
+              className="rounded-full align-top"
+            />
+          )}
+        </div>
+        <div className="mx-2 w-8/12">
           <Link href={`/${comment.username}`}>
             <button type="button">
-              <p className="text-gray-50 text-sm m-1">{comment.display_name}</p>
+              <p className="text-gray-50 text-sm m-1 font-bold  text-left w-full">
+                {comment.display_name}
+              </p>
             </button>
           </Link>
           <button
             type="button"
-            className="text-gray-50 text-sm m-1"
+            className="text-gray-50 text-left text-sm m-1 bg-gray-700 p-2 rounded-xl w-lg max-w-lg break-all"
             onClick={() =>
               comment.comment_text.length > 70
                 ? showWholeComment(true)
