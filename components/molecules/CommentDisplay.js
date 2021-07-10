@@ -104,40 +104,50 @@ export default function CommentDisplay({ comment }) {
     setCommentText(comment.comment_text);
   };
   return (
-    <div className="p-3 flex w-full justify-between">
+    <div className="p-3 flex w-full justify-between my-2">
       <div className="flex">
-        {comment.profile_pic ? (
-          <Image
-            layout="fill"
-            src={comment.profile_pic}
-            alt="profile-pic"
-            className="rounded-full h-8 w-8 my-1"
-          />
-        ) : (
-          <Image
-            layout="fill"
-            src="https://storage.googleapis.com/static.swiplus.com/profile_pics/default.jpeg"
-            alt="profile-pic"
-            className="rounded-full h-8 w-8 my-1"
-          />
-        )}
+        <div className=" w-3/12">
+          {comment.profile_pic ? (
+            <Image
+              height="50"
+              width="50"
+              src={comment.profile_pic}
+              alt="profile-pic"
+              className="rounded-full align-top"
+            />
+          ) : (
+            <Image
+              height="50"
+              width="50"
+              src="https://storage.googleapis.com/static.swiplus.com/profile_pics/default.jpeg"
+              alt="profile-pic"
+              className="rounded-full align-top"
+            />
+          )}
+        </div>
         <div className="mx-2">
           <Link href={`/${comment.username}`}>
             <button type="button">
-              <p className="text-gray-50 text-sm m-1">{comment.display_name}</p>
+              <p className="text-gray-50 text-sm m-1 font-bold  text-left w-full">
+                {comment.display_name}
+              </p>
             </button>
           </Link>
-          <button
-            type="button"
-            className="text-gray-50 text-sm m-1"
-            onClick={() =>
-              comment.comment_text.length > 70
-                ? showWholeComment(true)
-                : undefined
-            }
-          >{`${commentText} ${
-            comment.comment_text.length > 70 && !showAll ? "... Read more" : ""
-          }`}</button>
+          <p className="text-xs m-1 max-w-lg">
+            <button
+              type="button"
+              className="text-gray-50 text-left text-sm m-1 bg-gray-700 p-2 rounded-xl w-xl max-w-xl break-all"
+              onClick={() =>
+                comment.comment_text.length > 70
+                  ? showWholeComment(true)
+                  : undefined
+              }
+            >{`${commentText.trim()} ${
+              comment.comment_text.length > 70 && !showAll
+                ? "... Read more"
+                : ""
+            }`}</button>
+          </p>
           <p className="text-gray-500 text-xs m-1">{createdAt.toUpperCase()}</p>
           {+comment.user_id === state.user.userId ? (
             <button
@@ -165,10 +175,10 @@ export default function CommentDisplay({ comment }) {
             REPLY
           </button>
           {showReplyTextBox ? (
-            <>
+            <div className="max-w-xl w-6xl">
               {state.loggedIn ? (
                 <form
-                  className=" w-full flex flex-col justify-end"
+                  className=" flex flex-col justify-end w-6xl max-w-6xl"
                   onSubmit={handleSubmit(() => commentReply())}
                 >
                   <div className=" text-red-500  p-2 rounded-md text-sm text-left w-full">
@@ -188,7 +198,7 @@ export default function CommentDisplay({ comment }) {
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
                     placeholder="Type a Reply"
-                    className="bg-gray-600  h-full resize-y   border-2 border-transparent rounded-xl w-6/6 py-2 px-4 text-gray-100 font-inter leading-tight focus:outline-none  focus:border-blue-600"
+                    className="bg-gray-600  h-full resize-y  w-full  border-2 border-transparent rounded-xl w-6/6 py-2 px-4 text-gray-100 font-inter leading-tight focus:outline-none  focus:border-blue-600"
                   />
                   <div className="flex justify-end">
                     <p className="m-4 text-right text-gray-500">
@@ -215,7 +225,7 @@ export default function CommentDisplay({ comment }) {
               {getCommentReplies.isLoading ? (
                 <></>
               ) : (
-                getCommentReplies.data.pages.map((page) => (
+                getCommentReplies.data?.pages.map((page) => (
                   <React.Fragment key={page.nextId}>
                     {page.data.data.map((singleComment, index) => (
                       <ReplyCommentDisplay
@@ -233,7 +243,7 @@ export default function CommentDisplay({ comment }) {
                     // Check if data has all the decks
                     if (
                       getCommentReplies.data?.pages[
-                        getCommentReplies.data.pages.length - 1
+                        getCommentReplies.data?.pages.length - 1
                       ].data.nextPage
                     ) {
                       pageNumber.current += 1;
@@ -243,8 +253,8 @@ export default function CommentDisplay({ comment }) {
                     }
                   }
                 }}
-              />{" "}
-            </>
+              />
+            </div>
           ) : (
             <></>
           )}
