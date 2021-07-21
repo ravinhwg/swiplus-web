@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import PropTypes from "prop-types";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
@@ -52,7 +51,7 @@ export default function DisplayNotif({ notifData }) {
         <Link href={`/${notifData.trigger_id}`}>
           <button type="button">
             {notifData.profile_pic === null ? (
-              <Image
+              <img
                 width="50"
                 height="50"
                 alt="profile-pic"
@@ -60,7 +59,7 @@ export default function DisplayNotif({ notifData }) {
                 src="https://storage.googleapis.com/static.swiplus.com/profile_pics/default.jpeg"
               />
             ) : (
-              <Image
+              <img
                 width="50"
                 height="50"
                 className="h-10 w-10 rounded-full m-2"

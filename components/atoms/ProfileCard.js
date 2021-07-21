@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import PropTypes from "prop-types";
 
 export default function ProfileCard({ user }) {
@@ -16,7 +15,7 @@ export default function ProfileCard({ user }) {
               <div className="flex">
                 <div>
                   {user.profile_pic === null ? (
-                    <Image
+                    <img
                       height="50"
                       width="50"
                       src="https://storage.googleapis.com/static.swiplus.com/profile_pics/default.jpeg"
@@ -24,7 +23,7 @@ export default function ProfileCard({ user }) {
                       className="rounded-full"
                     />
                   ) : (
-                    <Image
+                    <img
                       height="50"
                       width="50"
                       src={user.profile_pic}

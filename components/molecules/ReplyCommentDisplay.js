@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import TimeAgo from "javascript-time-ago";
-import Image from "next/image";
 import en from "javascript-time-ago/locale/en";
 import { useMutation, useQueryClient } from "react-query";
 import PropTypes from "prop-types";
@@ -70,9 +69,9 @@ export default function ReplyCommentDisplay({ comment }) {
   return (
     <div className="p-3 flex w-full justify-between my-2">
       <div className="flex">
-        <div className="w-4/12">
+        <div className="w-2/12">
           {comment.profile_pic ? (
-            <Image
+            <img
               height="30"
               width="30"
               src={comment.profile_pic}
@@ -80,7 +79,7 @@ export default function ReplyCommentDisplay({ comment }) {
               className="rounded-full align-top"
             />
           ) : (
-            <Image
+            <img
               height="30"
               width="30"
               src="https://storage.googleapis.com/static.swiplus.com/profile_pics/default.jpeg"

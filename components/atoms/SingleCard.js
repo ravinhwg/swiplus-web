@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import PropTypes from "prop-types";
 
@@ -11,7 +10,7 @@ export default function SingleCardThumb({ deck }) {
       }`}
     >
       {deck ? (
-        <Image src={deck.card_order[0]} alt={deck.deck_title} layout="fill" />
+        <img src={deck.card_order[0]} alt={deck.deck_title} layout="fill" />
       ) : (
         <></>
       )}
