@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useContext } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useMutation, useQueryClient } from "react-query";
 import PropTypes from "prop-types";
 import { useRouter } from "next/router";
@@ -33,7 +32,7 @@ export default function ProfilePage({ user }) {
       <div className="flex">
         <div className="flex-col items-end p-2 m-3">
           {user?.data.profile_pic === null ? (
-            <Image
+            <img
               alt="profile-pic"
               src="https://storage.googleapis.com/static.swiplus.com/profile_pics/default.jpeg"
               width="100"
@@ -41,7 +40,7 @@ export default function ProfilePage({ user }) {
               className="rounded-full"
             />
           ) : (
-            <Image
+            <img
               alt="profile-pic"
               src={user?.data.profile_pic}
               width="100"

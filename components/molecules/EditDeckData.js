@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
@@ -66,7 +65,7 @@ export default function EditDeckData({ deck }) {
       <div className="flex justify-center">
         {deck ? (
           <Link href={`/d/${deck.id}`}>
-            <Image
+            <img
               src={deck.card_order[0]}
               alt={deck.deck_title}
               height="250"
